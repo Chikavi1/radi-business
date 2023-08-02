@@ -1,0 +1,72 @@
+
+
+<ion-content >
+  <div style="padding: 1em;margin-top:3em;">
+    <div *ngIf="!edit">
+      <ion-fab color="light"  vertical="top" horizontal="end"  slot="fixed" (click)="editing()">
+        <ion-fab-button mode="ios" size="small"color="light"  style="outline: none !important">
+          <ion-icon name="pencil-outline" style="color:#f8d100;"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+      <ion-card style="padding:1em;">
+        <h2  class="capital" style="font-weight: bold;"> {{history.user_name}}</h2>
+        <p class="capital">
+          {{history.name}}
+        </p>
+        <p>
+          {{history.date | date:'fullDate'}}
+        </p>
+        <p><br></p>
+        <p class="capital">{{history.description}}</p>
+        <p *ngIf="history.income" style="color:green;font-size: 1.2em;">$ {{history.income}}</p>
+
+      </ion-card>
+      <!-- *ngIf="2 > hours" -->
+      <ion-button *ngIf="!history.report_id || (2 > hours)" fill="clear" color="danger"  (click)="createReport()" expand="block">
+        Reportar
+      </ion-button>
+      <h4 *ngIf="history.report_id" style="color:red;text-align: center;">Tiene reporte</h4>
+
+      <ion-card>
+        <ion-row>
+          <ion-col size="6">
+            <p style="text-align: center;">
+              <ion-icon style="font-size: 6em;" name="medal-outline"></ion-icon>
+            </p>
+          </ion-col>
+          <ion-col size="6">
+          <div *ngIf="!history.achivement_id">
+            <p>No se le dio logro</p>
+            <ion-button color="success" fill="clear" (click)="createAchivementModal()">Dar logro</ion-button>
+          </div>
+          <div *ngIf="history.achivement_id">
+            <p style="color:green;font-weight: bold;margin-top:3em;font-size: 1.2em;">Se le dio logro</p>
+          </div>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </div>
+
+    <div *ngIf="edit">
+      <p>Descripción</p>
+      <ion-textarea   maxlength="599" rows="8" cols="20"  [(ngModel)]="description" class="new-input" placeholder="Ingresa una descripción" type="text"></ion-textarea>
+      <h2>Monto</h2>
+      <ion-input class="new-input" (keypress)="numberOnlyValidation($event)"
+      placeholder="Ingresa monto (opcional)" type="number" [(ngModel)]="income"  ></ion-input>
+          <ion-row>
+        <ion-col>
+          <ion-button expand="block" color="danger" (click)="editing()">Cancelar</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button expand="block" color="success" (click)="update()">Actualizar</ion-button>
+        </ion-col>
+       </ion-row>
+    </div>
+
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-button (click)="close()" fill="clear" color="danger" expand="block">
+    Cerrar
+  </ion-button>
+</ion-footer>

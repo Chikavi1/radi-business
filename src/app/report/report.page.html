@@ -1,0 +1,16 @@
+
+<ion-content [fullscreen]="true">
+  <div style="padding:1em; margin-top:3em;">
+    <h2>Reportar cuenta del usuario</h2>
+    <p>Descripción</p>
+    <ion-textarea maxlength="599" rows="8" cols="20"  [(ngModel)]="description" class="new-input" placeholder="Ingresa una descripción" type="text"></ion-textarea>
+    <ion-button (click)="send()" style="margin-top:1em;" expand="full" color="tertiary" shape="round">Enviar</ion-button>
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button (click)="close()" expand="full" color="danger">
+    Cerrar
+  </ion-button>
+</ion-footer>

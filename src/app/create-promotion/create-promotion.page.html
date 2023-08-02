@@ -1,0 +1,24 @@
+<ion-content [fullscreen]="true">
+  <img (click)="takePhoto()" [src]="image" alt="">
+  <div style="padding:1em">
+
+    <p>Título</p>
+    <ion-input class="new-input" placeholder="Ingresa Título" [(ngModel)]="title"  ></ion-input>
+    <p>Descripción</p>
+    <ion-textarea   maxlength="599" rows="8" cols="20"  [(ngModel)]="description" class="new-input" placeholder="Ingresa una descripción" type="text"></ion-textarea>
+    <p>Condiciones</p>
+    <ion-textarea   maxlength="599" rows="8" cols="20"  [(ngModel)]="conditions" class="new-input" placeholder="Ingresa una descripción" type="text"></ion-textarea>
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-row >
+   <ion-col>
+     <ion-button expand="block" color="danger" (click)="close()">Cerrar</ion-button>
+   </ion-col>
+   <ion-col>
+     <ion-button expand="block" color="success" [disabled]="buttondisabled || !uploadPhoto || !title || !description || !conditions" (click)="create()">Crear</ion-button>
+   </ion-col>
+  </ion-row>
+</ion-footer>

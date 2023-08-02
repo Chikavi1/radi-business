@@ -1,0 +1,34 @@
+
+<ion-content>
+  <app-explore-container></app-explore-container>
+
+  <h1 style="padding: 1em .5em;">Promociones</h1>
+
+
+  <div style="padding:1em;">
+    <div *ngIf="discounts.length != 0">
+      <ion-button expand="block" (click)="createPromotion()" style="padding:0em 1em;" color="success">
+        Crear Promoción
+      </ion-button>
+        <ion-card *ngFor="let discount of discounts" (click)="promotion(discount.id)">
+          <ion-row>
+            <ion-col size="5">
+              <img style="height: 100%;" src="{{discount.image}}" alt="">
+            </ion-col>
+            <ion-col size="7">
+              <p class="capital">{{discount.title}}</p>
+              <p>Ver más</p>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+    </div>
+
+    <div style="margin-top:6em;">
+      <div *ngIf="discounts.length == 0">
+        <h2 style="text-align: center;">No tienes promociones.</h2>
+        <ion-button (click)="createPromotion()" expand="full">Agregar promoción</ion-button>
+      </div>
+    </div>
+  </div>
+
+</ion-content>

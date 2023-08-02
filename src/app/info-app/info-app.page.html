@@ -1,0 +1,37 @@
+
+<ion-content>
+  <ion-fab  vertical="top" horizontal="start"  slot="fixed" (click)="beforePage()">
+    <ion-fab-button mode="ios" size="small" translucent    color="motel"  style="  outline: none !important;    ">
+      <ion-icon name="arrow-back-outline" style="color:#f8d100;"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <div class="padding-1 " style="text-align: center;margin-top: 4em;">
+    <h1 (click)="sumClicks()">Radi Pets</h1>
+    <p style="font-weight: bold;">Business</p>
+    <p>🇲🇽</p>
+    <p>Zapopan, Jalisco. México</p>
+    <p *ngIf="sandbox" >{{hashiduser}}</p>
+
+    <div *ngIf="plt === 'capacitor'">
+      <div *ngIf="plt === 'ios'">
+        <a href="itms-apps://itunes.apple.com/app/id842849113">
+          <ion-button expand="full" >App</ion-button>
+        </a>
+      </div>
+      <div *ngIf="plt === 'android'">
+        <a href="market://details?id=pet.radi.radi" target="_blank">
+          <ion-button expand="full" >App</ion-button>
+        </a>
+      </div>
+    </div>
+
+  <ion-row>
+    <ion-col size="2" offset="4" (click)="openBlank('https://www.facebook.com/radipetsmx')">
+      <ion-icon style="font-size: 1.4em;color: #3b5998;" name="logo-facebook"></ion-icon>
+    </ion-col>
+    <ion-col size="2" (click)="openBlank('https://www.instagram.com/radipets')">
+      <ion-icon style="font-size: 1.4em;color:#E1306C;" name="logo-instagram"></ion-icon>
+    </ion-col>
+  </ion-row>
+  </div>
+</ion-content>

@@ -1,0 +1,125 @@
+<ion-content>
+  <div *ngIf="result.length != 0">
+    <div style="background-color: #41cb7d;height: 17em;margin-top: -2em;">
+      <h1 style="text-align: center;">
+        <img style="margin-top:2em;width: 4em;height: 4em;" src="../../assets/img/logo-white.png" alt="image">
+      </h1>
+    </div>
+
+    <div style="margin-top: -5em">
+
+      <!--
+        <ion-card >
+          <h1 class="text-center" style="color:#41cb7d"><ion-icon name="shield-checkmark-outline"></ion-icon></h1>
+          <h1 class="text-center" style="color:#41cb7d">Pasa</h1>
+          <p class="text-center">Radi cuenta con todas sus vacunas</p>
+
+          <ion-item style="background-color: transparent;" button detail="true" detail-icon="caret-forward-outline">
+            <ion-icon style="color: #41cb7d;" slot="start" name="checkmark-circle-outline"></ion-icon>
+            <ion-label>
+              <h3>Rabia</h3>
+              <p>23 de marzo del 2023</p>
+              <p>Verificado por Plaza Punto Sur</p>
+            </ion-label>
+          </ion-item>
+          <ion-item style="background-color: transparent;" button detail="true" detail-icon="caret-forward-outline">
+            <ion-icon style="color: #41cb7d;" slot="start" name="checkmark-circle-outline"></ion-icon>
+            <ion-label>
+              <h3>Quintople</h3>
+              <p>26 de mayo del 2023</p>
+              <p>Verificado por Veterinaria Paulo</p>
+            </ion-label>
+          </ion-item>
+        </ion-card> -->
+
+    <ion-card style="padding:1em">
+      <h3>Información de la mascota</h3>
+      <ion-row>
+        <ion-col size="5">
+          <img [src]="result.photo" style="border-radius:.75em;margin-top:1.5em;" alt="pet image">
+        </ion-col>
+        <ion-col size="6">
+          <p style="font-weight: bold;">{{result.name}}</p>
+          <p *ngIf="result.size == 'mn'">Mini</p>
+          <p *ngIf="result.size == 'sm'">Pequeño</p>
+          <p *ngIf="result.size == 'md'">Mediano</p>
+          <p *ngIf="result.size == 'lg'">Grande</p>
+          <p *ngIf="result.size == 'xl'">Extra Grande</p>
+          <p *ngIf="result.gender == 1">Macho</p>
+          <p *ngIf="result.gender == 2">Hembra</p>
+          <p style="color:green;" *ngIf="result.sterelized">Esterilizado</p>
+        </ion-col>
+      </ion-row>
+      <p style="margin-top: 2em;"> {{result.description}} </p>
+    </ion-card>
+
+    <ion-card style="padding:1em">
+      <h3>Información del dueño</h3>
+      <ion-row>
+        <ion-col size="4">
+          <img style="width: 5em;height: 5em;border-radius: 50%;margin-top:1.5em;margin-left: 1em;" [src]="result.user_photo" alt="image user">
+        </ion-col>
+        <ion-col size="7">
+          <p style="font-size: 1.3em;font-weight: bold;">{{result.user_name}}</p>
+          <p style="color:green;"  *ngIf="result.user_verified">Verificado por la plataforma</p>
+          <p>Usuario desde {{result.user_created | date:'dd/MM/yyyy'}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+    <ion-card style="padding:1em;">
+      <h3 class="text-center">Visitas</h3>
+
+      <div *ngIf="visits.length != 0">
+        <ion-item *ngFor="let item of visits" style="background-color: transparent;" button detail="true" detail-icon="caret-forward-outline">
+          <ion-label (click)="History(item.id)">
+            <h3>{{item.id}}.-{{item.description}}</h3>
+            <p>{{item.date| date:'dd/MM/yyyy'}}</p>
+          </ion-label>
+        </ion-item>
+      </div>
+
+      <div *ngIf="visits.length == 0">
+        <h2 style="text-align: center;">Primera visita con ustedes</h2>
+      </div>
+
+
+
+      <ion-button *ngIf="btnCreate" (click)="addVisits()" shape="round" color="success" expand="full">
+        Agregar Visita
+      </ion-button>
+    </ion-card>
+
+
+    <ion-card style="padding:1em;">
+      <h3 class="text-center" style="color:#41cb7d" *ngIf="goodbehavior">No cuenta con ningún reporte</h3>
+      <h3 class="text-center" style="color:#e48f48" *ngIf="!goodbehavior">Cuenta con reporte</h3>
+    </ion-card>
+
+    <ion-card style="padding: 1em;">
+      <p>Para proteger la Información de nuestros usuarios, se le enviará una notificacion al usuario que se esta revisando su historial.</p>
+    </ion-card>
+    </div>
+  </div>
+
+  <div *ngIf="result.length == 0">
+    <div style="background-color: red;height: 17em;margin-top: -2em;">
+      <h1 style="text-align: center;">
+        <img style="margin-top:2em;width: 4em;height: 4em;" src="../../assets/img/logo-white.png" alt="image">
+      </h1>
+    </div>
+
+    <div style="margin-top: -5em">
+
+
+      <ion-card style="padding:1em">
+        <h3>Error</h3>
+        <p>No se encontro mascota registrada</p>
+      </ion-card>
+
+      </div>
+  </div>
+
+</ion-content>
+<ion-footer>
+  <ion-button (click)="close()" color="danger" fill="clear" expand="full">Cerrar</ion-button>
+</ion-footer>

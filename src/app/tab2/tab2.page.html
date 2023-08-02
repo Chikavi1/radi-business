@@ -1,0 +1,25 @@
+
+<ion-content>
+  <app-explore-container></app-explore-container>
+
+
+  <h1 style="padding: 1em .5em;">Historial</h1>
+
+  <div *ngIf="records.length != 0">
+
+
+
+    <ion-item *ngFor="let record of records" class="capital" lines="none" style="padding-bottom:1em;background-color: transparent;" button detail="true" detail-icon="caret-forward-outline">
+      <ion-label (click)="History(record.id)">
+        <p class="capital" style="font-weight: bold;">{{record.user_name}}</p>
+        <p class="capital">{{record.name}}</p>
+        <p>{{record.date | date:'fullDate'}}</p>
+      </ion-label>
+    </ion-item>
+  </div>
+
+  <div *ngIf="records.length == 0" style="padding:1em;margin-top:6em;">
+    <h2 style="text-align: center;">No hay historial por el momento.</h2>
+  </div>
+
+</ion-content>

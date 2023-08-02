@@ -1,0 +1,9 @@
+<ion-item  lines="none" style="margin-top: 3em;">
+  <ion-avatar slot="start" (click)="Profile()">
+    <img alt="Silhouette of a person's head" src="{{image}}" />
+  </ion-avatar>
+  <ion-label (click)="Profile()">{{name}}</ion-label>
+<ion-label slot="end" (click)="qrcodeapp()">
+  <ion-icon style="font-size: 2em;"  name="qr-code-outline"></ion-icon>
+</ion-label>
+</ion-item>

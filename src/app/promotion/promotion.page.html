@@ -1,0 +1,58 @@
+<ion-content>
+
+
+  <img (click)="takePhoto()" src="{{image}}" alt="">
+
+  <div *ngIf="!edit">
+    <ion-fab color="light"  vertical="top" horizontal="end"  slot="fixed" (click)="share()">
+      <ion-fab-button mode="ios" size="small"color="light"  style="outline: none !important">
+        <ion-icon name="share-social-outline" style="color:#f8d100;"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    <ion-fab color="light"  vertical="bottom" horizontal="end"  slot="fixed" (click)="editing()">
+      <ion-fab-button mode="ios" size="small"color="light"  style="outline: none !important">
+        <ion-icon name="pencil-outline" style="color:#f8d100;"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    <p style="color:red;" *ngIf="discount.status != 1">No disponible</p>
+    <div style="padding:1em;">
+     <h1 class="capital">{{discount.title}}</h1>
+      <h2>Descripción</h2>
+      <p class="capital">{{discount.description}}</p>
+      <h2>Condiciones</h2>
+      <p class="capital">{{ discount.conditions}}</p>
+    </div>
+  </div>
+
+  <div *ngIf="edit">
+    <div style="padding:1em">
+
+      <p>Título</p>
+      <ion-input class="new-input" placeholder="Ingresa Título" [(ngModel)]="title"  ></ion-input>
+      <p>Descripción</p>
+      <ion-textarea   maxlength="599" rows="8" cols="20"  [(ngModel)]="description" class="new-input" placeholder="Ingresa una descripción" type="text"></ion-textarea>
+      <p>Condiciones</p>
+      <ion-textarea   maxlength="599" rows="8" cols="20"  [(ngModel)]="conditions" class="new-input" placeholder="Ingresa una descripción" type="text"></ion-textarea>
+
+      <ion-button color="warning" expand="full" fill="clear" (click)="presentAlertskip()">Eliminar</ion-button>
+    </div>
+
+  </div>
+ </ion-content>
+
+ <ion-footer>
+   <ion-button *ngIf="!edit" expand="block" color="danger" (click)="close(0)">Cerrar</ion-button>
+
+   <ion-row *ngIf="edit">
+    <ion-col>
+      <ion-button expand="block" color="danger" (click)="editing()">Cancelar</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button expand="block" color="success" [disabled]="!image || !title || !description || !conditions" (click)="update()">Actualizar</ion-button>
+    </ion-col>
+   </ion-row>
+
+
+ </ion-footer>

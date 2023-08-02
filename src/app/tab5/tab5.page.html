@@ -1,0 +1,138 @@
+
+
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <app-explore-container></app-explore-container>
+
+
+  <h1 style="padding: 1em .5em;">Estadisticas</h1>
+
+
+  <div *ngIf="false"style="padding:1em;margin-top:6em;">
+      <h2 style="text-align: center;">Por el momento no tienes estadisticas.</h2>
+      <p>Empieza a escanear y en unos dias se mostrará las estadisticas.</p>
+  </div>
+  <div *ngIf="true" style="text-align: center;">
+    <h2>Último mes</h2>
+    <ion-card>
+      <h2>{{counter}}</h2>
+      <p>Total de mascotas escaneadas</p>
+    </ion-card>
+    <ion-card>
+      <div *ngIf="income">
+        <h2>$ {{ income }}</h2>
+        <p>Dinero recibido</p>
+      </div>
+      <div  *ngIf="!income">
+        <h2>Sin dinero</h2>
+      </div>
+    </ion-card>
+
+    <ion-item-divider mode="md">
+    </ion-item-divider>
+
+    <div style="padding:1em;">
+      <h2>Estadisticas de las mascotas de tus clientes</h2>
+    </div>
+    <ion-item-divider mode="md">
+    </ion-item-divider>
+
+    <ion-card style="margin-top: 2em;">
+      <h2>
+        <span *ngIf="winGen == 0">
+          Empate
+        </span>
+      <span *ngIf="winGen == 1">
+        Macho
+      </span>
+      <span *ngIf="winGen == 2">
+        Hembra
+      </span>
+    </h2>
+      <p>Género de la mascota que más se escaneó</p>
+      <canvas #genderPet style="position: relative; height:20vh; width:40vw"></canvas>
+      <p>Grafica de Género que más se escaneó</p>
+    </ion-card>
+    <ion-card>
+      <h2>
+        <span *ngIf="winSpe == 0">
+          Empate
+        </span>
+        <span *ngIf="winSpe == 1">
+          Gato
+        </span>
+        <span *ngIf="winSpe == 2">
+          Perro
+        </span>
+      </h2>
+      <p>Especie que más se escaneó</p>
+      <canvas #speciePet style="position: relative; height:20vh; width:40vw"></canvas>
+      <p>Grafica de Especie que más se escaneó</p>
+    </ion-card>
+    <ion-item-divider mode="md">
+    </ion-item-divider>
+
+    <div style="padding:1em;">
+      <h2>Estadisticas para publicidad</h2>
+      <p>Esta información se puede utilizar en los anuncios.</p>
+    </div>
+    <ion-item-divider mode="md">
+    </ion-item-divider>
+
+    <ion-card style="margin-top: 2em;">
+      <h2 *ngIf="hours">{{hours[0].hours}}</h2>
+
+      <p>Horarios con más demanda</p>
+      <canvas #bestHour style="position: relative; height:20vh; width:40vw"></canvas>
+      <p>Grafica de horarios con más demanda</p>
+    </ion-card>
+
+    <ion-card>
+      <!-- <h2>
+        <span *ngIf="weekday == 0">0</span>
+        <span *ngIf="weekday == 1">1</span>
+        <span *ngIf="weekday == 2">2</span>
+        <span *ngIf="weekday == 3">3</span>
+        <span *ngIf="weekday == 4">4</span>
+        <span *ngIf="weekday == 5">5</span>
+        <span *ngIf="weekday == 6">6</span>
+        <span *ngIf="weekday == 7">7</span>
+      </h2> -->
+      <h2 *ngIf="days">{{days[0].week_day}}</h2>
+
+      <p>Dias con más demanda</p>
+      <canvas #bestWeekDay style="position: relative; height:20vh; width:40vw"></canvas>
+      <p>Grafica de dias con más demanda</p>
+    </ion-card>
+
+
+    <ion-item-divider mode="md">
+    </ion-item-divider>
+
+    <div style="padding:1em;">
+      <h2>Estadisticas de tus clientes</h2>
+    </div>
+    <ion-item-divider mode="md">
+    </ion-item-divider>
+
+
+    <ion-card style="margin-top: 2em;">
+      <h2>Hombres</h2>
+      <p>Género que más se escaneó</p>
+      <canvas #genderHuman style="position: relative; height:20vh; width:40vw"></canvas>
+      <p>Grafica de Género de los clientes</p>
+    </ion-card>
+
+    <ion-card>
+      <h2 *ngIf="ageRange">{{ageRange[0].age_range}}</h2>
+      <p>Rango de edad que más se escaneó</p>
+      <canvas #ageHuman style="position: relative; height:20vh; width:40vw"></canvas>
+      <p>Grafica de rangos de edad de los cliente</p>
+    </ion-card>
+
+  </div>
+</ion-content>

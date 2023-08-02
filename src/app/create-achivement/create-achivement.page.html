@@ -1,0 +1,46 @@
+
+<ion-content>
+  <div style="padding: 1em;">
+    <h2 style="font-weight: bold;">Logro</h2>
+    <!-- <h2 style="color:#3b1687;font-weight: bold;">Logro</h2> -->
+    <p>Selecciona un logro para dar.</p>
+    <ion-card *ngIf="selected">
+      <ion-row>
+        <ion-col>
+          <img src="{{selected.image}}" alt="image">
+        </ion-col>
+        <ion-col>
+          <h3>{{selected.name}}</h3>
+          <p> {{selected.description}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+
+    <ion-row>
+      <ion-col  size="4" *ngFor="let item of achivements">
+        <p style="text-align: center;"  [ngClass]="{'selected' : idSelected == item.id }" (click)="selectA(item)">
+          <!-- style="filter: grayscale(100%);" -->
+          <img [src]="item.image"  alt="">
+          <br>
+          <span style="font-weight: bold;font-size: .85em;">
+           {{item.name}}
+          </span>
+        </p>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col size="6" >
+      <ion-button expand="full" color="danger" fill="clear" (click)="close(false)">
+        Cerrar
+      </ion-button>
+    </ion-col>
+    <ion-col size="6">
+      <ion-button expand="full" [disabled]="!selected || btnDisabled" color="tertiary" (click)="create()">
+        Dar
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

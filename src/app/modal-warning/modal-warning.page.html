@@ -1,0 +1,23 @@
+<ion-content>
+  <div style="width: 100%;height: 15em;">
+    <ng-lottie  [options]="warning">
+    </ng-lottie>
+  </div>
+  <div class="text-center">
+    <h4>{{title}}</h4>
+    <p style="padding: 1em;">{{subtitle}}</p>
+  </div>
+    <ion-row>
+      <ion-col *ngIf="cancel_text">
+        <ion-button expand="full" color="primary" fill="clear" (click)="close(0)">
+        {{cancel_text}}
+        </ion-button>
+      </ion-col>
+      <ion-col>
+
+        <ion-button  expand="full" color="warning" (click)="close(1)">
+          {{done_text}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-content>

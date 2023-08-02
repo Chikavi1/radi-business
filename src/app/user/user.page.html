@@ -1,0 +1,31 @@
+<ion-content >
+
+  <div style="padding: 1em;">
+    <h1>{{user.name}}</h1>
+    <p *ngIf="user.gender == 1">Hombre</p>
+    <p *ngIf="user.gender == 2">Mujer</p>
+    <p *ngIf="user.birthday">{{user.birthday | date:'dd/MM/yyyy'}} ({{age}} años)</p>
+    <p>{{user.email}}</p>
+    <!-- <p style="margin-top:2em;">Intereses</p> -->
+    <!-- <p>{{user.interest}}</p> -->
+    <p>Usuario desde {{user.createdAt  | date:'dd/MM/yyyy'}}</p>
+  </div>
+
+  <ion-card style="text-align: center;">
+    <h1>{{counter}}</h1>
+    <h3>visitas</h3>
+  </ion-card>
+
+  <a style="text-decoration: none;" href = "mailto: {{user.email}}">
+  <ion-item lines="none">
+    <ion-label>Enviar correo</ion-label>
+    <ion-icon name="mail-outline" slot="end"></ion-icon>
+  </ion-item>
+</a>
+
+
+</ion-content>
+
+<ion-footer>
+  <ion-button (click)="close()" color="danger" expand="full">Cerrar</ion-button>
+</ion-footer>
