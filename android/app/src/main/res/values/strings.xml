@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">business</string>
-    <string name="title_activity_main">business</string>
-    <string name="package_name">io.ionic.starter</string>
-    <string name="custom_url_scheme">io.ionic.starter</string>
+    <string name="app_name">Radi Business</string>
+    <string name="title_activity_main">Radi Business</string>
+    <string name="package_name">pet.radi.business</string>
+    <string name="custom_url_scheme">pet.radi.business</string>
 </resources>
