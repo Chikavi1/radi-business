@@ -8,7 +8,8 @@
   </ion-fab>
   <div style="width: 100%;height: 100%;background-position: center;background-repeat: no-repeat;background-size: cover;object-fit: cover;background-image: url('../../assets/img/qrcodeapp.png');">
   </div>
-  <p style="margin-top: -63%;color:#135899;z-index: 1;padding:1em;">¡Invita a tus clientes a escanear el código y disfrutar de Radi Pets de forma rápida y gratuita! <br> <br> El proceso de registro es súper sencillo y solo les llevará menos de 2 minutos. </p>
+  <!-- margin-top: -63% -->
+  <p  [ngClass]="device === 'tablet'?'mt-ipad':'mt-cell' " style="color:#135899;z-index: 1;padding:1em;">¡Invita a tus clientes a escanear el código y disfrutar de Radi Pets de forma rápida y gratuita! <br> <br> El proceso de registro es súper sencillo y solo les llevará menos de 2 minutos. </p>
 </ion-content>
 
 <ion-footer>

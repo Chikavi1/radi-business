@@ -11,12 +11,14 @@ import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 export class Tab1Page {
 name;
 image;
+device;
 
   constructor(private modalCtrl:ModalController,
     private toastController:ToastController,
     private barcodeScanner: BarcodeScanner){
     this.name = localStorage.getItem('name');
     this.image = localStorage.getItem('image');
+    this.device = localStorage.getItem('device');
   }
   type;
   code;

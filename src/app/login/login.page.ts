@@ -12,10 +12,13 @@ export class LoginPage implements OnInit {
 
   email;
   password;
+  device;
 
   constructor(private api:DataService,
     private toastController: ToastController,
-    private navCtrl:NavController) { }
+    private navCtrl:NavController) {
+     this.device = localStorage.getItem('device');
+    }
 
   ngOnInit() {
   }

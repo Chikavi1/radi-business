@@ -36,8 +36,10 @@ export class Tab5Page implements AfterViewInit{
   ageRange;
 
   hours ;
+  device;
 
   constructor(private api:DataService,private modalCtrl:ModalController){
+    this.device = localStorage.getItem('device');
 
 
   }

@@ -8,8 +8,12 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./qrcodeapp.page.scss'],
 })
 export class QrcodeappPage implements OnInit {
+  device;
 
-  constructor(private modalCtrl:ModalController) { }
+  constructor(private modalCtrl:ModalController) {
+    this.device = localStorage.getItem('device');
+
+  }
 
   ngOnInit() {
   }

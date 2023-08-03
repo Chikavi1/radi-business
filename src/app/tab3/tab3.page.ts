@@ -13,8 +13,10 @@ import { QrcodeappPage } from '../qrcodeapp/qrcodeapp.page';
 export class Tab3Page {
 
   clients:any = [];
-
+  device;
   constructor(private api:DataService, private modalCtrl:ModalController){
+    this.device = localStorage.getItem('device');
+
     this.api.getUsersByCompany(localStorage.getItem('id_company')).subscribe(data => {
       console.log(data);
        this.clients = data;

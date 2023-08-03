@@ -1,16 +1,23 @@
 
 
 <ion-content [fullscreen]="true">
-  <div style="text-align: center;margin-top: 4em;">
-    <img src="../../assets/img/logo.png" style="width: 4em;height: 4em;" alt="logo">
-    <h2>Radi Pets</h2>
-    <p>Business</p>
-  </div>
-  <div style="padding: 1em;">
-    <p>Correo</p>
-    <ion-input class="new-input" placeholder="Correo eléctronico" [(ngModel)]="email"></ion-input>
-    <p>Contraseña</p>
-    <ion-input class="new-input" placeholder="Contraseña"  type="password" [(ngModel)]="password"></ion-input>
-    <ion-button style="margin-top:1em;" shape="round" (click)="login()" expand="full" color="tertiary">Ingresar</ion-button>
-  </div>
+
+  <ion-row>
+    <ion-col [size]="device=='tablet'?8:12" [offset]="device=='tablet'?2:0">
+      <div style="text-align: center;margin-top: 4em;">
+        <img src="../../assets/img/logo.png" style="width: 4em;height: 4em;" alt="logo">
+        <h2>Radi Pets</h2>
+        <p>Business</p>
+      </div>
+      <div style="padding: 1em;">
+        <p>Correo</p>
+        <ion-input class="new-input" placeholder="Correo eléctronico" [(ngModel)]="email"></ion-input>
+        <p>Contraseña</p>
+        <ion-input class="new-input" placeholder="Contraseña"  type="password" [(ngModel)]="password"></ion-input>
+        <ion-button style="margin-top:1em;" shape="round" (click)="login()" expand="full" color="tertiary">Ingresar</ion-button>
+      </div>
+
+    </ion-col>
+  </ion-row>
+
 </ion-content>

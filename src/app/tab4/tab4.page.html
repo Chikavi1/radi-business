@@ -1,34 +1,39 @@
 
 <ion-content>
   <app-explore-container></app-explore-container>
-
-  <h1 style="padding: 1em .5em;">Promociones</h1>
-
-
-  <div style="padding:1em;">
-    <div *ngIf="discounts.length != 0">
-      <ion-button expand="block" (click)="createPromotion()" style="padding:0em 1em;" color="success">
-        Crear Promoción
-      </ion-button>
-        <ion-card *ngFor="let discount of discounts" (click)="promotion(discount.id)">
+  <ion-row>
+    <ion-col [size]="device=='tablet'?10:12" [offset]="device=='tablet'?1:0">
+      <h1 style="padding: 1em .5em;">Promociones</h1>
+      <div style="padding:1em;">
+        <div *ngIf="discounts.length != 0">
+          <ion-button expand="block" (click)="createPromotion()" style="padding:0em 1em;" color="success">
+            Crear Promoción
+          </ion-button>
           <ion-row>
-            <ion-col size="5">
-              <img  src="{{discount.image}}" alt="">
-            </ion-col>
-            <ion-col size="7">
-              <p class="capital">{{discount.title}}</p>
-              <p>Ver más</p>
+            <ion-col *ngFor="let discount of discounts" [size]="device=='tablet'?6:12">
+              <ion-card  (click)="promotion(discount.id)">
+                <ion-row>
+                  <ion-col size="5">
+                    <img  src="{{discount.image}}" alt="">
+                  </ion-col>
+                  <ion-col size="7">
+                    <p class="capital">{{discount.title}}</p>
+                    <p>Ver más</p>
+                  </ion-col>
+                </ion-row>
+              </ion-card>
             </ion-col>
           </ion-row>
-        </ion-card>
-    </div>
+        </div>
 
-    <div style="margin-top:6em;">
-      <div *ngIf="discounts.length == 0">
-        <h2 style="text-align: center;">No tienes promociones.</h2>
-        <ion-button (click)="createPromotion()" expand="full">Agregar promoción</ion-button>
+        <div style="margin-top:6em;">
+          <div *ngIf="discounts.length == 0">
+            <h2 style="text-align: center;">No tienes promociones.</h2>
+            <ion-button (click)="createPromotion()" expand="full">Agregar promoción</ion-button>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </ion-col>
+  </ion-row>
 
 </ion-content>

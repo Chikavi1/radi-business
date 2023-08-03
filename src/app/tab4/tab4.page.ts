@@ -13,8 +13,10 @@ import { CreatePromotionPage } from '../create-promotion/create-promotion.page';
 })
 export class Tab4Page {
   discounts:any = [];
+  device;
 
   constructor(private api:DataService,private modalCtrl:ModalController){
+    this.device = localStorage.getItem('device');
     this.getData()
   }
 

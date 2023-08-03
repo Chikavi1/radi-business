@@ -12,8 +12,12 @@ import { QrcodeappPage } from '../qrcodeapp/qrcodeapp.page';
 })
 export class Tab2Page {
   records:any = [];
+  device;
+
   constructor(private api:DataService,private modalCtrl:ModalController){
     this.getInfo();
+    this.device = localStorage.getItem('device');
+
   }
 
   ionViewDidEnter(){
