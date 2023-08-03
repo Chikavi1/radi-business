@@ -86,7 +86,7 @@ export class ResultPage implements OnInit {
       'id_pet': this.result.id_pet,
       'id_user': this.result.id_user,
       'id_business': localStorage.getItem('id_company'),
-      'description': 'Paseo en andares',
+      'description': 'Visita a '+localStorage.getItem('name'),
       'date': new Date(),
       'status': 1
     };
