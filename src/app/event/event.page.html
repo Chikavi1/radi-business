@@ -1,0 +1,71 @@
+<ion-content >
+  <ion-fab color="light"  vertical="top" horizontal="start"  slot="fixed" (click)="close()">
+    <ion-fab-button mode="ios" size="small"color="light"  style="outline: none !important">
+      <ion-icon name="arrow-back-outline" style="color:#f8d100;"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-fab color="light"  vertical="top" horizontal="end"  slot="fixed" (click)="share()">
+    <ion-fab-button mode="ios" size="small"color="light"  style="outline: none !important">
+      <ion-icon name="share-social-outline" style="color:#f8d100;"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+ <img class="cover" src="https://i.ibb.co/Fny3y63/image.png" alt="">
+ <div style="padding:1em;">
+  <ion-row style="margin-top: -2em;">
+    <ion-col size="9">
+      <h1  style="font-weight: bold;">Expo Pet 2024</h1>
+      <p style="font-size: .87em;margin-top: -.5em;">Expopetweekend</p>
+    </ion-col>
+    <ion-col size="3">
+      <!-- <p style="padding-top: 1em;font-weight: 700;">
+        Gratuito
+      </p> -->
+      <p style="padding-top: 1em;font-weight: 700;">
+        Con Costo
+      </p>
+
+    </ion-col>
+   </ion-row>
+
+   <ion-row>
+    <ion-col>
+      <p>
+        Sabado,<br>
+        15 de junio de 2023<br>
+        1:00 PM
+      </p>
+    </ion-col>
+    <ion-col>
+      <p>
+        Domingo,<br>
+        16 de junio de 2023 <br>
+        8:00 PM
+      </p>
+    </ion-col>
+   </ion-row>
+
+   <ion-button expand="full" color="tertiary" shape="round" (click)="cta('https://ticketland.mx/petweekend2023')">Ir al sitio web</ion-button>
+
+   <p style="font-weight: bold;margin-top: 4em;">Acerca de</p>
+   <p>Sí tienes un producto o servicio de la industria para mascotas, Expo Pet Weekend es una excelente plataforma para darte a conocer y potencializar tu negocio 📈 Conoce nuestra nueva área comercial donde contaremos con diversos pabellones para ti y tu mascota ✨ Además, visita nuestra área de exhibición, donde podrás disfrutar de pasarelas, concursos y muchas sorpresas más 🤩 ¡No te puedes perder este evento donde encontrarás TODO PARA TU MASCOTA! Te esperamos este 15 y 16 de junio en Expo Guadalajara Evento PetFriendly 🐶🐱🐹🐰🦎🐟 ¡Te esperamos!  </p>
+   <p style="font-weight: bold;margin-top: 2em;">Consideraciones</p>
+   <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum velit hic totam animi exercitationem mollitia nobis ea suscipit voluptates amet? Fuga quasi ipsum facere provident incidunt nesciunt neque odit est.</p>
+   <p style="font-weight: bold;margin-top: 2em;">Ubicación</p>
+   <div style="width: 100%;height: 13em;border-radius: 1em;background-color: gray;">
+  </div>
+  <p>Dirección:</p>
+  <p>San mateo evangelista 4167-1, lomas de san miguel,san pedro tlaquepaque.</p>
+</div>
+
+  <ion-card  style="margin-top: 3em;padding:1em">
+    <h1>Acerca del organizador</h1>
+    <img src="https://i.ibb.co/6Xy1FW3/image.png"  style="width:3em;height: 3em;border-radius: 50%;"  alt="organizador">
+    <p style="font-weight: bold;">Expopetweekend</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia cumque dolores ullam odit explicabo corporis sequi expedita minima veritatis aliquid.</p>
+    <ion-button fill="clear" expand="full">Ver Perfil</ion-button>
+  </ion-card>
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="full" fill="clear" color="danger" (click)="close()">Cerrar</ion-button>
+</ion-footer>

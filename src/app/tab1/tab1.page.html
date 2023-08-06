@@ -5,9 +5,17 @@
     <ion-col [size]="device=='tablet'?6:12" [offset]="device=='tablet'?3:0">
       <div style="padding:1em;margin-top:6em;">
         <h1>Escanear</h1>
-        <p>Escanea el codigo QR de la placa o el codigo QR del perfil de la mascota</p>
-        <p>Recuerdale al usuario que los puntos se generan unicamente con la placa.</p>
-        <ion-button expand="full" shape="round" (click)="scan()">Escanear</ion-button>
+        <p>Escanea el código QR de la placa o el código QR del perfil de la mascota</p>
+        <p>Recuérdale al usuario que los puntos se generan únicamente con la placa.</p>
+        <div style="margin-top: 2em;">
+          <ion-button expand="full" shape="round" (click)="scan(1)">Escanear</ion-button>
+
+          <ion-button *ngIf="grantedPayments" expand="full" fill="clear" color="success" (click)="scan(2)">Generar cobro</ion-button>
+
+          <ion-button *ngIf="grantedLinks"  expand="full" fill="clear" color="danger" (click)="scan(3)">Generar links</ion-button>
+
+        </div>
+
       </div>
     </ion-col>
   </ion-row>

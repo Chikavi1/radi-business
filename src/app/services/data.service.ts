@@ -28,6 +28,21 @@ export class DataService {
   }
 
 
+  checkLink(data){
+    return this.http.post(this.MODE + 'Radilinks',JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  createLinks(data):any{
+    return this.http.post(this.MODE + 'links/create',JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  updateLinks(data):any{
+    return this.http.put(this.MODE + 'links/update',JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  checkStatus(data){
+    return this.http.post(this.MODE + 'business/status',JSON.parse(JSON.stringify(data)), this.options);
+  }
 
 
   updatediscountImage(data){
@@ -43,7 +58,7 @@ export class DataService {
   }
 
   getAchiviments(type){
-    return this.http.get(this.MODE+'listachivements/type');
+    return this.http.get(this.MODE+'listachivements/'+type);
   }
 
 

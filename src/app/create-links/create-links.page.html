@@ -1,0 +1,22 @@
+<ion-content>
+  <div style="padding:1em;margin-top: 4em;">
+    <h1 *ngIf="!isEdit">Crear</h1>
+    <h1 *ngIf="isEdit">Editar</h1>
+    <h2>links/{{code}}</h2>
+    <h2>Url</h2>
+    <ion-input class="new-input" placeholder="Ingresa URL" [(ngModel)]="url"></ion-input>
+    <ion-button shape="round" color="dark" (click)="getcopyinfo()" style="margin-top: 1em;"><ion-icon name="copy-outline"></ion-icon> &#160;Pegar</ion-button>
+
+    <ion-button shape="round" expand="full" (click)="createOrUpdate()"  color="success" style="margin-top: 4em;" [disabled]="!url">
+
+    <span *ngIf="!isEdit">Crear</span>
+    <span *ngIf="isEdit">Editar</span>
+    </ion-button>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-button (click)="close()" color="danger" expand="full">
+    Cerrar
+  </ion-button>
+</ion-footer>

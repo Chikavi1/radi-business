@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Platform } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
+import { DataService } from './services/data.service';
+import { ModalBlockPage } from './modal-block/modal-block.page';
 
 @Component({
   selector: 'app-root',
@@ -8,9 +10,22 @@ import { Platform } from '@ionic/angular';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(private router:Router,private platform:Platform){
+  constructor(private router:Router,private modalCtrl:ModalController,private api:DataService,private platform:Platform){
+
     this.checkDevice();
       if(localStorage.getItem('id_company')){
+
+        this.api.checkStatus({id:localStorage.getItem('id_company')}).subscribe((data:any) => {
+          if(data[0].status == 0){
+            this.blockModal(0)
+          }
+          if(data[0].status == 2){
+            this.blockModal(2)
+          }
+
+          localStorage.setItem('granted',data[0].granted);
+        });
+
         this.router.navigateByUrl('/');
       }else{
         this.router.navigateByUrl('/login')
@@ -25,4 +40,24 @@ export class AppComponent {
 
     }
   }
+
+  async blockModal(id){
+    const modal = await this.modalCtrl.create({
+      component: ModalBlockPage,
+      breakpoints: [ 1],
+      initialBreakpoint: 1,
+      backdropDismiss:true,
+      canDismiss:false,
+      componentProps:{
+        id: id,
+      }
+    });
+    modal.onDidDismiss().then((data) => {
+      if(data['data']){
+
+      }
+    });
+    return await modal.present();
+  }
+
 }

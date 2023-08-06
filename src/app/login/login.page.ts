@@ -37,6 +37,7 @@ export class LoginPage implements OnInit {
       localStorage.setItem('image',decoded.image);
       localStorage.setItem('type',decoded.type);
       localStorage.setItem('email',decoded.email);
+      localStorage.setItem('granted',decoded.granted);
       this.navCtrl.navigateRoot('/')
     },err => {
       console.log(err);

@@ -65,6 +65,26 @@ const routes: Routes = [
   {
     path: 'info-app',
     loadChildren: () => import('./info-app/info-app.module').then( m => m.InfoAppPageModule)
+  },
+  {
+    path: 'events',
+    loadChildren: () => import('./events/events.module').then( m => m.EventsPageModule)
+  },
+  {
+    path: 'event',
+    loadChildren: () => import('./event/event.module').then( m => m.EventPageModule)
+  },
+  {
+    path: 'create-links',
+    loadChildren: () => import('./create-links/create-links.module').then( m => m.CreateLinksPageModule)
+  },
+  {
+    path: 'modal-block',
+    loadChildren: () => import('./modal-block/modal-block.module').then( m => m.ModalBlockPageModule)
+  },
+  {
+    path: 'payment',
+    loadChildren: () => import('./payment/payment.module').then( m => m.PaymentPageModule)
   }
 ];
 @NgModule({

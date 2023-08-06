@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
 import { ResultPage } from '../result/result.page';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
+import { CreateLinksPage } from '../create-links/create-links.page';
+import { PaymentPage } from '../payment/payment.page';
 
 @Component({
   selector: 'app-tab1',
@@ -13,12 +15,19 @@ name;
 image;
 device;
 
+grantedLinks;
+grantedPayments;
+
   constructor(private modalCtrl:ModalController,
     private toastController:ToastController,
     private barcodeScanner: BarcodeScanner){
     this.name = localStorage.getItem('name');
     this.image = localStorage.getItem('image');
     this.device = localStorage.getItem('device');
+
+    let granted = localStorage.getItem('granted');
+    this.grantedLinks = granted.includes('links');
+    this.grantedPayments = granted.includes('payments')
   }
   type;
   code;
@@ -43,25 +52,60 @@ device;
   }
 
 
+  async openModal(Page){
+    const modal = await this.modalCtrl.create({
+      component: Page,
+      breakpoints: [1],
+      initialBreakpoint: 1,
+      componentProps:{
+        type: this.type,
+        code: this.code,
+      }
+    });
+    modal.onDidDismiss().then((data) => {
+      if(data['data']){
+        const info = data['data'];
+        console.log(info);
+      }
+    });
+    return await modal.present();
+  }
 
 
 
-  scan(){
 
-
+  scan(type){
     this.barcodeScanner.scan().then(barcodeData => {
       let data = barcodeData.text;
-      if(!barcodeData.cancelled){
-        if(data.includes('https://')){
-          const hash = data.split('pet/pet/');
-          this.code = hash[1];
-          this.type = 'app'
-        }else{
-          this.type =  'placa'
-          this.code = data;
+      if(type === 1){
+        if(!barcodeData.cancelled){
+          if(data.includes('https://')){
+            const hash = data.split('pet/pet/');
+            this.code = hash[1];
+            this.type = 'app'
+          }else{
+            this.type =  'placa'
+            this.code = data;
+          }
         }
+        this.scanResult();
       }
-      this.scanResult();
+
+      if(type === 2){
+        this.openModal(PaymentPage);
+      }
+      if(type === 3){
+        // let data = 'https://radi.pet/links/70405c1s';
+        if(data.includes('https://radi.pet/links/')){
+            const hash = data.split('pet/links/');
+            this.code = hash[1];
+            this.openModal(CreateLinksPage)
+        }else{
+          alert('Error intenta luego.')
+        }
+
+      }
+
     }).catch(err => {
       this.presentToast('Hubo un error,intenta despues.','danger');
       console.log('Error', err);

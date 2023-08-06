@@ -6,7 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['tabs.page.scss']
 })
 export class TabsPage {
+  grantedEvents;
 
-  constructor() {}
+  constructor() {
+    let granted = localStorage.getItem('granted');
+    this.grantedEvents = granted.includes('events')
+
+  }
 
 }
