@@ -33,14 +33,14 @@
       <p class="capital">
         {{event.start_date | localizedDate:'EEEE'}}<br>
         {{event.start_date | localizedDate:'d MMMM  y'}} <br>
-        {{event.start_date | date:'h:mm a'}}
+        {{event.start_date | date:'h:mm a':"+0000"}}
       </p>
     </ion-col>
     <ion-col>
       <p class="capital">
         {{event.end_date | localizedDate:'EEEE'}}<br>
         {{event.end_date | localizedDate:'d MMMM  y'}} <br>
-        {{event.end_date | date:'h:mm a'}}
+        {{event.end_date | date:'h:mm a':"+0000"}}
       </p>
     </ion-col>
    </ion-row>

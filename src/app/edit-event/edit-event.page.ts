@@ -40,9 +40,9 @@ export class EditEventPage implements OnInit {
   ngOnInit() {
     this.image = this.data.image;
     this.name = this.data.name;
-    this.start_date = moment(this.data.start_date).format();;
-    this.end_date = moment(this.data.end_date).format();
-
+    this.start_date = moment(this.data.start_date).utc().format();
+    this.end_date = moment(this.data.end_date).utc().format();
+    console.log(this.data.start_date);
     this.description = this.data.description;
     this.considerations = this.data.considerations;
     this.price = this.data.price;
