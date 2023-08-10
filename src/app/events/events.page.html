@@ -10,14 +10,16 @@
             Crear evento
           </ion-button>
           <ion-row>
-            <ion-col *ngFor="let discount of events" [size]="device=='tablet'?6:12">
-              <ion-card  (click)="event(discount.id)">
+            <ion-col *ngFor="let event of events" [size]="device=='tablet'?6:12">
+              <ion-card  (click)="eventOpen(event.id)">
                 <ion-row>
                   <ion-col size="5">
-                    <img  src="{{discount.image}}" alt="">
+                    <img src="{{event.image}}" alt="">
                   </ion-col>
                   <ion-col size="7">
-                    <p class="capital">{{discount.title}}</p>
+                    <p class="capital">{{event.name}}</p>
+                    <p>{{event.start_date | date:'d/MM/y' }} - {{event.end_date | date:'d/MM/y'}}</p>
+
                     <p>Ver más</p>
                   </ion-col>
                 </ion-row>
@@ -29,7 +31,7 @@
         <div style="margin-top:6em;">
           <div *ngIf="events.length == 0">
             <h2 style="text-align: center;">No tienes eventos proximos.</h2>
-            <ion-button (click)="event(1)" expand="full">Agregar evento</ion-button>
+            <ion-button (click)="createEvent()" expand="full">Agregar evento</ion-button>
           </div>
         </div>
       </div>

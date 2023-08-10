@@ -28,6 +28,27 @@ export class DataService {
   }
 
 
+  changePassword(data){
+    return this.http.put(this.MODE + 'business_password',JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  getEventsByBusiness(id_company){
+    return this.http.get(this.MODE+'radievents/'+id_company);
+  }
+
+  getEvent(id):any{
+    return this.http.get(this.MODE+'radievent/'+id);
+  }
+
+  createEvent(data):any{
+    return this.http.post(this.MODE + 'eventcreate',JSON.parse(JSON.stringify(data)), this.options);
+
+  }
+
+  updateEvent(data):any{
+    return this.http.put(this.MODE + 'eventupdate',JSON.parse(JSON.stringify(data)), this.options);
+  }
+
   checkLink(data){
     return this.http.post(this.MODE + 'Radilinks',JSON.parse(JSON.stringify(data)), this.options);
   }

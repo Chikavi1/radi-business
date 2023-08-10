@@ -77,10 +77,13 @@
     <ion-item (click)="openBlank('https://www.radi.pet/terms')" >
       Terminos y condiciones
     </ion-item>
+    <ion-item (click)="changePass()" >
+      Cambiar contraseña
+    </ion-item>
     <ion-item (click)="infoApp()" >
       Acerca de
     </ion-item>
-    <ion-item color="danger" (click)="logout()">
+    <ion-item style="color: red !important;" (click)="logout()">
       Cerrar sesión
     </ion-item>
   </div>

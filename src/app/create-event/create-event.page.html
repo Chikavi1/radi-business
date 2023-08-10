@@ -1,0 +1,76 @@
+<ion-content >
+  <div *ngIf="step == 1" style="height: 100%;">
+      <div id="mapId" #leafletmap style="width: 100%;height: 70%">
+      </div>
+      <div style="padding:1em">
+        <h1>Dirección del evento </h1>
+        <p>Ingresa dirección manual y mueve el pin para obtener las coordenadas.</p>
+        <ion-input class="new-input" placeholder="Ingresa dirección" type="text" [(ngModel)]="address"></ion-input>
+
+
+      </div>
+
+    </div>
+  <div style="padding:1em">
+    <div *ngIf="step == 2">
+
+      <img (click)="takePhoto()" [src]="image" alt="image">
+
+    <p style="margin-top:2em !important;">Nombre del evento</p>
+    <ion-input class="new-input"
+    placeholder="Ingresa nombre" type="text" [(ngModel)]="name"  ></ion-input>
+    <p style="margin-top:2em !important;">Fecha Inicia</p>
+
+    <ion-datetime-button datetime="datetime" ></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime id="datetime" [(ngModel)]="start_date"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+
+        <p style="margin-top:1em;">Fecha final</p>
+
+        <ion-datetime-button datetime="datetime2" ></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime id="datetime2" [(ngModel)]="end_date"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+
+    <p style="margin-top:1em;">Costo</p>
+    <ion-input class="new-input" (keypress)="numberOnlyValidation($event)"
+    placeholder="Ingresa monto" type="number" [(ngModel)]="price"  ></ion-input>
+    <p>* si no tiene costo puedes dejarlo en "0".</p>
+    <p style="margin-top:1em;">URL</p>
+    <ion-input class="new-input"
+    placeholder="Ingresa URL (opcional)" type="url" [(ngModel)]="url_redirect"  ></ion-input>
+    <p>Descripción del evento</p>
+    <ion-textarea maxlength="599" rows="8" cols="20"  [(ngModel)]="description" class="new-input" placeholder="Ingresa la descripción del evento" type="text"></ion-textarea>
+    <p>Consideraciones para los invitados</p>
+    <ion-textarea maxlength="599" rows="8" cols="20"  [(ngModel)]="considerations" class="new-input" placeholder="Ingresa las consideraciones del evento" type="text"></ion-textarea>
+  </div>
+
+</div>
+</ion-content>
+
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button color="danger" expand="full" *ngIf="step == 1" (click)="close()">
+        Cancelar
+      </ion-button>
+      <ion-button fill="clear" color="danger" expand="full" *ngIf="step != 1" (click)="back()">
+        Regresar
+      </ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button *ngIf="step == 1" [disabled]="10 > address.length " color="tertiary" expand="full" (click)="next()">
+        Siguiente
+      </ion-button>
+      <ion-button *ngIf="step == 2"  [disabled]="!uploadPhoto || !name || !description || !considerations || !start_date || !end_date"  color="success" expand="full" (click)="send()">
+        Enviar
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+</ion-footer>

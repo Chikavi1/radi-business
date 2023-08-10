@@ -4,19 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { EventPageRoutingModule } from './event-routing.module';
+import { ChangePasswordPageRoutingModule } from './change-password-routing.module';
 
-import { EventPage } from './event.page';
-import { PipesModule } from 'src/app/pipes/pipes.module';
+import { ChangePasswordPage } from './change-password.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PipesModule,
-    EventPageRoutingModule
+    ChangePasswordPageRoutingModule
   ],
-  declarations: [EventPage]
+  declarations: [ChangePasswordPage]
 })
-export class EventPageModule {}
+export class ChangePasswordPageModule {}

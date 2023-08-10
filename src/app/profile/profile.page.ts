@@ -4,6 +4,7 @@ import { DataService } from '../services/data.service';
 import { Browser } from '@capacitor/browser';
 import { InfoAppPage } from '../info-app/info-app.page';
 import { Share } from '@capacitor/share';
+import { ChangePasswordPage } from '../change-password/change-password.page';
 
 
 declare var require: any;
@@ -68,6 +69,23 @@ export class ProfilePage implements OnInit {
   }
 
 
+  async changePass(){
+    const modal = await this.modalctrl.create({
+      component: ChangePasswordPage,
+      breakpoints: [.95,1],
+      initialBreakpoint: .95,
+      componentProps:{
+        id:1,
+      }
+    });
+    modal.onDidDismiss().then((data) => {
+      if(data['data']){
+        const info = data['data'];
+        console.log(info);
+      }
+    });
+    return await modal.present();
+  }
 
   async infoApp(){
     const modal = await this.modalctrl.create({

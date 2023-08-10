@@ -4,19 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { EventPageRoutingModule } from './event-routing.module';
+import { EditEventPageRoutingModule } from './edit-event-routing.module';
 
-import { EventPage } from './event.page';
-import { PipesModule } from 'src/app/pipes/pipes.module';
+import { EditEventPage } from './edit-event.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PipesModule,
-    EventPageRoutingModule
+    EditEventPageRoutingModule
   ],
-  declarations: [EventPage]
+  declarations: [EditEventPage]
 })
-export class EventPageModule {}
+export class EditEventPageModule {}
