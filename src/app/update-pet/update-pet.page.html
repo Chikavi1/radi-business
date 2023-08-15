@@ -1,0 +1,102 @@
+<ion-content>
+  <div style="padding: 1em;">
+    <ion-card style="padding: 1em;">
+      <p style="color: orange;">Atención</p>
+      <p>Al actualizar se le enviará una notificación al dueño de {{name}}, se recomienda comentarle a tu cliente antes de hacer cualquier modificación.</p>
+    </ion-card>
+
+    <!-- chronic disease -->
+    <p>Enfermedades cronicas</p>
+    <ion-textarea [(ngModel)]="chronic_disease" placeholder="Ingresa las enfermedades cronicas"></ion-textarea>
+    <p>Tamaño</p>
+    <!-- size -->
+    <ion-chip (click)="setSize('mn')" [ngClass]="{'selected' : size == 'mn' }">
+      Mini
+    </ion-chip>
+    <ion-chip (click)="setSize('sm')" [ngClass]="{'selected' : size == 'sm' }">
+      Pequeño
+    </ion-chip>
+    <ion-chip (click)="setSize('md')" [ngClass]="{'selected' : size == 'md' }">
+      Mediano
+    </ion-chip>
+    <ion-chip (click)="setSize('lg')" [ngClass]="{'selected' : size == 'lg' }">
+      Grande
+    </ion-chip>
+    <ion-chip (click)="setSize('xl')" [ngClass]="{'selected' : size == 'xl' }">
+      Extra Grande
+    </ion-chip>
+    <!-- mn|sm|md|lg|xl| -->
+    <p>Fecha de nacimiento</p>
+    <ion-datetime-button datetime="datetime" ></ion-datetime-button>
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime   presentation="date"  [max]="today" id="datetime" cancelText="Cancelar" doneText="Aceptar" [(ngModel)]="birthday"></ion-datetime>
+      </ng-template>
+    </ion-modal>
+
+    <p>Género</p>
+    <!-- gender -->
+    <ion-chip (click)="setGender(1)" [ngClass]="{'selected' : gender == 1 }">
+      Macho
+    </ion-chip>
+    <ion-chip (click)="setGender(2)" [ngClass]="{'selected' : gender == 2 }">
+      Hembra
+    </ion-chip>
+    <p>Especie</p>
+    <!-- specie -->
+    <ion-chip  (click)="setSpecie(2)" [ngClass]="{'selected' : specie == 2 }">
+      Perro
+    </ion-chip>
+    <ion-chip  (click)="setSpecie(1)" [ngClass]="{'selected' : specie == 1 }">
+      Gato
+    </ion-chip>
+    <p>Peso</p>
+    <ion-input class="new-input" [(ngModel)]="weight" placeholder="Ingresa el peso en KG">
+
+    </ion-input>
+    <!-- weight -->
+    <p>Esterilizado</p>
+    <ion-chip (click)="setSterelized(1)" [ngClass]="{'selected' : sterelized == 1 }">
+      Si
+    </ion-chip>
+    <ion-chip (click)="setSterelized(0)" [ngClass]="{'noselected' : sterelized == 0 }">
+      No
+    </ion-chip>
+    <!-- sterelized -->
+    <div *ngIf="sterelized">
+      <p>Fecha de esterilización</p>
+      <ion-datetime-button datetime="datetime2" ></ion-datetime-button>
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime   presentation="date"  [max]="today" id="datetime2" cancelText="Cancelar" doneText="Aceptar" [(ngModel)]="sterelized_date"></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </div>
+
+    <!-- sterelized_date -->
+    <p>Requiere bozal</p>
+    <!-- muzzle -->
+    <ion-chip (click)="setMuzzle(1)" [ngClass]="{'noselected' : muzzle == 1 }">
+      Si
+    </ion-chip>
+    <ion-chip (click)="setMuzzle(0)" [ngClass]="{'selected' : muzzle == 0 }">
+      No
+    </ion-chip>
+
+
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col size="6">
+      <ion-button color="danger" expand="full" fill="clear" (click)="close()">
+        Cancelar
+      </ion-button>
+    </ion-col>
+    <ion-col size="6">
+      <ion-button expand="full" (click)="update()">
+        Actualizar
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

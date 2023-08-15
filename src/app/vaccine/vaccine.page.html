@@ -1,0 +1,57 @@
+<ion-content>
+  <h2 style="margin:1em;margin-top:3em;" *ngIf="type == 'vaccine'">Agregar Vacuna</h2>
+  <h2 style="margin:1em;margin-top:3em;" *ngIf="type == 'deworming'">Agregar desparasitación</h2>
+
+<ion-label *ngIf="type == 'vaccine'" style="padding: 1em;margin-bottom: 2em;">Fecha vacuna</ion-label>
+<ion-label *ngIf="type == 'deworming'"  style="padding: 1em;margin-bottom: 2em;">Fecha desparasitación</ion-label>
+
+  <ion-item lines="none" style="margin-top: 1em;">
+    <ion-datetime-button datetime="datetime" ></ion-datetime-button>
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime   presentation="date" [min]="yearLimitIonDateTime" [max]="today" id="datetime" cancelText="Cancelar" doneText="Aceptar" [(ngModel)]="date"></ion-datetime>
+      </ng-template>
+    </ion-modal>
+
+    <!-- <ion-datetime  [ngClass]="{'ml-2' : device == 'tablet' }"  ></ion-datetime> -->
+  </ion-item>
+
+  <ion-item lines="none" *ngIf="type == 'vaccine'">
+    <ion-label>Nombre de la vacuna</ion-label>
+    <ion-select interface="popover" [(ngModel)]="name">
+
+      <ion-select-option value="Rabia">Rabia</ion-select-option>
+
+      <div *ngIf="specie == 2">
+       <ion-select-option value="Parvovirus">Parvovirus</ion-select-option>
+       <ion-select-option value="Hepatitis">Hepatitis</ion-select-option>
+       <ion-select-option value="Bordotella">Bordotella </ion-select-option>
+       <ion-select-option value="leptospirosis">leptospirosis </ion-select-option>
+      </div>
+
+      <div *ngIf="specie == 1">
+        <ion-select-option value="Panleucopenia">Panleucopenia </ion-select-option>
+        <ion-select-option value="Leucemia">Leucemia </ion-select-option>
+      </div>
+
+
+      <ion-select-option value="other">otro </ion-select-option>
+    </ion-select>
+  </ion-item>
+  <div *ngIf="name === 'other' " class="p-1">
+    <ion-input autocomplete="off" [(ngModel)]="other_name" placeholder="Ingresa vacuna" class="new-input"></ion-input>
+  </div>
+
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button expand="block" fill="clear" color="danger" (click)="back(0)">Atras</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button *ngIf="name != 'other'" expand="block" [disabled]="!name || !date"  fill="clear" color="dark" (click)="add()">Agregar</ion-button>
+      <ion-button *ngIf="name == 'other'" expand="block" [disabled]="3  > other_name.length || !date"  fill="clear" color="dark" (click)="add()">Agregar</ion-button>
+
+    </ion-col>
+  </ion-row>
+</ion-footer>

@@ -1,0 +1,20 @@
+
+<ion-content>
+  <ion-fab  vertical="top" horizontal="start"  slot="fixed" (click)="beforePage()">
+    <ion-fab-button mode="ios" size="small" translucent    color="motel"  style="  outline: none !important;    ">
+      <ion-icon name="arrow-back-outline" style="color:#f8d100;"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <div style="margin-top: 3em;padding:1em;">
+    <h2>Soporte</h2>
+    <p>¡Hola! ¿Necesitas ayuda o soporte? <br><br> Envíanos un mensaje para ayuda instantánea y síguenos para mantenerte al tanto de las últimas actualizaciones. ¡Estamos aquí para ti!  </p>
+    <ion-row>
+      <ion-col size="2" offset="4" (click)="openBlank('https://www.facebook.com/radipetsmx')">
+        <ion-icon style="font-size: 1.4em;color: #3b5998;" name="logo-facebook"></ion-icon>
+      </ion-col>
+      <ion-col size="2" (click)="openBlank('https://www.instagram.com/radipets')">
+        <ion-icon style="font-size: 1.4em;color:#E1306C;" name="logo-instagram"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>

@@ -97,6 +97,22 @@ const routes: Routes = [
   {
     path: 'edit-event',
     loadChildren: () => import('./edit-event/edit-event.module').then( m => m.EditEventPageModule)
+  },
+  {
+    path: 'support',
+    loadChildren: () => import('./support/support.module').then( m => m.SupportPageModule)
+  },
+  {
+    path: 'vaccine',
+    loadChildren: () => import('./vaccine/vaccine.module').then( m => m.VaccinePageModule)
+  },
+  {
+    path: 'update-pet',
+    loadChildren: () => import('./update-pet/update-pet.module').then( m => m.UpdatePetPageModule)
+  },
+  {
+    path: 'create-business',
+    loadChildren: () => import('./create-business/create-business.module').then( m => m.CreateBusinessPageModule)
   }
 ];
 @NgModule({

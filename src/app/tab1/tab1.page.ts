@@ -17,6 +17,7 @@ device;
 
 grantedLinks;
 grantedPayments;
+grantedRoot;
 
   constructor(private modalCtrl:ModalController,
     private toastController:ToastController,
@@ -28,6 +29,8 @@ grantedPayments;
     let granted = localStorage.getItem('granted');
     this.grantedLinks = granted.includes('links');
     this.grantedPayments = granted.includes('payments')
+    this.grantedRoot = granted.includes('root')
+
   }
   type;
   code;
@@ -71,45 +74,51 @@ grantedPayments;
     return await modal.present();
   }
 
-
+  createBusiness(){
+    alert('crear')
+  }
 
 
   scan(type){
-    this.barcodeScanner.scan().then(barcodeData => {
-      let data = barcodeData.text;
-      if(type === 1){
-        if(!barcodeData.cancelled){
-          if(data.includes('https://')){
-            const hash = data.split('pet/pet/');
-            this.code = hash[1];
-            this.type = 'app'
-          }else{
-            this.type =  'placa'
-            this.code = data;
-          }
-        }
-        this.scanResult();
-      }
+    this.code = '214904';
+    this.type = 'app'
+    this.scanResult();
 
-      if(type === 2){
-        this.openModal(PaymentPage);
-      }
-      if(type === 3){
-        // let data = 'https://radi.pet/links/70405c1s';
-        if(data.includes('https://radi.pet/links/')){
-            const hash = data.split('pet/links/');
-            this.code = hash[1];
-            this.openModal(CreateLinksPage)
-        }else{
-          alert('Error intenta luego.')
-        }
+    // this.barcodeScanner.scan().then(barcodeData => {
+    //   let data = barcodeData.text;
+    //   if(type === 1){
+    //     if(!barcodeData.cancelled){
+    //       if(data.includes('https://')){
+    //         const hash = data.split('pet/pet/');
+    //         this.code = hash[1];
+    //         this.type = 'app'
+    //       }else{
+    //         this.type =  'placa'
+    //         this.code = data;
+    //       }
+    //     }
+    //     this.scanResult();
+    //   }
 
-      }
+    //   if(type === 2){
+    //     this.openModal(PaymentPage);
+    //   }
+    //   if(type === 3){
+    //     // let data = 'https://radi.pet/links/70405c1s';
+    //     if(data.includes('https://radi.pet/links/')){
+    //         const hash = data.split('pet/links/');
+    //         this.code = hash[1];
+    //         this.openModal(CreateLinksPage)
+    //     }else{
+    //       alert('Error intenta luego.')
+    //     }
 
-    }).catch(err => {
-      this.presentToast('Hubo un error,intenta despues.','danger');
-      console.log('Error', err);
-    });
+    //   }
+
+    // }).catch(err => {
+    //   this.presentToast('Hubo un error,intenta despues.','danger');
+    //   console.log('Error', err);
+    // });
   }
 
   async presentToast(message,color) {

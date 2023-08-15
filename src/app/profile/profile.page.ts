@@ -5,6 +5,7 @@ import { Browser } from '@capacitor/browser';
 import { InfoAppPage } from '../info-app/info-app.page';
 import { Share } from '@capacitor/share';
 import { ChangePasswordPage } from '../change-password/change-password.page';
+import { SupportPage } from '../support/support.page';
 
 
 declare var require: any;
@@ -87,9 +88,18 @@ export class ProfilePage implements OnInit {
     return await modal.present();
   }
 
-  async infoApp(){
+  infoApp(){
+    this.openModal(InfoAppPage)
+  }
+
+  support(){
+    this.openModal(SupportPage)
+
+  }
+
+  async openModal(Page){
     const modal = await this.modalctrl.create({
-      component: InfoAppPage,
+      component: Page,
       breakpoints: [.95,1],
       initialBreakpoint: .95,
       componentProps:{
@@ -97,10 +107,7 @@ export class ProfilePage implements OnInit {
       }
     });
     modal.onDidDismiss().then((data) => {
-      if(data['data']){
-        const info = data['data'];
-        console.log(info);
-      }
+
     });
     return await modal.present();
   }

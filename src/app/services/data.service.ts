@@ -27,6 +27,29 @@ export class DataService {
     }
   }
 
+  getPet(PetId): any {
+    return this.http.get(this.MODE + 'pets/showOrg/' + PetId);
+  }
+
+  updatePet(data):any{
+    return this.http.put(this.MODE + 'pets/updategranted',JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  getVaccines(id_pet){
+    return this.http.get(this.MODE+'get_vaccines/'+id_pet);
+  }
+
+  createVaccine(data){
+    return this.http.post(this.MODE + 'create_vaccine',JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  updateVaccines(data){
+    return this.http.put(this.MODE + 'update_vaccine',JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  deleteVaccine(data){
+    return this.http.post(this.MODE + 'delete_vaccine',JSON.parse(JSON.stringify(data)), this.options);
+  }
 
   changePassword(data){
     return this.http.put(this.MODE + 'business_password',JSON.parse(JSON.stringify(data)), this.options);
