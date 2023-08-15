@@ -4,6 +4,7 @@ import { ResultPage } from '../result/result.page';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 import { CreateLinksPage } from '../create-links/create-links.page';
 import { PaymentPage } from '../payment/payment.page';
+import { CreateBusinessPage } from '../create-business/create-business.page';
 
 @Component({
   selector: 'app-tab1',
@@ -75,50 +76,51 @@ grantedRoot;
   }
 
   createBusiness(){
-    alert('crear')
+    this.openModal(CreateBusinessPage);
+
   }
 
 
   scan(type){
-    this.code = '214904';
-    this.type = 'app'
-    this.scanResult();
+    // this.code = '214904';
+    // this.type = 'app'
+    // this.scanResult();
 
-    // this.barcodeScanner.scan().then(barcodeData => {
-    //   let data = barcodeData.text;
-    //   if(type === 1){
-    //     if(!barcodeData.cancelled){
-    //       if(data.includes('https://')){
-    //         const hash = data.split('pet/pet/');
-    //         this.code = hash[1];
-    //         this.type = 'app'
-    //       }else{
-    //         this.type =  'placa'
-    //         this.code = data;
-    //       }
-    //     }
-    //     this.scanResult();
-    //   }
+    this.barcodeScanner.scan().then(barcodeData => {
+      let data = barcodeData.text;
+      if(type === 1){
+        if(!barcodeData.cancelled){
+          if(data.includes('https://')){
+            const hash = data.split('pet/pet/');
+            this.code = hash[1];
+            this.type = 'app'
+          }else{
+            this.type =  'placa'
+            this.code = data;
+          }
+        }
+        this.scanResult();
+      }
 
-    //   if(type === 2){
-    //     this.openModal(PaymentPage);
-    //   }
-    //   if(type === 3){
-    //     // let data = 'https://radi.pet/links/70405c1s';
-    //     if(data.includes('https://radi.pet/links/')){
-    //         const hash = data.split('pet/links/');
-    //         this.code = hash[1];
-    //         this.openModal(CreateLinksPage)
-    //     }else{
-    //       alert('Error intenta luego.')
-    //     }
+      if(type === 2){
+        this.openModal(PaymentPage);
+      }
+      if(type === 3){
+        // let data = 'https://radi.pet/links/70405c1s';
+        if(data.includes('https://radi.pet/links/')){
+            const hash = data.split('pet/links/');
+            this.code = hash[1];
+            this.openModal(CreateLinksPage)
+        }else{
+          alert('Error intenta luego.')
+        }
 
-    //   }
+      }
 
-    // }).catch(err => {
-    //   this.presentToast('Hubo un error,intenta despues.','danger');
-    //   console.log('Error', err);
-    // });
+    }).catch(err => {
+      this.presentToast('Hubo un error,intenta despues.','danger');
+      console.log('Error', err);
+    });
   }
 
   async presentToast(message,color) {

@@ -1,20 +1,75 @@
+<ion-content>
+  <ion-fab color="light"  vertical="top" horizontal="start"  slot="fixed" (click)="close()">
+    <ion-fab-button mode="ios" size="small"color="light"  style="outline: none !important">
+      <ion-icon name="arrow-back-outline" style="color:#f8d100;"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
+  <div style="padding:1em;margin-top:3em;">
 
-<ion-content  >
-name
-email
-password
-granted
-type
-description
-image
-bg_color
-fn_color
-fb_url
-ig_url
-web_url
-latitude
-longitude
-address
-status
+    <h2>Agregar Negocio</h2>
+    <!-- <ion-button expand="full">
+      Ver listado
+    </ion-button> -->
+
+    <ion-input placeholder="Ingresa nombre" [(ngModel)]="name"></ion-input>
+    <ion-input placeholder="Ingresa email" [(ngModel)]="email"></ion-input>
+    <ion-input placeholder="Ingresa contraseña" [(ngModel)]="password"></ion-input>
+    <ion-list>
+      <ion-item>
+        <ion-select  [(ngModel)]="granted" aria-label="Fruit" placeholder="Ingresa permisos" [multiple]="true">
+          <ion-select-option value="edit">Editar mascota</ion-select-option>
+          <ion-select-option value="history">Historial clinico</ion-select-option>
+          <ion-select-option value="payments">Pagos</ion-select-option>
+          <ion-select-option value="links">Crear Links</ion-select-option>
+          <ion-select-option value="events">Crear Eventos</ion-select-option>
+          <ion-select-option value="promotions">Crear Promociones</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <!-- <ion-input placeholder="Ingresa granted"></ion-input> -->
+
+    <ion-list>
+      <ion-item>
+        <ion-select  [(ngModel)]="type" aria-label="Fruit" placeholder="Selecciona el tipo">
+          <ion-select-option value="1">Especial</ion-select-option>
+          <ion-select-option value="2">Parque</ion-select-option>
+          <ion-select-option value="3">Estilista</ion-select-option>
+          <ion-select-option value="4">Veterinaria</ion-select-option>
+          <ion-select-option value="5">Pet Friendly</ion-select-option>
+          <ion-select-option value="6">Guarderia</ion-select-option>
+          <ion-select-option value="6">Escuela</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    <ion-input [(ngModel)]="description" placeholder="Ingresa description  (opcional)"></ion-input>
+    <ion-input [(ngModel)]="fb_url" placeholder="Ingresa fb_url (opcional)"></ion-input>
+    <ion-input [(ngModel)]="ig_url" placeholder="Ingresa ig_url (opcional)"></ion-input>
+    <ion-input [(ngModel)]="web_url" placeholder="Ingresa web_url (opcional)"></ion-input>
+    <ion-button expand="full"  (click)="create()">Crear</ion-button>
+
+    <ion-item *ngFor="let client of clients" lines="none" style="padding-bottom: .5em;">
+      <ion-label>
+        {{client.name}}
+      </ion-label>
+    </ion-item>
+
+    <!-- name
+    email
+    password
+    granted
+    type
+    description
+    image
+    bg_color
+    fn_color
+    fb_url
+    ig_url
+    web_url
+    latitude
+    longitude
+    address
+    status -->
+</div>
 </ion-content>

@@ -28,20 +28,14 @@
     Cerrar
   </ion-button>
 </ion-footer> -->
-
-
 <ion-content>
 
-
-<ion-row style="padding:3em 1em;" [ngStyle]="{'background': company.bg_color ? company.bg_color : 'transparent' }"
->
-
-
-  <ion-col size="5" style="padding: .5em;">
+<ion-row style="padding:3em 1em;" [ngStyle]="{'background': company.bg_color ? company.bg_color : 'transparent' }">
+  <ion-col size="4" style="padding: .5em;">
     <img style="border-radius: 50%;" src="{{company.image}}" alt="">
   </ion-col>
   <ion-col  size="7">
-    <h1 style="padding-top: 1.5em;;font-weight: bold;" [ngStyle]="{'color': company.fn_color ? company.fn_color : '#17202F' }">{{company.name}}</h1>
+    <h1 style="font-weight: bold;" [ngStyle]="{'color': company.fn_color ? company.fn_color : '#17202F' }">{{company.name}}</h1>
   </ion-col>
 </ion-row>
 
@@ -63,6 +57,7 @@
     <p *ngIf="company.type == 4">Veterinaria</p>
     <p *ngIf="company.type == 5">Lugar petfriendly</p>
     <p *ngIf="company.type == 6">Guarderia</p>
+    <p *ngIf="company.type == 6">Escuela</p>
 
 
     <p class="capital">
@@ -71,17 +66,18 @@
 
     <ion-button expand="full" color="tertiary"  (click)="share()" shape="round">Compartir Perfil</ion-button>
 
-    <ion-item style="margin-top:4em;" (click)="openBlank('https://www.radi.pet/privacy')" >
-      Politicas de privacidad
-    </ion-item>
-    <ion-item (click)="openBlank('https://www.radi.pet/terms')" >
-      Terminos y condiciones
-    </ion-item>
     <ion-item (click)="changePass()" >
       Cambiar contraseña
     </ion-item>
     <ion-item (click)="support()" >
       Soporte
+    </ion-item>
+
+    <ion-item style="margin-top:4em;" (click)="openBlank('https://www.radi.pet/privacy')" >
+      Politicas de privacidad
+    </ion-item>
+    <ion-item (click)="openBlank('https://www.radi.pet/terms')" >
+      Terminos y condiciones
     </ion-item>
 
     <ion-item (click)="infoApp()" >

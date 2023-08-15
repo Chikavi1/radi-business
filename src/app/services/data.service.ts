@@ -27,6 +27,10 @@ export class DataService {
     }
   }
 
+  createBusiness(data): any {
+    return this.http.post(this.MODE + 'business/create',JSON.parse(JSON.stringify(data)), this.options);
+  }
+
   getPet(PetId): any {
     return this.http.get(this.MODE + 'pets/showOrg/' + PetId);
   }
