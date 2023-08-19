@@ -52,6 +52,7 @@ export class SelectReadPage implements OnInit {
         }
         this.code = hash[1];
         this.openResult();
+        this.close();
     }
     if(this.type === 2){
       // pagos
