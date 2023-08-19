@@ -16,14 +16,24 @@ export class Tab3Page {
   device;
   constructor(private api:DataService, private modalCtrl:ModalController){
     this.device = localStorage.getItem('device');
+    this.getInfo();
 
+  }
+
+  ionViewDidEnter(){
+    if(localStorage.getItem('updateUsers')){
+     this.getInfo();
+     localStorage.removeItem('updateUsers');
+
+    }
+   }
+
+   getInfo(){
     this.api.getUsersByCompany(localStorage.getItem('id_company')).subscribe(data => {
       console.log(data);
        this.clients = data;
-
     });
-  }
-
+   }
 
   async User(id){
     const modal = await this.modalCtrl.create({

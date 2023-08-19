@@ -1,0 +1,33 @@
+<ion-content>
+  <swiper-container
+  style="width: 100% !important;height: 95%;"
+  slides-per-view="1"
+  [loop]="true"
+  [pagination]="true"
+  >
+    <swiper-slide class="cont">
+      <div style="width: 100%;height: 15em;">
+        <ng-lottie  [options]="qrlottie">
+        </ng-lottie>
+      </div>
+      <h1>Escanear Código QR</h1>
+      <p>Acerca el código QR lentamente, asegurando que esté bien enfocado y dentro del marco. Espera a que la app lo detecte y procese. Evita reflejos y asegúrate de tener buena iluminación.</p>
+      <ion-button expand="full" color="tertiary" (click)="qrcodescan()" shape="round">Usar QR</ion-button>
+    </swiper-slide>
+    <swiper-slide class="cont">
+      <div style="width: 100%;height: 15em;">
+        <ng-lottie [options]="nfclottie">
+        </ng-lottie>
+      </div>
+      <h1>NFC</h1>
+      <p> Acerca el área NFC de tu dispositivo a la placa de identificación, asegurando un contacto cercano y evitando interferencias electromagnéticas para una lectura exitosa.</p>
+      <ion-button expand="full" color="tertiary" (click)="nfcscan()" shape="round">Usar NFC</ion-button>
+    </swiper-slide>
+  </swiper-container>
+  <div style="padding:1em">
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-button expand="full" color="danger" (click)="close()" >Cerrar</ion-button>
+
+</ion-footer>

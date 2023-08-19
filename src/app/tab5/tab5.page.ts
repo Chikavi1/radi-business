@@ -91,9 +91,9 @@ export class Tab5Page implements AfterViewInit{
   }
 
   ionViewDidEnter(){
-    if(localStorage.getItem('updateVisits')){
+    if(localStorage.getItem('updateStats')){
      this.getInfo();
-     localStorage.removeItem('updateVisits');
+     localStorage.removeItem('updateStats');
 
     }
    }

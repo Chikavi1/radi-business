@@ -13,10 +13,16 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { registerLocaleData } from '@angular/common';
 
+import { NFC, Ndef } from '@awesome-cordova-plugins/nfc/ngx';
 
 import localeEs from '@angular/common/locales/es';
 import localeEn from '@angular/common/locales/en';
 
+import { LottieModule } from 'ngx-lottie';
+import player from 'lottie-web';
+export function playerFactory() {
+  return player;
+}
 
 registerLocaleData(localeEs, 'es');
 registerLocaleData(localeEn, 'en');
@@ -28,6 +34,8 @@ export function createTranslateLoader(http: HttpClient) {
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule,
+    LottieModule.forRoot({ player: playerFactory }),
+    IonicModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -35,9 +43,11 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    HttpClientModule, IonicModule.forRoot(), AppRoutingModule],
+    HttpClientModule, AppRoutingModule],
   providers: [
     BarcodeScanner,
+    NFC,
+    Ndef,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

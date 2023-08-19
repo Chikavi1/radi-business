@@ -5,6 +5,8 @@ import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 import { CreateLinksPage } from '../create-links/create-links.page';
 import { PaymentPage } from '../payment/payment.page';
 import { CreateBusinessPage } from '../create-business/create-business.page';
+import { SelectReadPage } from '../select-read/select-read.page';
+import { NFC, Ndef } from '@awesome-cordova-plugins/nfc/ngx';
 
 @Component({
   selector: 'app-tab1',
@@ -21,6 +23,7 @@ grantedPayments;
 grantedRoot;
 
   constructor(private modalCtrl:ModalController,
+    private nfc:NFC,
     private toastController:ToastController,
     private barcodeScanner: BarcodeScanner){
     this.name = localStorage.getItem('name');
@@ -36,9 +39,22 @@ grantedRoot;
   type;
   code;
 
-  async scanResult(){
+
+  async scanResult(type){
+    // check if have nfc
+    this.type = type;
+    // this.openModal(SelectReadPage);
+
+    this.nfc.enabled().then( () => {
+      this.openModal(SelectReadPage);
+    }).catch(() => {
+      this.qrcodescan();
+    });
+  }
+
+  async openResult(){
     const modal = await this.modalCtrl.create({
-      component: ResultPage,
+      component: SelectReadPage,
       breakpoints: [.95,1],
       initialBreakpoint: .95,
       componentProps:{
@@ -48,13 +64,10 @@ grantedRoot;
     });
     modal.onDidDismiss().then((data) => {
       if(data['data']){
-        const info = data['data'];
-        console.log(info);
       }
     });
     return await modal.present();
   }
-
 
   async openModal(Page){
     const modal = await this.modalCtrl.create({
@@ -77,51 +90,66 @@ grantedRoot;
 
   createBusiness(){
     this.openModal(CreateBusinessPage);
-
   }
 
-
-  scan(type){
-    // this.code = '214904';
-    // this.type = 'app'
-    // this.scanResult();
-
+  async qrcodescan(){
     this.barcodeScanner.scan().then(barcodeData => {
-      let data = barcodeData.text;
-      if(type === 1){
-        if(!barcodeData.cancelled){
-          if(data.includes('https://')){
-            const hash = data.split('pet/pet/');
-            this.code = hash[1];
-            this.type = 'app'
-          }else{
-            this.type =  'placa'
-            this.code = data;
-          }
-        }
-        this.scanResult();
+      if(!barcodeData.cancelled){
+        let data = barcodeData.text;
+        this.processData(data);
       }
-
-      if(type === 2){
-        this.openModal(PaymentPage);
-      }
-      if(type === 3){
-        // let data = 'https://radi.pet/links/70405c1s';
-        if(data.includes('https://radi.pet/links/')){
-            const hash = data.split('pet/links/');
-            this.code = hash[1];
-            this.openModal(CreateLinksPage)
-        }else{
-          alert('Error intenta luego.')
-        }
-
-      }
-
     }).catch(err => {
       this.presentToast('Hubo un error,intenta despues.','danger');
       console.log('Error', err);
     });
   }
+
+  processData(text){
+    let hash;
+    if(this.type === 1){
+      // visits
+        if(text.includes('https://radi.pet/pets/')){
+          hash = text.split('pet/pets/');
+          this.type = 'placa'
+        }else{
+          hash = text.split('pet/pet/');
+          this.type =  'app'
+        }
+        this.code = hash[1];
+        this.openResult();
+
+    }
+    if(this.type === 2){
+      // pagos
+      this.openModal(PaymentPage);
+    }
+    if(this.type === 3){
+      // links
+      if(text.includes('https://radi.pet/links/')){
+          const hash = text.split('pet/links/');
+          this.code = hash[1];
+          this.openModal(CreateLinksPage)
+      }else{
+        alert('Error intenta luego.')
+      }
+
+    }
+  }
+
+
+
+      // let data = 'https://radi.pet/pets/RDa899b6e';
+      // let data = 'https://radi.pet/pet/214904';
+
+      // const hash = data.split('pet/pets/');
+      // this.code = hash[1];
+      // this.type = 'placa'
+
+
+
+      // this.code = 'RDa899b6e';
+      // this.type = 'placa'
+
 
   async presentToast(message,color) {
     const toast = await this.toastController.create({

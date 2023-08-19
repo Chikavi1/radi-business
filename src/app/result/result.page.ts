@@ -43,6 +43,7 @@ export class ResultPage implements OnInit {
   allgreen = true;
   cedula = 'a';
 petId;
+load = true;
 
   ngOnInit(){
 
@@ -85,6 +86,7 @@ petId;
 
       });
 
+      this.load = false;
     },error=>{
       this.result = [];
     }
@@ -269,6 +271,8 @@ petId;
         this.presentToast('Se ha creado la visita.','success')
         this.close();
         localStorage.setItem('updateVisits','true');
+        localStorage.setItem('updateUsers','true');
+        localStorage.setItem('updateStats','true');
 
       }
     })

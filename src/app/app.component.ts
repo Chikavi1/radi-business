@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { ModalController, Platform } from '@ionic/angular';
 import { DataService } from './services/data.service';
 import { ModalBlockPage } from './modal-block/modal-block.page';
-
+import { register } from 'swiper/element/bundle';
+register();
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',

@@ -113,6 +113,10 @@ const routes: Routes = [
   {
     path: 'create-business',
     loadChildren: () => import('./create-business/create-business.module').then( m => m.CreateBusinessPageModule)
+  },
+  {
+    path: 'select-read',
+    loadChildren: () => import('./select-read/select-read.module').then( m => m.SelectReadPageModule)
   }
 ];
 @NgModule({
