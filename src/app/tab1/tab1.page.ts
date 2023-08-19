@@ -54,7 +54,7 @@ grantedRoot;
 
   async openResult(){
     const modal = await this.modalCtrl.create({
-      component: SelectReadPage,
+      component: ResultPage,
       breakpoints: [.95,1],
       initialBreakpoint: .95,
       componentProps:{

@@ -4,6 +4,7 @@ import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 import { ModalController, ToastController } from '@ionic/angular';
 import { PaymentPage } from '../payment/payment.page';
 import { CreateLinksPage } from '../create-links/create-links.page';
+import { ResultPage } from '../result/result.page';
 
 @Component({
   selector: 'app-select-read',
@@ -71,7 +72,7 @@ export class SelectReadPage implements OnInit {
 
   async openResult(){
     const modal = await this.modalCtrl.create({
-      component: SelectReadPage,
+      component: ResultPage,
       breakpoints: [.95,1],
       initialBreakpoint: .95,
       componentProps:{
@@ -101,8 +102,9 @@ export class SelectReadPage implements OnInit {
   async nfcscan(){
     try {
       let data = await this.nfc.scanNdef();
-      alert(JSON.stringify(data));
-      this.processData(data);
+      alert(JSON.stringify(data.ndefMessage));
+      // alert(this.nfc.bytesToHexString(data.))
+      this.processData(data.ndefMessage);
    } catch (err) {
        alert(JSON.stringify(err));
    }
