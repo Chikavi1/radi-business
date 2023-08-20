@@ -103,9 +103,10 @@ export class SelectReadPage implements OnInit {
   async nfcscan(){
     try {
       let data = await this.nfc.scanNdef();
-      alert(JSON.stringify(data.ndefMessage));
-      // alert(this.nfc.bytesToHexString(data.))
-      this.processData(data.ndefMessage);
+      let payload = data.ndefMessage[0].payload;
+      let tagContent = this.nfc.bytesToString(payload).substring(3);
+      alert(JSON.stringify(tagContent));
+      this.processData(tagContent);
    } catch (err) {
        alert(JSON.stringify(err));
    }

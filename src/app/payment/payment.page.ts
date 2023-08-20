@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-payment',
@@ -8,24 +8,60 @@ import { ModalController } from '@ionic/angular';
 })
 export class PaymentPage implements OnInit {
 
-  constructor(private modalCtrl:ModalController) { }
+  success;
+  enabledButton = true;
+  paymentsEnabled = true;
+  constructor(private loadingCtrl: LoadingController,private modalCtrl:ModalController) {
+    this.success  = {
+      path: '../../../assets/lotties/success.json',
+      autoplay: true,
+      loop: true
+    }
+
+   }
 
   ngOnInit() {
+    // checar si tiene habilitado / y si tiene tarjeta
+
   }
 
-  amount;
-  description;
+  amount = 35;
+  description = 'Compra en Radi Pets';
+  total;
+
+  setTotal(){
+    this.total = this.amount+(this.amount*0.032);
+    console.log(this.total);
+  }
+
+  async showLoading() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Procesando Pago ...',
+      duration: 3000,
+    });
+
+    loading.present();
+    this.enabledButton = false;
+    // checa nip, se hace pago y envia notificación
+
+    setTimeout(()=>{
+      this.datePayment = new Date();
+      this.step = 3;
+      this.enabledButton = true;
+    },3000)
+
+  }
 
   pin = '';
   step = 1;
 
   next(){
     this.step = 2;
+    this.setTotal();
   }
+  datePayment
 
-  process(){
-    this.step = 3;
-  }
+
 
   close(){
     this.modalCtrl.dismiss();

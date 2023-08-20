@@ -121,7 +121,11 @@ grantedRoot;
     }
     if(this.type === 2){
       // pagos
-      this.openModal(PaymentPage);
+      if(text.includes('https://radi.pet/pets/')){
+          this.openModal(PaymentPage);
+        }else{
+          this.presentToast('Opción disponible exclusivamente con la placa.','warning');
+        }
     }
     if(this.type === 3){
       // links

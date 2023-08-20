@@ -6,15 +6,16 @@
       <div style="padding:1em;margin-top:6em;">
 
         <h1>Bienvenido</h1>
-        <p>Selecciona una opcion, puedes escanea el código QR de la placa o el código QR del perfil de la mascota o en caso de que tu dispositivo cuente con lector puedes leer el nfc de la placa</p>
-        <p>Recuérdale al usuario que los puntos se generan únicamente con la placa.</p>
+        <p>
+          Selecciona una opción: puedes escanear el código QR de la placa, el código QR del perfil de la mascota o, si tu dispositivo cuenta con lector, también puedes leer el NFC de la placa.</p>
+        <p>Es importante destacar que tanto los puntos como los pagos solo se generan a través de la placa.</p>
         <div style="margin-top: 2em;">
           <ion-row>
             <ion-col>
               <ion-button expand="full" color="tertiary" shape="round" (click)="scanResult(1)"><ion-icon name="add-outline"> </ion-icon> Visita</ion-button>
             </ion-col>
             <ion-col *ngIf="grantedPayments">
-              <ion-button expand="full" color="success" shape="round" (click)="scanResult(2)"><ion-icon name="wallet-outline"> </ion-icon> Cobrar</ion-button>
+              <ion-button expand="full" color="success" shape="round" (click)="scanResult(2)"><ion-icon name="wallet-outline"> </ion-icon> &nbsp; Cobrar</ion-button>
             </ion-col>
           </ion-row>
           <!-- <ion-button *ngIf="grantedPayments" expand="full" fill="clear" color="success" (click)="scan(2)">Generar cobro</ion-button>
