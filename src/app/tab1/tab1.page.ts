@@ -37,15 +37,13 @@ grantedRoot;
 
 
   }
-  type;
   code;
 
+  action;
+  modeRead;
 
-  async scanResult(type){
-    // check if have nfc
-    this.type = type;
-    // this.openModal(SelectReadPage);
-
+  async scanResult(a){
+    this.action = a;
     this.nfc.enabled().then( () => {
       this.openModal(SelectReadPage);
     }).catch(() => {
@@ -59,7 +57,7 @@ grantedRoot;
       breakpoints: [.95,1],
       initialBreakpoint: .95,
       componentProps:{
-        type: this.type,
+        type: this.modeRead,
         code: this.code,
       }
     });
@@ -76,7 +74,7 @@ grantedRoot;
       breakpoints: [1],
       initialBreakpoint: 1,
       componentProps:{
-        type: this.type,
+        type: this.modeRead,
         code: this.code,
       }
     });
@@ -94,8 +92,6 @@ grantedRoot;
   }
 
   async qrcodescan(){
-
-
     this.barcodeScanner.scan({disableSuccessBeep: true}).then(barcodeData => {
       if(!barcodeData.cancelled){
         let data = barcodeData.text;
@@ -109,20 +105,20 @@ grantedRoot;
 
   processData(text){
     let hash;
-    if(this.type === 1){
+    if(this.action === 'visits'){
       // visits
         if(text.includes('https://radi.pet/pets/')){
           hash = text.split('pet/pets/');
-          this.type = 'placa'
+          this.modeRead = 'placa'
         }else{
           hash = text.split('pet/pet/');
-          this.type =  'app'
+          this.modeRead =  'app'
         }
         this.code = hash[1];
         this.openResult();
 
     }
-    if(this.type === 2){
+    if(this.action === 'payments'){
       // pagos
       if(text.includes('https://radi.pet/pets/')){
           this.openModal(PaymentPage);
@@ -130,7 +126,7 @@ grantedRoot;
           this.presentToast('Opción disponible exclusivamente con la placa.','warning');
         }
     }
-    if(this.type === 3){
+    if(this.action === 'links'){
       // links
       if(text.includes('https://radi.pet/links/')){
           const hash = text.split('pet/links/');
@@ -142,21 +138,6 @@ grantedRoot;
 
     }
   }
-
-
-
-      // let data = 'https://radi.pet/pets/RDa899b6e';
-      // let data = 'https://radi.pet/pet/214904';
-
-      // const hash = data.split('pet/pets/');
-      // this.code = hash[1];
-      // this.type = 'placa'
-
-
-
-      // this.code = 'RDa899b6e';
-      // this.type = 'placa'
-
 
   async presentToast(message,color) {
     const toast = await this.toastController.create({

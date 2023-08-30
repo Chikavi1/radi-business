@@ -19,6 +19,10 @@ export class SelectReadPage implements OnInit {
     private toastController:ToastController,
     private modalCtrl:ModalController,
     private nfc:NFC) { }
+
+    action;
+    modeRead;
+
     type;
     code;
 
@@ -27,7 +31,8 @@ export class SelectReadPage implements OnInit {
     }
 
   ngOnInit() {
-    console.log(this.type);
+    this.modeRead = this.type;
+
     this.qrlottie  = {
       path: '../../../assets/lotties/readqr.json',
       autoplay: true,
@@ -42,13 +47,13 @@ export class SelectReadPage implements OnInit {
 
   processData(text){
     let hash;
-    if(this.type === 1){
+    if(this.action === 'visits'){
         if(text.includes('https://radi.pet/pets/')){
           hash = text.split('pet/pets/');
-          this.type = 'placa'
+          this.type = 'placa';
         }else{
           hash = text.split('pet/pet/');
-          this.type =  'app'
+          this.type =  'app';
         }
         this.code = hash[1];
         this.openResult();
@@ -77,7 +82,7 @@ export class SelectReadPage implements OnInit {
       breakpoints: [.95,1],
       initialBreakpoint: .95,
       componentProps:{
-        type: this.type,
+        type: this.modeRead,
         code: this.code,
       }
     });
@@ -105,7 +110,12 @@ export class SelectReadPage implements OnInit {
       let data = await this.nfc.scanNdef();
       let payload = data.ndefMessage[0].payload;
       let tagContent = this.nfc.bytesToString(payload).substring(3);
+
       let id =  tagContent.split('pets/');
+      alert(tagContent);
+      alert(id);
+      alert(id[1]);
+
       this.processData(id[1]);
    } catch (err) {
    }

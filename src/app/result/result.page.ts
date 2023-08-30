@@ -42,14 +42,14 @@ export class ResultPage implements OnInit {
 
   allgreen = true;
   cedula = 'a';
-petId;
-load = true;
+  petId;
+  load = true;
 
   ngOnInit(){
 
     let data = {
-      code:this.code,
-      type:this.type
+      code: this.code,
+      type: this.type
     }
     console.log(data);
     this.api.getPetInfo(data).subscribe(data => {

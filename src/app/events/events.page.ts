@@ -43,11 +43,20 @@ export class EventsPage implements OnInit {
     });
     modal.onDidDismiss().then((data) => {
       if(data['data']){
-
+        this.getData();
       }
     });
     return await modal.present();
   }
+
+  doRefresh(event) {
+    this.getData();
+
+    setTimeout(() => {
+      event.target.complete();
+    },2000);
+  }
+
 
  async eventOpen(id){
   id = hashids.encode(id)

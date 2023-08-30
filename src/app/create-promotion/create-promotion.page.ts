@@ -43,7 +43,7 @@ export class CreatePromotionPage implements OnInit {
     this.api.createPromotion(data).subscribe((result:any) => {
       if(result.status == 200){
         this.presentToast('Se ha creado correctamente.','success')
-        this.close();
+        this.modalCtrl.dismiss(data);
       }
     })
   }

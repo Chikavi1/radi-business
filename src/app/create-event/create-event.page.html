@@ -15,7 +15,7 @@
     <div *ngIf="step == 2">
 
       <img (click)="takePhoto()" [src]="image" alt="image">
-
+      <small>Haz click en el logo para subir una imagen (requerido) </small>
     <p style="margin-top:2em !important;">Nombre del evento</p>
     <ion-input class="new-input"
     placeholder="Ingresa nombre" type="text" [(ngModel)]="name"  ></ion-input>

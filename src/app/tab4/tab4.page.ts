@@ -34,11 +34,19 @@ export class Tab4Page {
         });
     modal.onDidDismiss().then((data) => {
       if(data['data']){
-        this.getData()
+        this.getData();
 
       }
     });
     return await modal.present();
+  }
+
+  doRefresh(event) {
+    this.getData();
+
+    setTimeout(() => {
+      event.target.complete();
+    },2000);
   }
 
   async promotion(id){
