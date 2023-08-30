@@ -7,10 +7,13 @@ import { Component } from '@angular/core';
 })
 export class TabsPage {
   grantedEvents;
+  grantedOrg;
 
   constructor() {
     let granted = localStorage.getItem('granted');
     this.grantedEvents = granted.includes('events')
+    this.grantedOrg = granted.includes('orgs')
+
 
   }
 

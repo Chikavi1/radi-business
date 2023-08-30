@@ -1,0 +1,17 @@
+<ion-content>
+  <ion-row style="margin-top:4em;">
+      <ion-col size="6" offset="3">
+          <img src="../../../assets/img/tag-radi.png" alt="">
+      </ion-col>
+  </ion-row>
+  <div *ngIf="verified">
+      <p style="text-align: center !important;">
+          <ion-icon style="color:green;font-size:1.8em" name="checkmark-circle-outline"></ion-icon>
+      </p>
+      <p style="text-align: center;color:green;">Verificado</p>
+      <p class="text-center">{{ date |  date:'dd/MM/yyyy' }}</p>
+  </div>
+  <ion-button (click)="delete()" *ngIf="verified" style="padding: 0em 1em;" color="danger"  expand="block" >Cambiar Placa</ion-button>
+  <ion-button (click)="scan()" *ngIf="!verified" style="padding: 0em 1em;"  expand="block" >Enlazar</ion-button>
+
+</ion-content>

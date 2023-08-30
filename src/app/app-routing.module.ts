@@ -117,6 +117,22 @@ const routes: Routes = [
   {
     path: 'select-read',
     loadChildren: () => import('./select-read/select-read.module').then( m => m.SelectReadPageModule)
+  },
+  {
+    path: 'billing',
+    loadChildren: () => import('./billing/billing.module').then( m => m.BillingPageModule)
+  },
+  {
+    path: 'pets-org',
+    loadChildren: () => import('./pets-org/pets-org.module').then( m => m.PetsOrgPageModule)
+  },
+  {
+    path: 'result-pets-org',
+    loadChildren: () => import('./result-pets-org/result-pets-org.module').then( m => m.ResultPetsOrgPageModule)
+  },
+  {
+    path: 'id-pets',
+    loadChildren: () => import('./id-pets/id-pets.module').then( m => m.IdPetsPageModule)
   }
 ];
 @NgModule({

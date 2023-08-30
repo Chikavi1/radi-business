@@ -92,16 +92,25 @@ today
 
     }
 
-    console.log(data);
-
-    this.api.updatePet(data).subscribe(data => {
-      console.log(data);
-      if(data.status == 200){
+    this.api.updatePet(data).subscribe(result => {
+      console.log(result);
+      if(result.status == 200){
         this.presentToast('Se ha actualizado correctamente.','success');
-        this.close();
+        this.modalCtrl.dismiss(data);
+
       }
     });
 
+  }
+
+  numberOnlyValidation(event: any) {
+    const pattern = /[0-9.,]/;
+    let inputChar = String.fromCharCode(event.charCode);
+
+    if (!pattern.test(inputChar)) {
+      // invalid character, prevent input
+      event.preventDefault();
+    }
   }
 
   async presentToast(message,color) {

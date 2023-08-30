@@ -89,7 +89,7 @@ export class SelectReadPage implements OnInit {
   }
 
   async qrcodescan(){
-    this.barcodeScanner.scan().then(barcodeData => {
+    this.barcodeScanner.scan({disableSuccessBeep: true}).then(barcodeData => {
       if(!barcodeData.cancelled){
         let data = barcodeData.text;
         this.processData(data);
@@ -105,10 +105,9 @@ export class SelectReadPage implements OnInit {
       let data = await this.nfc.scanNdef();
       let payload = data.ndefMessage[0].payload;
       let tagContent = this.nfc.bytesToString(payload).substring(3);
-      alert(JSON.stringify(tagContent));
-      this.processData(tagContent);
+      let id =  tagContent.split('pets/');
+      this.processData(id[1]);
    } catch (err) {
-       alert(JSON.stringify(err));
    }
   }
 

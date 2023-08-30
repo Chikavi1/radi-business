@@ -1,0 +1,251 @@
+<ion-content>
+
+
+
+  <div *ngIf="load">
+    <h2 style="text-align: center;margin-top:3em;">
+      <img src="../../assets/img/logo.png" style="padding:1em 6em;" alt="">
+      Cargando información ...</h2>
+  </div>
+  <div *ngIf="!load">
+    <div *ngIf="result.length != 0">
+      <div style="background-color: #41cb7d;height: 17em;margin-top: -2em;">
+        <h1 style="text-align: center;">
+          <img style="margin-top:2em;width: 4em;height: 4em;" src="../../assets/img/logo-white.png" alt="image">
+        </h1>
+      </div>
+
+      <div style="margin-top: -5em">
+          <ion-card *ngIf="grantedCarnet"  style="padding:1em;" >
+            <h1 class="text-center">Carnet Digital de {{result.name}}</h1>
+            <div *ngIf="vaccines.length != 0">
+
+              <div *ngIf="allgreen" style="text-align: center;">
+                <h4 class="text-center" style="color:#41cb7d"><ion-icon name="shield-checkmark-outline"></ion-icon></h4>
+                <h4 class="text-center" style="color:#41cb7d">Vacunas verificadas</h4>
+                </div>
+
+                <div *ngIf="!allgreen">
+                  <div style="text-align: center !important;">
+                    <h4 class="text-center" style="color: #e46d23;">
+                      <ion-icon  name="alert-circle-outline"></ion-icon>
+                    </h4>
+                    <h4 class="text-center" style="color:#e46d23">Atención</h4>
+                    <p  class="text-center">Corrobora la información de las vacunas</p>
+                    <p style="padding: 1em;">Desliza a la izquierda para verificar la vacuna o desliza a la derecha para eliminarla</p>
+                  </div>
+              </div>
+
+                <ion-item-sliding  *ngFor="let item of vaccines;let i = index">
+                  <ion-item-options side="start" *ngIf="item.status == 1">
+                    <ion-item-option color="primary" (click)="updateInjection(item.id,i,1)">Verificar</ion-item-option>
+                  </ion-item-options>
+
+                  <ion-item-options side="end" >
+                    <ion-item-option color="danger" (click)="aresuredelete(item.id,i,1)">Eliminar</ion-item-option>
+                  </ion-item-options>
+
+                  <ion-item style="background-color: transparent;" >
+                    <ion-icon *ngIf="item.status == 2" style="color: #41cb7d;" slot="start" name="checkmark-circle-outline"></ion-icon>
+                    <ion-icon *ngIf="item.status == 1" style="color: #e46d23;" slot="start" name="alert-circle-outline"></ion-icon>
+                    <ion-label>
+                      <h3 class="capital">{{item.name}} </h3>
+                      <p>{{item.date | date:'dd/MM/Y'}}</p>
+                      <!-- <p>Verificado por Veterinaria Paulo</p> -->
+                    </ion-label>
+                  </ion-item>
+                </ion-item-sliding>
+
+              </div>
+
+
+            <div *ngIf="vaccines.length == 0">
+              <p class="text-center">{{result.name}} no cuenta con sus vacunas</p>
+            </div>
+
+            <div style="padding:0em 1em">
+              <ion-button color="tertiary" (click)="createVaccine('vaccine')" shape="round" expand="full">Agregar vacuna</ion-button>
+            </div>
+
+          </ion-card>
+
+          <ion-card style="padding:1em;text-align: center;">
+            <div (click)="desvincular()" *ngIf="result.code">
+
+              <h4 class="text-center" style="color:#41cb7d"><ion-icon name="shield-checkmark-outline"></ion-icon></h4>
+              <h2 style="color:#41cb7d">Tiene placa vinculada</h2>
+              <ion-button expand="full" fill="clear" color="danger">Desvincular</ion-button>
+            </div>
+            <div (click)="vincular()"  *ngIf="!result.code">
+              <h4 class="text-center" style="color: #e46d23;">
+                <ion-icon  name="alert-circle-outline"></ion-icon>
+              </h4>
+              <h2 style="color: #e46d23;">No tiene placa vinculada</h2>
+              <ion-button expand="full" fill="clear" color="success">Vincular</ion-button>
+            </div>
+
+          </ion-card>
+
+      <ion-card style="padding:1em">
+        <h3>Información de la mascota</h3>
+        <ion-row>
+          <ion-col size="5">
+            <img [src]="result.photo" style="border-radius:.75em;margin-top:1.5em;" alt="pet image">
+          </ion-col>
+          <ion-col size="6">
+            <h1 class="capital" style="font-weight: bold;text-align: center;padding-top: 1em;">{{result.name}}</h1>
+          </ion-col>
+        </ion-row>
+        <div style="padding:1em;">
+          <small>Edad</small>
+          <p>{{ result.birthday | date:'dd/MM/yyy'}} (
+            <span *ngIf="dateFormat === 'days'">
+              <span *ngIf="age === 1">{{ age }} Dia </span>
+              <span *ngIf="age != 1">Recién nacido</span>
+            </span>
+            <span *ngIf="dateFormat === 'months'">
+              <span *ngIf="age === 1">{{ age }} mes</span>
+              <span *ngIf="age != 1">{{ age }} meses</span>
+            </span>
+            <span *ngIf="dateFormat === 'years'">
+              <span *ngIf="age === 1">{{ age }} año</span>
+              <span *ngIf="age != 1">{{ age }} años</span>
+            </span>
+            ) </p>
+          <small>Tamaño</small>
+          <h5 *ngIf="result.size == 'mn'">Mini</h5>
+          <h5 *ngIf="result.size == 'sm'">Pequeño</h5>
+          <h5 *ngIf="result.size == 'md'">Mediano</h5>
+          <h5 *ngIf="result.size == 'lg'">Grande</h5>
+          <h5 *ngIf="result.size == 'xl'">Extra Grande</h5>
+          <small>Peso</small>
+          <h5 *ngIf="result.weight">{{result.weight}} KG</h5>
+          <small>Género</small>
+          <h5 *ngIf="result.gender == 1">Macho</h5>
+          <h5 *ngIf="result.gender == 2">Hembra</h5>
+          <small>Especie</small>
+          <h5 *ngIf="result.specie == 1">Gato</h5>
+          <h5 *ngIf="result.specie == 2">Perro</h5>
+          <h5 style="color:green;" *ngIf="result.sterelized">Esterilizado</h5>
+          <h5 style="color:red;" *ngIf="!result.sterelized">Sin Esterilizar</h5>
+          <div style="margin-top: 2em;">
+            <small>Descripción</small>
+            <h5 class="capital">{{result.description}} </h5>
+          </div>
+            <small>Enfermedades cronicas</small>
+            <p>{{result.chronic_disease}}</p>
+            <small>Bozal</small>
+
+            <h5 *ngIf="result.muzzle" style="color:orange;">Necesita bozal</h5>
+            <h5 *ngIf="!result.muzzle" style="color:green;">No Necesita bozal</h5>
+        </div>
+
+        <ion-button *ngIf="grantedEditPet" color="warning" (click)="updatePet()" shape="round" expand="full">Modificar datos</ion-button>
+
+      </ion-card>
+
+      <ion-card style="padding:1em;text-align: center;">
+        <h3>Color del collar</h3>
+        <div *ngIf="!result.color_necklace">
+          <p>No cuenta con color de collar, esto es para clasificar su comportamiento.</p>
+        </div>
+        <div *ngIf="result.color_necklace">
+          <div *ngIf="result.color_necklace == 1">
+            <p style="text-align: center;"><img style="width: 60px;height: 60px" src="../../assets/img/necklace-red.png" alt=""></p>
+            <h1 >Precaucion </h1>
+          </div>
+          <div *ngIf="result.color_necklace == 2">
+            <p><img src="../../assets/img/necklace-yellow.png" alt=""></p>
+            <h1 >Nervioso </h1>
+          </div>
+          <div *ngIf="result.color_necklace == 3">
+            <p><img src="../../assets/img/necklace-green.png" alt=""></p>
+            <h1 >Amistoso </h1>
+          </div>
+          <div *ngIf="result.color_necklace == 4">
+            <p><img src="../../assets/img/necklace-orange.png" alt=""></p>
+            <h1 >No soy amistoso </h1>
+          </div>
+          <div *ngIf="result.color_necklace == 5">
+            <p><img src="../../assets/img/necklace-purple.png" alt=""></p>
+            <h1 >No me aliementes  </h1>
+          </div>
+          <div *ngIf="result.color_necklace == 6">
+            <p><img src="../../assets/img/necklace-blue.png" alt=""></p>
+            <h1 >Entrenado  </h1>
+          </div>
+          <div *ngIf="result.color_necklace == 7">
+            <p><img src="../../assets/img/necklace-white.png" alt=""></p>
+            <h1 >Discapacidad  </h1>
+          </div>
+        </div>
+      </ion-card>
+      <ion-card >
+        <img style="width: 100%;" [src]="breedData.image" alt="image pet breed">
+        <div style=padding:1em;>
+
+          <h2>{{breedData.name}}</h2>
+          <!-- <p>{{ breedData.size }}</p> -->
+          <ion-row>
+            <ion-col>
+              <p>Esperanza de vida<br>
+              {{ breedData.lifeExpentacy }} años</p>
+            </ion-col>
+            <ion-col>
+              <p>Peso Min. <br>
+                {{ breedData.minWeight }} KG
+              </p>
+
+            </ion-col>
+            <ion-col>
+              <p>
+                Peso Max.
+                <br>
+                {{ breedData.maxWeight }} KG
+              </p>
+
+            </ion-col>
+          </ion-row>
+          <p>{{ breedData.clean }}</p>
+          <p>{{ breedData.description }}</p>
+          <p>{{ breedData.behavior }}</p>
+          <p>
+          Información puede variar.por el momento solo en español
+
+          </p>
+          <small>
+            FUENTE: Royalcanin
+
+          </small>
+        </div>
+        </ion-card>
+
+
+      </div>
+    </div>
+
+    <div *ngIf="result.length == 0">
+      <div style="background-color: red;height: 17em;margin-top: -2em;">
+        <h1 style="text-align: center;">
+          <img style="margin-top:2em;width: 4em;height: 4em;" src="../../assets/img/logo-white.png" alt="image">
+        </h1>
+      </div>
+
+      <div style="margin-top: -5em">
+
+
+        <ion-card style="padding:1em">
+          <h3>Error</h3>
+          <p>No se encontro mascota registrada</p>
+        </ion-card>
+
+        </div>
+    </div>
+  </div>
+
+
+
+</ion-content>
+<ion-footer>
+  <ion-button (click)="close()" color="danger" fill="clear" expand="full">Cerrar</ion-button>
+</ion-footer>

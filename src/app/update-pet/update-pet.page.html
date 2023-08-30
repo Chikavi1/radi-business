@@ -1,9 +1,9 @@
 <ion-content>
   <div style="padding: 1em;">
-    <ion-card style="padding: 1em;">
+    <!-- <ion-card style="padding: 1em;">
       <p style="color: orange;">Atención</p>
       <p>Al actualizar se le enviará una notificación al dueño de {{name}}, se recomienda comentarle a tu cliente antes de hacer cualquier modificación.</p>
-    </ion-card>
+    </ion-card> -->
 
     <!-- chronic disease -->
     <p>Enfermedades cronicas</p>
@@ -51,7 +51,7 @@
       Gato
     </ion-chip>
     <p>Peso</p>
-    <ion-input class="new-input" [(ngModel)]="weight" placeholder="Ingresa el peso en KG">
+    <ion-input class="new-input" (keypress)="numberOnlyValidation($event)" [(ngModel)]="weight" placeholder="Ingresa el peso en KG">
 
     </ion-input>
     <!-- weight -->

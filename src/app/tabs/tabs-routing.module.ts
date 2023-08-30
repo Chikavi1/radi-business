@@ -32,6 +32,11 @@ const routes: Routes = [
         loadChildren: () => import('../events/events.module').then(m => m.EventsPageModule)
       },
       {
+        path: 'adoptions',
+        loadChildren: () => import('../pets-org/pets-org.module').then(m => m.PetsOrgPageModule)
+      },
+
+      {
         path: '',
         redirectTo: '/tabs/tab1',
         pathMatch: 'full'

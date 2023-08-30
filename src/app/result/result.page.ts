@@ -279,6 +279,7 @@ load = true;
 
   }
 
+
   async presentToast(message,color) {
     const toast = await this.toastController.create({
       message,

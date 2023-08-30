@@ -27,6 +27,58 @@ export class DataService {
     }
   }
 
+  removeId(data):any{
+    return this.http.post(this.MODE + 'identifications/removed', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  loginOrg(data):any{
+    return this.http.post(this.MODE + 'organization/login', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  getBreedInfo(data){
+    return this.http.post(this.MODE + 'breeds/search', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+
+  getIdentification(id_pet){
+    return this.http.post(this.MODE + 'identifications/get', JSON.parse(JSON.stringify({id:id_pet})), this.options);
+  }
+
+  associatedId(data){
+    return this.http.post(this.MODE + 'identifications/associated', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  deleteIdentification(data){
+    return this.http.post(this.MODE+'deleteIdentification',JSON.parse(JSON.stringify(data)),this.options);
+  }
+
+
+  getAccount(data):any{
+    return this.http.post(this.MODE + 'getAccount',JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+
+  createLink(data):any{
+    return this.http.post(this.MODE + 'createLinks',JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  getMovements(data):any{
+    return this.http.post(this.MODE + 'getCharges',JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+
+  checkUserPay(data):any{
+    return this.http.post(this.MODE + 'checkuserpay',JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  pay(data):any{
+    return this.http.post(this.MODE + 'userpay',JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  getPetsByOrg(id_org):any{
+    return this.http.get(this.MODE + 'pets/organizations_business/'+id_org);
+  }
+
   createBusiness(data): any {
     return this.http.post(this.MODE + 'business/create',JSON.parse(JSON.stringify(data)), this.options);
   }
@@ -136,6 +188,10 @@ export class DataService {
 
   getPetInfo(data){
     return this.http.post(this.MODE + 'radi-pet-info',JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  getPetInfoOrg(data){
+    return this.http.post(this.MODE + 'radi-pet-info-org',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   getPetVaccines(){

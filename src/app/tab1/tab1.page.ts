@@ -33,7 +33,8 @@ grantedRoot;
     let granted = localStorage.getItem('granted');
     this.grantedLinks = granted.includes('links');
     this.grantedPayments = granted.includes('payments')
-    this.grantedRoot = granted.includes('root')
+    this.grantedRoot = granted.includes('root');
+
 
   }
   type;
@@ -93,7 +94,7 @@ grantedRoot;
   }
 
   async qrcodescan(){
-    this.barcodeScanner.scan().then(barcodeData => {
+    this.barcodeScanner.scan({disableSuccessBeep: true}).then(barcodeData => {
       if(!barcodeData.cancelled){
         let data = barcodeData.text;
         this.processData(data);

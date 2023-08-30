@@ -1,6 +1,8 @@
 <ion-content>
   <div *ngIf="load">
-    <h2 style="text-align: center;margin-top:3em;">Cargando información ...</h2>
+    <h2 style="text-align: center;margin-top:3em;">
+      <img src="../../assets/img/logo.png" style="padding:1em 6em;" alt="">
+      Cargando información ...</h2>
   </div>
   <div *ngIf="!load">
     <div *ngIf="result.length != 0">
@@ -11,23 +13,21 @@
       </div>
 
       <div style="margin-top: -5em">
-
-
-          <ion-card *ngIf="grantedCarnet" >
-            <h1 class="text-center">Carnet Digital de {{result.name}}</h1>
+          <ion-card *ngIf="grantedCarnet" style="padding:1em;" >
+            <h1 style="text-align: center;">Carnet Digital de {{result.name}}</h1>
             <div *ngIf="vaccines.length != 0">
 
               <div *ngIf="allgreen">
-                <h4 class="text-center" style="color:#41cb7d"><ion-icon name="shield-checkmark-outline"></ion-icon></h4>
-                <h4 class="text-center" style="color:#41cb7d">Vacunas verificadas</h4>
+                <h4 style="text-align: center;color:#41cb7d"><ion-icon name="shield-checkmark-outline"></ion-icon></h4>
+                <h4 style="text-align: center;color:#41cb7d">Vacunas verificadas</h4>
                 </div>
 
-                <div *ngIf="!allgreen">
-                  <h4 class="text-center" style="color: #e46d23;">
+                <div *ngIf="!allgreen" style="text-align: center !important;">
+                  <h4 style="text-align: center;color: #e46d23;">
                     <ion-icon  name="alert-circle-outline"></ion-icon>
                   </h4>
-                <h4 class="text-center" style="color:#e46d23">Atención</h4>
-                <p  class="text-center">Corrobora la información de las vacunas</p>
+                <h4 style="text-align: center;color:#e46d23">Atención</h4>
+                <p  style="text-align: center;">Corrobora la información de las vacunas</p>
                 <p style="padding: 1em;">Desliza a la izquierda para verificar la vacuna o desliza a la derecha para eliminarla</p>
               </div>
 

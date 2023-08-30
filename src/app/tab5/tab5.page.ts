@@ -64,6 +64,8 @@ export class Tab5Page implements AfterViewInit{
       this.HumGenderFem = data.info[0].HumGenderFem;
       this.hours = data.hours;
       this.days = data.days;
+      console.log(data.hours,data.days);
+
       this.ageRange = data.rangeAge;
       this.income = data.info[0].countIncome;
       if(this.petMas > this.petFem){

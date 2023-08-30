@@ -2,8 +2,18 @@
 
 <ion-content >
   <div style="padding:2em;" *ngIf="!paymentsEnabled">
-    <h2>No tiene activada la función</h2>
-    <p>Informa al cliente que los pagos con identificador aún no están activados en su cuenta. <br> Para habilitar esta función es muy sencillo, debe dirigirse al menú de "configuración", elegir la opción de "pagos" y activar la funcionalidad de "pagos con identificador". <br><br> En caso de no tener una tarjeta registrada, le recomendamos añadir una tarjeta y un NIP para aumentar su seguridad.</p>
+    <div *ngIf="messageStatus == 'disabledpayments'">
+      <h2>No tiene activada la función</h2>
+      <p>Informa al cliente que los pagos con identificador aún no están activados en su cuenta. <br> Para habilitar esta función es muy sencillo, debe dirigirse al menú de "configuración", elegir la opción de "pagos" y activar la funcionalidad de "pagos con identificador". <br><br></p>
+    </div>
+    <div *ngIf="messageStatus == 'idnofound'">
+      <h2>Placa no válida</h2>
+      <p>Queremos informarte que la placa que has escaneado no es válida para el proceso actual. <br><br> Si has utilizado el código QR del perfil de la mascota, queremos aclararte que, por razones de seguridad, la función de pagos solo es compatible con la placa QR emitida por Radi Pets.</p>
+    </div>
+    <div *ngIf="messageStatus == 'cardsnone'">
+      <h2>No cuenta con tarjeta vinculada</h2>
+      <p>Informa al cliente que no tiene una tarjeta registrada, le recomendamos añadir una tarjeta y un NIP para aumentar su seguridad.</p>
+    </div>
   <ion-button (click)="close()">Entendido</ion-button>
   </div>
 
@@ -14,15 +24,22 @@
       <p>Cantidad Minima 35 pesos </p>
       <h3>Descripción</h3>
       <ion-textarea   maxlength="250" rows="8" cols="20" [(ngModel)]="description" class="new-input" placeholder="Ingresa una descripción" type="text"></ion-textarea>
-      <ion-button (click)="next()" [disabled]="35 > amount "  expand="full" color="tertiary" shape="round">Siguiente</ion-button>
+      <ion-button style="margin-top:1em;" (click)="next()" [disabled]="35 > amount "  expand="full" color="tertiary" shape="round">Siguiente</ion-button>
 
     </div>
     <div *ngIf="step == 2">
-      <div style="text-align: center;margin-top:3em">
+
+      <ion-fab  vertical="top" horizontal="start"  slot="fixed" (click)="back()">
+        <ion-fab-button mode="ios" size="small" translucent    color="motel"  style="  outline: none !important;    ">
+          <ion-icon name="arrow-back-outline" style="color:#f8d100;"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+
+      <div style="text-align: center;margin-top:3em" *ngIf="!breakdown">
       <h2>Confirmación</h2>
       <p style="margin-top: 2em;">Total</p>
-      <h1><span style="font-size: 1.76em;">${{total}}</span> <span style="font-size: .78em;"> MXN</span> </h1>
-      <small>Clic para ver el desglose</small>
+      <h1><span style="font-size: 1.76em;">${{total | number : '1.2-2'}}</span> <span style="font-size: .78em;"> MXN</span> </h1>
+      <small (click)="setBreakdown(true)">Clic para ver el desglose</small>
       <h1>
         <span [ngClass]="{'selected' : pin.length >= 1 }"  style="color:gray">
           &#8226;
@@ -37,55 +54,100 @@
           &#8226;
         </span>
       </h1>
+        <ion-row style="padding:1em 4em;">
+          <ion-col (click)="setPin(1)" size="4" style="padding:1em 2em;">
+            <h2>1</h2>
+          </ion-col>
+          <ion-col (click)="setPin(2)" size="4" style="padding:1em 2em;">
+          <h1>2</h1>
+          </ion-col>
+          <ion-col (click)="setPin(3)" size="4" style="padding:1em 2em;">
+            <h1>3</h1>
+          </ion-col>
+          <ion-col (click)="setPin(4)" size="4" style="padding:1em 2em;">
+            <h1>4</h1>
+          </ion-col>
+          <ion-col (click)="setPin(5)" size="4" style="padding:1em 2em;">
+            <h1>5</h1>
+          </ion-col>
+          <ion-col (click)="setPin(6)" size="4" style="padding:1em 2em;">
+            <h1>6</h1>
+          </ion-col>
+          <ion-col (click)="setPin(7)" size="4" style="padding:1em 2em;">
+            <h1>7</h1>
+          </ion-col>
+          <ion-col (click)="setPin(8)" size="4" style="padding:1em 2em;">
+            <h1>8</h1>
+          </ion-col>
+          <ion-col (click)="setPin(9)" size="4" style="padding:1em 2em;">
+            <h1>9</h1>
+          </ion-col>
+          <ion-col size="4" (click)="deletedigit()" style="padding:1em 2em;">
+            <h1>
+              <ion-icon  style="font-weight: bold" name="trash-bin-outline"></ion-icon>
+            </h1>
+          </ion-col>
+          <ion-col (click)="setPin(0)" size="4" style="padding:1em 2em;">
+            <h1>0</h1>
+          </ion-col>
+
+        </ion-row>
+
+        <div style="padding: 1.2em;">
+          <p>
+            <ion-icon style="color:rgb(183, 183, 7)"  name="shield-checkmark-outline"></ion-icon>
+            Esta transacción esta <b>encriptada</b> por Radi Pets, con tu compra <b>aportas</b> a la plataforma de <b>Radi Org</b>
+          </p>
+          <ion-button (click)="showLoading()" [disabled]="4 > pin.length || !enabledButton" expand="full" color="tertiary" shape="round">Procesar Pago</ion-button>
+        </div>
       </div>
-    <ion-row style="padding:1em 4em;">
-      <ion-col (click)="setPin(1)" size="4" style="padding:1em 2em;">
-        <h2>1</h2>
-      </ion-col>
-      <ion-col (click)="setPin(2)" size="4" style="padding:1em 2em;">
-       <h1>2</h1>
-      </ion-col>
-      <ion-col (click)="setPin(3)" size="4" style="padding:1em 2em;">
-        <h1>3</h1>
-      </ion-col>
-      <ion-col (click)="setPin(4)" size="4" style="padding:1em 2em;">
-        <h1>4</h1>
-      </ion-col>
-      <ion-col (click)="setPin(5)" size="4" style="padding:1em 2em;">
-        <h1>5</h1>
-      </ion-col>
-      <ion-col (click)="setPin(6)" size="4" style="padding:1em 2em;">
-        <h1>6</h1>
-      </ion-col>
-      <ion-col (click)="setPin(7)" size="4" style="padding:1em 2em;">
-        <h1>7</h1>
-      </ion-col>
-      <ion-col (click)="setPin(8)" size="4" style="padding:1em 2em;">
-        <h1>8</h1>
-      </ion-col>
-      <ion-col (click)="setPin(9)" size="4" style="padding:1em 2em;">
-        <h1>9</h1>
-      </ion-col>
-      <ion-col size="4" (click)="deletedigit()" style="padding:1em 2em;">
-        <h1>
-          <ion-icon  style="font-weight: bold" name="trash-bin-outline"></ion-icon>
-        </h1>
-      </ion-col>
-      <ion-col (click)="setPin(0)" size="4" style="padding:1em 2em;">
-        <h1>0</h1>
-      </ion-col>
 
-    </ion-row>
 
-    <div style="padding: 1.2em;">
-      <p>
-        <ion-icon style="color:rgb(183, 183, 7)"  name="shield-checkmark-outline"></ion-icon>
-        Esta transaccion esta encriptada por Radi Pets
-      </p>
-      <ion-button (click)="showLoading()" [disabled]="4 > pin.length || !enabledButton" expand="full" color="tertiary" shape="round">Procesar Pago</ion-button>
-    </div>
+      <div *ngIf="breakdown" style="padding:1em;margin-top: 4em;">
+            <h2>Desglose</h2>
+            <div class="progress">
+              <div class="progress-bar bg-success" role="progressbar" [ngStyle]="{ 'width': percent1 + '%' }"></div>
+              <div class="progress-bar bg-warning" role="progressbar" [ngStyle]="{ 'width': percent2 + '%' }"></div>
+              <!-- <div class="progress-bar bg-danger" role="progressbar" [ngStyle]="{ 'width': percent3 + '%' }"></div> -->
+            </div>
 
-    </div>
+            <ion-row>
+              <ion-col size="6">
+                Cobrar
+              </ion-col>
+              <ion-col size="6" style="text-align: right;">
+                {{total | number : '1.2-2'}} MXN
+              </ion-col>
+              <ion-col size="6">
+                Precio ingresado
+              </ion-col>
+              <ion-col size="6" style="text-align: right;">
+                {{amount | number : '1.2-2'}} MXN
+              </ion-col>
+              <ion-col size="6" style="color:purple;font-weight: bold;">
+                Comisión negocio
+              </ion-col>
+              <ion-col size="6" style="text-align: right;">
+                {{serviceBusiness | number : '1.2-2'}} MXN
+              </ion-col>
+              <!-- <ion-col size="6">
+                Comisión cliente
+              </ion-col>
+              <ion-col size="6" style="text-align: right;">
+                3.50 MXN
+              </ion-col> -->
+              <ion-col size="6" style="color:green;font-weight: bold;">
+                Tu ganancia
+              </ion-col>
+              <ion-col size="6" style="text-align: right;">
+                {{business | number : '1.2-2'}} MXN
+              </ion-col>
+            </ion-row>
+            <ion-button expand="full" color="success" style="margin-top: 1em;" fill="clear" (click)="setBreakdown(false)">Volver al cobro</ion-button>
+      </div>
+
+
+        </div>
     <div *ngIf="step == 3">
       <!-- imagen -->
       <div style="padding:0em 8em;">
@@ -107,7 +169,7 @@
             <p>No.referencia </p>
           </ion-col>
           <ion-col size="6" style="text-align: right;">
-           <p>2313221321</p>
+           <p>{{idc}}</p>
           </ion-col>
           <ion-col size="6">
             <p>Descripción</p>
@@ -125,7 +187,7 @@
             <p>Hora </p>
           </ion-col>
           <ion-col size="6" style="text-align: right;">
-            <p>{{datePayment | date:'h:mm a':"+0000"}}</p>
+            <p>{{datePayment | date:'h:mm a'}}</p>
           </ion-col>
         </ion-row>
       </ion-card>
@@ -137,3 +199,8 @@
   </div>
 
 </ion-content>
+<ion-footer *ngIf="step == 1">
+  <ion-button expand="full" color="danger" (click)="close()">
+    Cerrar
+  </ion-button>
+</ion-footer>

@@ -6,6 +6,7 @@ import { InfoAppPage } from '../info-app/info-app.page';
 import { Share } from '@capacitor/share';
 import { ChangePasswordPage } from '../change-password/change-password.page';
 import { SupportPage } from '../support/support.page';
+import { BillingPage } from '../billing/billing.page';
 
 
 declare var require: any;
@@ -63,6 +64,8 @@ export class ProfilePage implements OnInit {
     localStorage.removeItem('image');
     localStorage.removeItem('type');
     localStorage.removeItem('email');
+    localStorage.removeItem('name_organization');
+    localStorage.removeItem('id_organization');
 
     this.navCtrl.navigateRoot('/login');
     this.close();
@@ -94,7 +97,10 @@ export class ProfilePage implements OnInit {
 
   support(){
     this.openModal(SupportPage)
+  }
 
+  billing(){
+    this.openModal(BillingPage)
   }
 
   async openModal(Page){

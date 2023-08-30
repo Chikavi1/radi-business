@@ -1,0 +1,106 @@
+
+
+<ion-content>
+
+<div *ngIf="load">
+  <h1 style="margin-top: 4em;text-align: center;">
+    <img src="../../assets/img/logo.png" style="padding:1em 6em;" alt="">
+    Cargando información ...
+  </h1>
+</div>
+
+<div *ngIf="!load">
+  <div *ngIf="needConfigurate" style="padding: 1em;">
+    <h1 style="color:orange;text-align: center;"><ion-icon name="warning-outline"></ion-icon></h1>
+    <h2>Necesitas configurar</h2>
+    <p>No tardas más de 2 minutos, necesitasmos esta información la tengas a la mano para tu seguridad.</p>
+    <p>Se abrira tu navegador para terminar el proceso.</p>
+    <ion-button expand="full" color="tertiary" (click)="createLink()" >Configurar</ion-button>
+  </div>
+
+  <div *ngIf="!needConfigurate" style="padding:1em;">
+    <h2>Billing</h2>
+    <ion-card style="background-color: #101727;padding:1em;">
+      <ion-row>
+        <ion-col>
+          <h2>Cuenta</h2>
+        </ion-col>
+        <ion-col>
+          <p style="text-align: right;">Editar</p>
+        </ion-col>
+      </ion-row>
+      <h1>{{ external_accounts.bank_name }}</h1>
+      <p>Con terminación {{ external_accounts.last4 }}</p>
+    </ion-card>
+    <h3>Movimientos</h3>
+
+    <div *ngIf="movements.length != 0">
+      <ion-card style="padding:1em;" *ngFor="let movement of movements">
+        <h1>$ 35.00 {{movement.currency}}</h1>
+        <ion-row>
+          <ion-col  size="9">
+            <p class="capital">{{movement.created*1000 | localizedDate:'fullDate'}}</p>
+          </ion-col>
+          <ion-col size="3" *ngIf="movement.status === 'succeeded'">
+            <ion-chip color="success">Exitoso</ion-chip>
+          </ion-col>
+        </ion-row>
+
+        <div class="progress">
+          <div class="progress-bar bg-success" role="progressbar" [ngStyle]="{ 'width': percent1 + '%' }"></div>
+          <div class="progress-bar bg-warning" role="progressbar" [ngStyle]="{ 'width': percent2 + '%' }"></div>
+          <!-- <div class="progress-bar bg-danger" role="progressbar" [ngStyle]="{ 'width': percent3 + '%' }"></div> -->
+        </div>
+
+        <ion-row>
+          <ion-col size="6">
+            Cobrado
+          </ion-col>
+          <ion-col size="6" style="text-align: right;">
+            37.75 MXN
+          </ion-col>
+          <ion-col size="6">
+            Precio ingresado
+          </ion-col>
+          <ion-col size="6" style="text-align: right;">
+            35.0 MXN
+          </ion-col>
+          <ion-col size="6" style="color:purple;">
+            Comisión negocio
+          </ion-col>
+          <ion-col size="6" style="text-align: right;">
+            2.92 MXN
+          </ion-col>
+          <!-- <ion-col size="6">
+            Comisión cliente
+          </ion-col>
+          <ion-col size="6" style="text-align: right;">
+            3.50 MXN
+          </ion-col> -->
+          <ion-col size="6" style="color:green;">
+            Tu ganancia
+          </ion-col>
+          <ion-col size="6" style="text-align: right;">
+            32.08 MXN
+          </ion-col>
+        </ion-row>
+
+        <ion-button (click)="openBrowser(movement.receipt_url)" fill="clear" expand="full">Ver recibo</ion-button>
+      </ion-card>
+    </div>
+
+    <div *ngIf="movements.length == 0">
+      <ion-card style="padding:1em;text-align: center;">
+        <h1>Sin Movimientos</h1>
+        <p>No has realizado ningun movimiento.</p>
+      </ion-card>
+    </div>
+  </div>
+</div>
+
+</ion-content>
+<ion-footer>
+  <ion-button expand="full" color="danger" fill="clear" (click)="close()">
+    Cerrar
+  </ion-button>
+</ion-footer>
