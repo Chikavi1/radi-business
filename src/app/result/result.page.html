@@ -64,6 +64,12 @@
 
           </ion-card>
 
+      <ion-card  style="padding:1em" *ngIf="result.org_name">
+        <img style="width: 5em;height: 5em;border-radius: 50%;" [src]="result.org_photo" alt="">
+        <h2 style="font-weight: bold;color:#41cb7d;">¡Mascota en adopción!</h2>
+        <p>Mascota verificada por <span style="font-weight: bold;">Radi Org</span>, se encuentra en adopción por parte de <span style="font-weight: bold;">{{result.org_name}}</span>.</p>
+      </ion-card>
+
       <ion-card style="padding:1em">
         <h3>Información de la mascota</h3>
         <ion-row>
@@ -91,7 +97,10 @@
 
       </ion-card>
 
-      <ion-card style="padding:1em">
+
+
+
+      <ion-card style="padding:1em" *ngIf="result.user_name">
         <h3>Información del dueño</h3>
         <ion-row>
           <ion-col size="4">
@@ -104,7 +113,9 @@
           </ion-col>
         </ion-row>
       </ion-card>
-      <ion-card style="padding:1em;">
+
+
+      <ion-card style="padding:1em;" *ngIf="result.user_name">
         <h3 class="text-center">Visitas</h3>
 
         <div *ngIf="visits.length != 0">
@@ -126,12 +137,12 @@
       </ion-card>
 
 
-      <ion-card style="padding:1em;">
+      <ion-card style="padding:1em;" *ngIf="result.user_name">
         <h3 class="text-center" style="color:#41cb7d" *ngIf="goodbehavior">No cuenta con ningún reporte</h3>
         <h3 class="text-center" style="color:#e48f48" *ngIf="!goodbehavior">Cuenta con reporte</h3>
       </ion-card>
 
-      <ion-card style="padding: 1em;">
+      <ion-card style="padding: 1em;" *ngIf="result.user_name">
         <p>Para proteger la Información de nuestros usuarios, se le enviará una notificacion al usuario que se esta revisando su historial.</p>
       </ion-card>
       </div>

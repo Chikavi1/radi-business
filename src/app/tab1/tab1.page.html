@@ -12,16 +12,14 @@
         <div style="margin-top: 2em;">
           <ion-row>
             <ion-col>
-              <ion-button expand="full" color="tertiary" shape="round" (click)="scanResult('visit')"><ion-icon name="add-outline"> </ion-icon> Visita</ion-button>
+              <ion-button expand="full" color="tertiary" shape="round" (click)="scanResult('visits')"><ion-icon name="add-outline"> </ion-icon> Visita</ion-button>
             </ion-col>
             <ion-col *ngIf="grantedPayments">
               <ion-button expand="full" color="success" shape="round" (click)="scanResult('payments')"><ion-icon name="wallet-outline"> </ion-icon> &nbsp; Cobrar</ion-button>
             </ion-col>
           </ion-row>
 
-          <ion-button *ngIf="grantedLinks"  expand="full"  shape="round"  color="warning" (click)="scanResult('links')">Generar links</ion-button>
-
-
+          <!-- <ion-button *ngIf="grantedLinks"  expand="full"  shape="round"  color="warning" (click)="createLinks()">Generar links</ion-button> -->
           <!-- <ion-button *ngIf="grantedPayments" expand="full" fill="clear" color="success" (click)="scan(2)">Generar cobro</ion-button>
           <ion-button *ngIf="grantedRoot"  expand="full" fill="clear" color="danger" (click)="createBusiness()">Crear negocio</ion-button> -->
 

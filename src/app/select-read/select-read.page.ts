@@ -18,12 +18,21 @@ export class SelectReadPage implements OnInit {
   constructor(private barcodeScanner:BarcodeScanner,
     private toastController:ToastController,
     private modalCtrl:ModalController,
-    private nfc:NFC) { }
+    private nfc:NFC) {
+      this.qrlottie  = {
+        path: '../../../assets/lotties/readqr.json',
+        autoplay: true,
+        loop: true
+      }
+      this.nfclottie  = {
+        path: '../../../assets/lotties/readnfc.json',
+        autoplay: true,
+        loop: true
+      }
+    }
 
     action;
     modeRead;
-
-    type;
     code;
 
     close(){
@@ -31,59 +40,70 @@ export class SelectReadPage implements OnInit {
     }
 
   ngOnInit() {
-    this.modeRead = this.type;
 
-    this.qrlottie  = {
-      path: '../../../assets/lotties/readqr.json',
-      autoplay: true,
-      loop: true
-    }
-    this.nfclottie  = {
-      path: '../../../assets/lotties/readnfc.json',
-      autoplay: true,
-      loop: true
-    }
   }
 
-  processData(text){
+  processData(text,action,tec){
     let hash;
-    if(this.action === 'visits'){
-        if(text.includes('https://radi.pet/pets/')){
+    let modeRead;
+    if(action === 'visits'){
+        if(text.includes('di.pet/pets/')){
           hash = text.split('pet/pets/');
-          this.type = 'placa';
+          modeRead = 'placa'
         }else{
           hash = text.split('pet/pet/');
-          this.type =  'app';
+          modeRead =  'app'
         }
-        this.code = hash[1];
-        this.openResult();
-        this.close();
-    }
-    if(this.type === 2){
-      // pagos
-      this.openModal(PaymentPage);
-    }
-    if(this.type === 3){
-      // links
-      if(text.includes('https://radi.pet/links/')){
-          const hash = text.split('pet/links/');
-          this.code = hash[1];
-          this.openModal(CreateLinksPage)
-      }else{
-        alert('Error intenta luego.')
-      }
 
+        if(tec == 'nfc'){
+          modeRead = 'placa'
+          this.openResult(modeRead, hash[0]);
+        }else{
+          this.openResult(modeRead, hash[1]);
+        }
+    }
+    if(action === 'payments'){
+      if(text.includes('https://radi.pet/pets/')){
+        hash = text.split('pet/pets/');
+        modeRead = 'placa'
+        this.openPayments(hash[1]);
+        }else{
+          this.presentToast('Opción disponible exclusivamente con la placa.','warning');
+        }
     }
   }
 
-  async openResult(){
+  async openPayments(code){
+    console.log(this.modeRead,this.code)
+    const modal = await this.modalCtrl.create({
+      component: PaymentPage,
+      breakpoints: [1],
+      initialBreakpoint: 1,
+      componentProps:{
+        code: code,
+      }
+    });
+    modal.onDidDismiss().then((data) => {
+      // if(data['data']){
+      //   const info = data['data'];
+      //   console.log(info);
+      // }
+    });
+    return await modal.present();
+  }
+
+  async openResult(modeRead,code){
+    console.log('------')
+    console.log(modeRead,code);
+    console.log('------')
+
     const modal = await this.modalCtrl.create({
       component: ResultPage,
       breakpoints: [.95,1],
       initialBreakpoint: .95,
       componentProps:{
-        type: this.modeRead,
-        code: this.code,
+        modeRead: modeRead,
+        code: code,
       }
     });
     modal.onDidDismiss().then((data) => {
@@ -93,11 +113,17 @@ export class SelectReadPage implements OnInit {
     return await modal.present();
   }
 
+
   async qrcodescan(){
+    // let data = 'https://radi.pet/pets/RD39uc98q4';
+    // let data = 'https://radi.pet/pet/214904';
+    // this.processData(data,this.action,'qr');
+
+
     this.barcodeScanner.scan({disableSuccessBeep: true}).then(barcodeData => {
       if(!barcodeData.cancelled){
         let data = barcodeData.text;
-        this.processData(data);
+        this.processData(data,this.action,'qr');
       }
     }).catch(err => {
       this.presentToast('Hubo un error,intenta despues.','danger');
@@ -106,17 +132,16 @@ export class SelectReadPage implements OnInit {
   }
 
   async nfcscan(){
+    // let tagContent = 'di.pet/pets/RDa899b6e';
+    // let id =  tagContent.split('pets/');
+    // this.processData(id[1],this.action,'nfc');
+
     try {
       let data = await this.nfc.scanNdef();
       let payload = data.ndefMessage[0].payload;
       let tagContent = this.nfc.bytesToString(payload).substring(3);
-
       let id =  tagContent.split('pets/');
-      alert(tagContent);
-      alert(id);
-      alert(id[1]);
-
-      this.processData(id[1]);
+      this.processData(id[1],this.action,'nfc');
    } catch (err) {
    }
   }
@@ -136,27 +161,7 @@ export class SelectReadPage implements OnInit {
       breakpoints: [1],
       initialBreakpoint: 1,
       componentProps:{
-        type: this.type,
-        code: this.code,
-      }
-    });
-    modal.onDidDismiss().then((data) => {
-      if(data['data']){
-        const info = data['data'];
-        console.log(info);
-      }
-    });
-    return await modal.present();
-  }
-
-  async scanResult(){
-
-    const modal = await this.modalCtrl.create({
-      component: SelectReadPage,
-      breakpoints: [.95,1],
-      initialBreakpoint: .95,
-      componentProps:{
-        type: this.type,
+        type: this.modeRead,
         code: this.code,
       }
     });

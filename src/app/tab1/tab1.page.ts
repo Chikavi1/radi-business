@@ -14,13 +14,13 @@ import { NFC, Ndef } from '@awesome-cordova-plugins/nfc/ngx';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-name;
-image;
-device;
+  name;
+  image;
+  device;
 
-grantedLinks;
-grantedPayments;
-grantedRoot;
+  grantedLinks;
+  grantedPayments;
+  grantedRoot;
 
   constructor(private modalCtrl:ModalController,
     private nfc:NFC,
@@ -34,31 +34,82 @@ grantedRoot;
     this.grantedLinks = granted.includes('links');
     this.grantedPayments = granted.includes('payments')
     this.grantedRoot = granted.includes('root');
-
-
   }
+
   code;
 
-  action;
-  modeRead;
+  action;   // visit || payments || links
+  modeRead; // placa || app
 
-  async scanResult(a){
-    this.action = a;
+  async scanResult(action){
+    this.action = action; // visit
+
     this.nfc.enabled().then( () => {
-      this.openModal(SelectReadPage);
+      this.openSelectRead();
     }).catch(() => {
-      this.qrcodescan();
+      this.qrcodescan(action);
+
     });
   }
 
-  async openResult(){
+  async openSelectRead(){
+    const modal = await this.modalCtrl.create({
+      component: SelectReadPage,
+      breakpoints: [1],
+      initialBreakpoint: 1,
+      componentProps:{
+        action: this.action,
+      }
+
+    });
+    modal.onDidDismiss().then((data) => {
+      // if(data['data']){
+      //   const info = data['data'];
+      //   console.log(info);
+      // }
+    });
+    return await modal.present();
+  }
+
+
+  async openPayments(code){
+    const modal = await this.modalCtrl.create({
+      component: PaymentPage,
+      breakpoints: [1],
+      initialBreakpoint: 1,
+      componentProps:{
+        code: code,
+      }
+    });
+    modal.onDidDismiss().then((data) => {
+      // if(data['data']){
+      //   const info = data['data'];
+      //   console.log(info);
+      // }
+    });
+    return await modal.present();
+  }
+
+
+  async openModalBusiness(){
+    const modal = await this.modalCtrl.create({
+      component: CreateBusinessPage,
+      breakpoints: [1],
+      initialBreakpoint: 1
+    });
+    modal.onDidDismiss().then((data) => {
+    });
+    return await modal.present();
+  }
+
+  async openResult(modeRead,code){
     const modal = await this.modalCtrl.create({
       component: ResultPage,
       breakpoints: [.95,1],
       initialBreakpoint: .95,
       componentProps:{
-        type: this.modeRead,
-        code: this.code,
+        modeRead: modeRead,
+        code: code,
       }
     });
     modal.onDidDismiss().then((data) => {
@@ -68,34 +119,17 @@ grantedRoot;
     return await modal.present();
   }
 
-  async openModal(Page){
-    const modal = await this.modalCtrl.create({
-      component: Page,
-      breakpoints: [1],
-      initialBreakpoint: 1,
-      componentProps:{
-        type: this.modeRead,
-        code: this.code,
-      }
-    });
-    modal.onDidDismiss().then((data) => {
-      if(data['data']){
-        const info = data['data'];
-        console.log(info);
-      }
-    });
-    return await modal.present();
-  }
 
   createBusiness(){
-    this.openModal(CreateBusinessPage);
+    this.openModalBusiness();
   }
 
-  async qrcodescan(){
+
+  async qrcodescan(action){
     this.barcodeScanner.scan({disableSuccessBeep: true}).then(barcodeData => {
       if(!barcodeData.cancelled){
         let data = barcodeData.text;
-        this.processData(data);
+        this.processData(data,action);
       }
     }).catch(err => {
       this.presentToast('Hubo un error,intenta despues.','danger');
@@ -103,40 +137,43 @@ grantedRoot;
     });
   }
 
-  processData(text){
+  processData(text,action){
     let hash;
-    if(this.action === 'visits'){
-      // visits
+    let modeRead;
+    if(action === 'visits'){
         if(text.includes('https://radi.pet/pets/')){
           hash = text.split('pet/pets/');
-          this.modeRead = 'placa'
+          modeRead = 'placa'
         }else{
           hash = text.split('pet/pet/');
-          this.modeRead =  'app'
+          modeRead =  'app'
         }
-        this.code = hash[1];
-        this.openResult();
-
+        this.openResult(modeRead, hash[1]);
     }
-    if(this.action === 'payments'){
-      // pagos
+    if(action === 'payments'){
       if(text.includes('https://radi.pet/pets/')){
-          this.openModal(PaymentPage);
+        hash = text.split('pet/pets/');
+        modeRead = 'placa'
+        this.openPayments(hash[1]);
         }else{
           this.presentToast('Opción disponible exclusivamente con la placa.','warning');
         }
     }
-    if(this.action === 'links'){
-      // links
-      if(text.includes('https://radi.pet/links/')){
-          const hash = text.split('pet/links/');
-          this.code = hash[1];
-          this.openModal(CreateLinksPage)
-      }else{
-        alert('Error intenta luego.')
-      }
+  }
 
-    }
+
+  createLinks(){
+    // this.openModal(CreateLinksPage)
+
+
+
+    //   if(text.includes('https://radi.pet/links/')){
+    //       const hash = text.split('pet/links/');
+    //       this.code = hash[1];
+    //   }else{
+    //     alert('Error intenta luego.')
+    //   }
+
   }
 
   async presentToast(message,color) {

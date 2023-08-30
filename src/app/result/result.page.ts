@@ -19,7 +19,10 @@ const hashids = new Hashids('Elradipet10Lt', 6,'ABCEIU1234567890');
 export class ResultPage implements OnInit {
   visits:any = [];
   result:any = [];
+
   code:any;
+  modeRead;
+
   vaccines:any = [];
   grantedCarnet = false;
   grantedHistorial;
@@ -38,7 +41,6 @@ export class ResultPage implements OnInit {
     }
   btnCreate = true;
   goodbehavior = true;
-  type;
 
   allgreen = true;
   cedula = 'a';
@@ -49,12 +51,12 @@ export class ResultPage implements OnInit {
 
     let data = {
       code: this.code,
-      type: this.type
+      modeRead: this.modeRead
     }
-    console.log(data);
     this.api.getPetInfo(data).subscribe(data => {
      this.result = data[0];
      console.log(this.result);
+
      this.petId = hashids.encode(this.result.id_pet);
 
       let dataVisit = {
@@ -67,28 +69,31 @@ export class ResultPage implements OnInit {
         this.get_injections()
       }
 
-
-      this.api.visitsByUser(dataVisit).subscribe(data => {
-        this.visits = data;
-        if(this.visits.length != 0){
-          let differenceHours = moment().diff(moment(this.visits[0].date), 'hours');
-          this.btnCreate = (differenceHours > 24)?true:false;
-        }else{
-          this.btnCreate = true;
-        }
-
-        this.visits.forEach(data => {
-          if(data.report_id){
-            this.goodbehavior = false;
-            return;
+      if(this.result.id_user){
+        this.api.visitsByUser(dataVisit).subscribe(data => {
+          this.visits = data;
+          if(this.visits.length != 0){
+            let differenceHours = moment().diff(moment(this.visits[0].date), 'hours');
+            this.btnCreate = (differenceHours > 24)?true:false;
+          }else{
+            this.btnCreate = true;
           }
-        });
 
-      });
+          this.visits.forEach(data => {
+            if(data.report_id){
+              this.goodbehavior = false;
+              return;
+            }
+          });
+
+        });
+      }
 
       this.load = false;
     },error=>{
       this.result = [];
+      this.load = false;
+
     }
   );
   }
