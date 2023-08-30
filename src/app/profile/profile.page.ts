@@ -26,10 +26,15 @@ export class ProfilePage implements OnInit {
   fb_url;
   ig_url;
   web_url;
+  grantedPayments;
 
   constructor(private api:DataService,
     private navCtrl: NavController,
     private modalctrl:ModalController,private toastController:ToastController) {
+      let granted = localStorage.getItem('granted');
+      this.grantedPayments = granted.includes('payments')
+
+
     this.api.getCompany(localStorage.getItem('id_company')).subscribe(data => {
       this.company = data[0];
 

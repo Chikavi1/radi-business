@@ -94,6 +94,8 @@ grantedRoot;
   }
 
   async qrcodescan(){
+
+
     this.barcodeScanner.scan({disableSuccessBeep: true}).then(barcodeData => {
       if(!barcodeData.cancelled){
         let data = barcodeData.text;

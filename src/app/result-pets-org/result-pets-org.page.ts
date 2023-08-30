@@ -56,16 +56,31 @@ export class ResultPetsOrgPage implements OnInit {
   ngOnInit(){
     this.petId  = hashids.encode(this.id);
 
+    // if(!this.id){
+    //   this.id = has
+    // }
+
     console.log(this.id,this.petId,this.code);
 
     let data = {
-      code: this.petId,
+      code: this.petId?this.petId:this.code,
       type: this.type
     }
 
+    console.log(data);
+
     this.api.getPetInfoOrg(data).subscribe(data => {
+      console.log(data);
+      if(!this.petId){
+        this.petId = hashids.encode(data[0].id);
+        console.log(this.petId);
+      }
+
       this.result = data[0];
-      this.birthdayChange(data[0].birthday)
+
+      if(data[0].birthday){
+        this.birthdayChange(data[0].birthday)
+      }
 
       this.get_injections();
 
@@ -161,7 +176,7 @@ export class ResultPetsOrgPage implements OnInit {
 
 
   get_injections(){
-
+    console.log(this.petId);
     this.api.getVaccines(this.petId).subscribe(data => {
       console.log(data);
       this.vaccines = data;

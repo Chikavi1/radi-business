@@ -76,7 +76,7 @@ export class DataService {
   }
 
   getPetsByOrg(id_org):any{
-    return this.http.get(this.MODE + 'pets/organizations_business/'+id_org);
+    return this.http.get(this.MODE + 'pets/organizationsInAdoptions/'+id_org);
   }
 
   createBusiness(data): any {

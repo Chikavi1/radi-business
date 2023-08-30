@@ -66,7 +66,7 @@
 
     <ion-button style="margin-bottom:4em;" expand="full" color="tertiary"  (click)="share()" shape="round">Compartir Perfil</ion-button>
 
-    <ion-item (click)="billing()">
+    <ion-item (click)="billing()" *ngIf="grantedPayments">
       Configuración de pagos
     </ion-item>
 

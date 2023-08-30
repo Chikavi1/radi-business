@@ -22,11 +22,13 @@ const hashids = new Hashids('Elradipet10Lt', 6,'ABCEIU1234567890');
 export class PetsOrgPage implements OnInit {
   type = 'app';
   code = '214904';
+
   id_org;
   pets:any = [];
   email;
   password;
   name_organization;
+
   constructor(private modalCtrl:ModalController,
     private nfc:NFC,
     private api:DataService,
@@ -35,7 +37,6 @@ export class PetsOrgPage implements OnInit {
 
       this.id_org = localStorage.getItem('id_organization');
       this.name_organization = localStorage.getItem('name_organization');
-      // this.id_org = 1;
       if(this.id_org){
         this.loadPets()
       }
@@ -53,10 +54,8 @@ export class PetsOrgPage implements OnInit {
         email: this.email,
         password: this.password
       }
-      console.log(datos);
 
       this.api.loginOrg(datos).subscribe( data => {
-        console.log(data);
         if(data.token){
           var decoded:any = jwt_decode(data.token);
           localStorage.setItem('id_organization',decoded.id);
@@ -83,11 +82,12 @@ export class PetsOrgPage implements OnInit {
     },2000);
   }
 
-id;
+  id;
 
   seePet(id,code){
     this.id = id;
     this.code = code;
+    this.type = 'app';
     this.openResult()
   }
 
@@ -113,7 +113,7 @@ id;
   }
 
   async scanResult(type){
-    this.type = type;
+    this.type = 'placa';
     this.nfc.enabled().then( () => {
       this.openModal(SelectReadPage);
     }).catch(() => {
@@ -134,7 +134,6 @@ id;
     modal.onDidDismiss().then((data) => {
       if(data['data']){
         const info = data['data'];
-
 
       }
     });
