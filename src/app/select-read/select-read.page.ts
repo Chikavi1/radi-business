@@ -116,7 +116,8 @@ export class SelectReadPage implements OnInit {
 
   async qrcodescan(){
     // let data = 'https://radi.pet/pets/RD39uc98q4';
-    // let data = 'https://radi.pet/pet/214904';
+    // // let data = 'https://radi.pet/pet/214904';
+    // console.log(data,this.action,'qr')
     // this.processData(data,this.action,'qr');
 
 

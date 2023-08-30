@@ -20,7 +20,6 @@ const hashids = new Hashids('Elradipet10Lt', 6,'ABCEIU1234567890');
   styleUrls: ['./pets-org.page.scss'],
 })
 export class PetsOrgPage implements OnInit {
-  type = 'app';
   code = '214904';
 
   id_org;
@@ -85,21 +84,18 @@ export class PetsOrgPage implements OnInit {
   id;
 
   seePet(id,code){
-    this.id = id;
-    this.code = code;
-    this.type = 'app';
-    this.openResult()
+    console.log('app',hashids.encode(id));
+    this.openResult('app',hashids.encode(id));
   }
 
-  async openResult(){
+  async openResult(modeRead,code){
     const modal = await this.modalCtrl.create({
-      component: ResultPetsOrgPage,
+      component: ResultPage,
       breakpoints: [.95,1],
       initialBreakpoint: .95,
       componentProps:{
-        type: this.type,
-        code: this.code,
-        id: this.id
+        modeRead: modeRead,
+        code: code,
       }
     });
     modal.onDidDismiss().then((data) => {
@@ -112,39 +108,36 @@ export class PetsOrgPage implements OnInit {
     return await modal.present();
   }
 
-  async scanResult(type){
-    this.type = 'placa';
+  action;
+  async scanResult(action){
+    this.action = 'visits'; // visits
     this.nfc.enabled().then( () => {
-      this.openModal(SelectReadPage);
+      this.openSelectRead();
     }).catch(() => {
-      this.qrcodescan();
+      this.qrcodescan(this.action);
     });
   }
 
-  async openModal(Page){
+  async openSelectRead(){
     const modal = await this.modalCtrl.create({
-      component: Page,
+      component: SelectReadPage,
       breakpoints: [1],
       initialBreakpoint: 1,
       componentProps:{
-        type: this.type,
-        code: this.code,
+        action: this.action,
       }
+
     });
     modal.onDidDismiss().then((data) => {
-      if(data['data']){
-        const info = data['data'];
-
-      }
     });
     return await modal.present();
   }
 
-  async qrcodescan(){
+  async qrcodescan(action){
     this.barcodeScanner.scan({disableSuccessBeep: true}).then(barcodeData => {
       if(!barcodeData.cancelled){
         let data = barcodeData.text;
-        this.processData(data);
+        this.processData(data,action);
       }
     }).catch(err => {
       this.presentToast('Hubo un error,intenta despues.','danger');
@@ -152,19 +145,21 @@ export class PetsOrgPage implements OnInit {
     });
   }
 
-  processData(text){
+
+
+  processData(text,action){
     let hash;
-
-    if(text.includes('https://radi.pet/pets/')){
-      hash = text.split('pet/pets/');
-      this.type = 'placa'
-    }else{
-      hash = text.split('pet/pet/');
-      this.type =  'app'
+    let modeRead;
+    if(action === 'visits'){
+        if(text.includes('https://radi.pet/pets/')){
+          hash = text.split('pet/pets/');
+          modeRead = 'placa'
+        }else{
+          hash = text.split('pet/pet/');
+          modeRead =  'app'
+        }
+        this.openResult(modeRead, hash[1]);
     }
-    this.code = hash[1];
-    this.openResult();
-
   }
 
 
