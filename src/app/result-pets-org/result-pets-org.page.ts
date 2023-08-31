@@ -31,7 +31,8 @@ export class ResultPetsOrgPage implements OnInit {
 
     }
   code;
-  type;
+  modeRead;
+
   result:any = [];
   load = true;
 
@@ -60,11 +61,9 @@ export class ResultPetsOrgPage implements OnInit {
     //   this.id = has
     // }
 
-    console.log(this.id,this.petId,this.code);
-
     let data = {
       code: this.petId?this.petId:this.code,
-      type: this.type
+      type: this.modeRead
     }
 
     console.log(data);

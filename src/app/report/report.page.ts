@@ -23,12 +23,14 @@ export class ReportPage implements OnInit {
   send(){
     let data = {
       id_visit: this.id,
-      pet_id: this.pet_id,
-      user_id: this.user_id,
+      id_pet: this.pet_id,
+      id_user: this.user_id,
       id_business: localStorage.getItem('id_company'),
       description: this.description,
       status: 1
     }
+
+    console.log(data);
 
     this.api.createReport(data).subscribe(data => {
       console.log(data);

@@ -21,9 +21,9 @@ export class DataService {
 
   constructor(private http: HttpClient){
     if(localStorage.getItem('sandbox')){
-      this.MODE = this.TEST_URL;
+      this.MODE = this.LOCAL_URL;
     }else{
-      this.MODE = this.PRODUCTION_URL;
+      this.MODE = this.LOCAL_URL;
     }
   }
 
@@ -128,6 +128,11 @@ export class DataService {
     return this.http.put(this.MODE + 'eventupdate',JSON.parse(JSON.stringify(data)), this.options);
   }
 
+
+  deleteEvent(data):any{
+    return this.http.post(this.MODE + 'eventdelete',JSON.parse(JSON.stringify(data)), this.options);
+  }
+
   checkLink(data){
     return this.http.post(this.MODE + 'Radilinks',JSON.parse(JSON.stringify(data)), this.options);
   }
@@ -222,8 +227,8 @@ export class DataService {
     return this.http.get(this.MODE+'businessusers/'+id);
   }
 
-  getUsersById(id){
-    return this.http.get(this.MODE+'businessuser/'+id);
+  getUsersById(data){
+    return this.http.post(this.MODE + 'businessuser',JSON.parse(JSON.stringify(data)), this.options);
   }
 
 

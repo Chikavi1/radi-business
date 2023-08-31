@@ -19,7 +19,11 @@ export class UserPage implements OnInit {
 
   ngOnInit() {
 
-    this.api.getUsersById(this.id).subscribe((data:any) => {
+    let data = {
+      id_user: this.id,
+      id_business: localStorage.getItem('id_company')
+    }
+    this.api.getUsersById(data).subscribe((data:any) => {
       console.log(data);
       this.user = data.user[0];
       this.counter = data.count;

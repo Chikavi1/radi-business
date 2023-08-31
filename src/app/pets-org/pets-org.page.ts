@@ -85,17 +85,18 @@ export class PetsOrgPage implements OnInit {
 
   seePet(id,code){
     console.log('app',hashids.encode(id));
-    this.openResult('app',hashids.encode(id));
+    this.openResult('app',code,id);
   }
 
-  async openResult(modeRead,code){
+  async openResult(modeRead,code,id?){
     const modal = await this.modalCtrl.create({
-      component: ResultPage,
+      component: ResultPetsOrgPage,
       breakpoints: [.95,1],
       initialBreakpoint: .95,
       componentProps:{
         modeRead: modeRead,
         code: code,
+        id:id
       }
     });
     modal.onDidDismiss().then((data) => {

@@ -5,7 +5,7 @@ import { PhotoModalPage } from '../photo-modal/photo-modal.page';
 import * as Leaflet from 'leaflet';
 
 import { DataService } from '../services/data.service';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController, ToastController } from '@ionic/angular';
 import * as moment from 'moment';
 declare var L: any;
 
@@ -20,8 +20,8 @@ export class EditEventPage implements OnInit {
   private mapElement: ElementRef;
 
 
-  latitude = 20.71231315882407;
-  longitude = -103.42433816960676;
+  latitude;
+  longitude;
   image;
   name;
   start_date;
@@ -34,7 +34,10 @@ export class EditEventPage implements OnInit {
   map;
 
 
-  constructor(private modalCtrl:ModalController, private api:DataService) { }
+  constructor(private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
+    private toastController:ToastController,
+    private api: DataService) { }
 
   data;
   ngOnInit() {
@@ -63,6 +66,49 @@ export class EditEventPage implements OnInit {
     }
   }
 
+  async presentAlertskip() {
+    const alert = await this.alertCtrl.create({
+      cssClass: 'my-custom-class',
+      header: 'Confirmar',
+      message: '¿Seguro que quieres eliminarlo? Esta acción no se puede revertir',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Si,Eliminar',
+          handler: () => {
+            let data = {
+              id: this.data.id,
+              status: 0
+            }
+            this.api.deleteEvent(data).subscribe(data => {
+              console.log(data);
+              this.presentToast('Se ha eliminado correctamente.','dark');
+              this.modalCtrl.dismiss(1);
+
+            });
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async presentToast(message,color) {
+    const toast = await this.toastController.create({
+      message,
+      color,
+      duration: 2000
+    });
+    toast.present();
+  }
+
   update(){
     let data = {
       id:             this.data.id,
@@ -78,6 +124,7 @@ export class EditEventPage implements OnInit {
       longitude:      this.longitude,
       address:        this.address
       };
+
 
       this.api.updateEvent(data).subscribe(data => {
         if(data.status == 200){
@@ -179,8 +226,8 @@ export class EditEventPage implements OnInit {
         iconSize:     [33, 33], // size of the icon
       });
 
-      this.latitude = 20.71231315882407;
-      this.longitude = -103.42433816960676;
+      // this.latitude = 20.71231315882407;
+      // this.longitude = -103.42433816960676;
 
       this.map = Leaflet.map(this.mapElement.nativeElement,{ zoomControl: false}).setView([this.latitude,this.longitude], 15);
       Leaflet.tileLayer('https://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}&s=Ga', {

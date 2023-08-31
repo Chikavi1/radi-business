@@ -4,6 +4,7 @@
     <div  >
 
       <img (click)="takePhoto()" [src]="image" alt="image">
+      <small>Haz click en la imagen para editarla (requerido) </small>
 
     <p style="margin-top:2em !important;">Nombre del evento</p>
     <ion-input class="new-input"
@@ -40,7 +41,10 @@
     <h1>Dirección del evento </h1>
     <div id="mapId" #leafletmap style="width: 100%;height: 20em;border-radius: 2em !important;">
     </div>
-    <ion-input class="new-input" placeholder="Ingresa dirección" type="text" [(ngModel)]="address"></ion-input>
+    <ion-input class="new-input" style="margin-top: 1em;" placeholder="Ingresa dirección" type="text" [(ngModel)]="address"></ion-input>
+
+    <ion-button color="warning" expand="full" fill="clear" (click)="presentAlertskip()">Eliminar</ion-button>
+
   </div>
 
 </div>

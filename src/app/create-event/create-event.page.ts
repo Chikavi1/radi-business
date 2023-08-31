@@ -180,21 +180,15 @@ address:string = '';
   }
 
    leafletMap(){
-
-    Geolocation.getCurrentPosition({enableHighAccuracy:true}).then((resp) => {
-      this.latitude = resp.coords.latitude;
-      this.longitude = resp.coords.longitude;
-
-
+    let initlat = 20.65822858189279;
+    let initlng = -103.3518831503091
+    this.map = Leaflet.map(this.mapElement.nativeElement,{ zoomControl: false}).setView([initlat,initlng], 15);
     var homeICon = L.icon(
       {
         iconUrl:  '../../../assets/img/logo.png',
         iconSize:     [33, 33], // size of the icon
       });
 
-
-
-      this.map = Leaflet.map(this.mapElement.nativeElement,{ zoomControl: false}).setView([this.latitude,this.longitude], 15);
       Leaflet.tileLayer('https://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}&s=Ga', {
         zoom: 8,
         zoomControl: false,
@@ -204,7 +198,11 @@ address:string = '';
         maxResolution: 39135.75848201024,
         doubleClickZoom: true
         }).addTo(this.map);
-      Leaflet.marker([this.latitude,this.longitude],{draggable: true,icon: homeICon}).on('dragend', e => this.procesar(e) ).addTo(this.map);
+
+
+        Geolocation.getCurrentPosition({enableHighAccuracy:true}).then((resp) => {
+          this.map.panTo(new L.LatLng(resp.coords.latitude,resp.coords.longitude));
+          Leaflet.marker([resp.coords.latitude,resp.coords.longitude],{draggable: true,icon: homeICon}).on('dragend', e => this.procesar(e) ).addTo(this.map);
     });
     }
 
