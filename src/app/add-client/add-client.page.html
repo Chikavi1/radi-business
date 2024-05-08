@@ -8,7 +8,13 @@
     <ion-input class="new-input" placeholder="Ingresa correo" [(ngModel)]="email"  ></ion-input>
     <p>Celular</p>
     <ion-input class="new-input" placeholder="Ingresa número de celular" [(ngModel)]="cellphone"  ></ion-input>
-
+    <p>Género</p>
+    <ion-chip (click)="setGender(1)" [ngClass]="{'selected' : gender == 1 }">
+      Hombre
+    </ion-chip>
+    <ion-chip (click)="setGender(2)" [ngClass]="{'selected' : gender == 2 }">
+      Mujer
+    </ion-chip>
 
   </div>
 

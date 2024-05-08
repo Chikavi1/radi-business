@@ -27,6 +27,10 @@ export class DataService {
     }
   }
 
+  createUser(data):any{
+    return this.http.post(this.MODE + 'business/users/create', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
   getRewards(id):any{
     return this.http.get(this.MODE + 'rewards/company/'+id);
   }
