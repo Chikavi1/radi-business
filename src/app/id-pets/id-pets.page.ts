@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
-import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, Platform, ToastController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
+import { BarcodeFormat, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
+
+
 declare var require: any;
 const Hashids = require('hashids/cjs');
 const hashids = new Hashids('Elradipet10Lt', 6,'ABCEIU1234567890');
@@ -23,8 +25,8 @@ export class IdPetsPage implements OnInit {
   constructor(
     public modalCtrl: ModalController,
     public  dataService:  DataService,
+    private platform:Platform,
     private toastController: ToastController,
-    private barcodeScanner: BarcodeScanner,
     private alertController:AlertController
     ){
     }
@@ -75,10 +77,42 @@ export class IdPetsPage implements OnInit {
     });
   }
 
-  scan(){
+  async scan(){
+    if(this.platform.is('android')){
+      await BarcodeScanner.requestPermissions();
+      const data = await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
+      if (data.available) {
+        const code = await this.startScanner();
+        this.handlerScanner(code[0].displayValue);
+      } else {
+        try {
+          await BarcodeScanner.installGoogleBarcodeScannerModule();
+          const code = await this.startScanner();
+          this.handlerScanner(code[0].displayValue);
+        } catch (e) {
+        }
+      }
+    }else{
+      await BarcodeScanner.requestPermissions();
+      const code = await this.startScanner();
+      this.handlerScanner(code[0].displayValue);
+    }
+  }
 
-    this.barcodeScanner.scan({disableSuccessBeep: true}).then(barcodeData => {
-      let code = barcodeData.text.split('https://radi.pet/pets/')
+  async startScanner() {
+    const { barcodes } = await BarcodeScanner.scan({
+      formats: [BarcodeFormat.QrCode, BarcodeFormat.Ean13]
+    });
+    return barcodes;
+  }
+
+  async requestPermissions(): Promise<boolean> {
+    const { camera } = await BarcodeScanner.requestPermissions();
+    return camera === 'granted' || camera === 'limited';
+  }
+
+  handlerScanner(d){
+      let code = d.split('https://radi.pet/pets/')
       let data = {
         id: hashids.decode(this.id)[0],
         code: code[1]
@@ -96,9 +130,8 @@ export class IdPetsPage implements OnInit {
       },err => {
         this.presentToast('No se puede asociar','warning');
       })
-    }).catch(err => {
-     });
   }
+
 
   async presentToast(message,color) {
     const toast = await this.toastController.create({

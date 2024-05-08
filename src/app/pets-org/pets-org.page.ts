@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
 import { ResultPage } from '../result/result.page';
-import { NFC, Ndef } from '@awesome-cordova-plugins/nfc/ngx';
-import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
+// import { NFC, Ndef } from '@awesome-cordova-plugins/nfc/ngx';
 import { SelectReadPage } from '../select-read/select-read.page';
 import { DataService } from '../services/data.service';
 import { ResultPetsOrgPage } from '../result-pets-org/result-pets-org.page';
@@ -29,10 +28,9 @@ export class PetsOrgPage implements OnInit {
   name_organization;
 
   constructor(private modalCtrl:ModalController,
-    private nfc:NFC,
+    // private nfc:NFC,
     private api:DataService,
-    private toastController:ToastController,
-    private barcodeScanner: BarcodeScanner){
+    private toastController:ToastController){
 
       this.id_org = localStorage.getItem('id_organization');
       this.name_organization = localStorage.getItem('name_organization');
@@ -112,11 +110,11 @@ export class PetsOrgPage implements OnInit {
   action;
   async scanResult(action){
     this.action = 'visits'; // visits
-    this.nfc.enabled().then( () => {
-      this.openSelectRead();
-    }).catch(() => {
+    // this.nfc.enabled().then( () => {
+      // this.openSelectRead();
+    // }).catch(() => {
       this.qrcodescan(this.action);
-    });
+    // });
   }
 
   async openSelectRead(){
@@ -135,15 +133,16 @@ export class PetsOrgPage implements OnInit {
   }
 
   async qrcodescan(action){
-    this.barcodeScanner.scan({disableSuccessBeep: true}).then(barcodeData => {
-      if(!barcodeData.cancelled){
-        let data = barcodeData.text;
-        this.processData(data,action);
-      }
-    }).catch(err => {
-      this.presentToast('Hubo un error,intenta despues.','danger');
-      console.log('Error', err);
-    });
+    // cambio
+    // this.barcodeScanner.scan({disableSuccessBeep: true}).then(barcodeData => {
+    //   if(!barcodeData.cancelled){
+    //     let data = barcodeData.text;
+    //     this.processData(data,action);
+    //   }
+    // }).catch(err => {
+    //   this.presentToast('Hubo un error,intenta despues.','danger');
+    //   console.log('Error', err);
+    // });
   }
 
 

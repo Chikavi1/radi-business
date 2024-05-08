@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { ProfilePage } from '../profile/profile.page';
 import { PromotionPage } from '../promotion/promotion.page';
 import { DataService } from '../services/data.service';
@@ -15,7 +15,9 @@ export class Tab4Page {
   discounts:any = [];
   device;
 
-  constructor(private api:DataService,private modalCtrl:ModalController){
+  constructor(private api:DataService,
+    private navCtrl:NavController,
+    private modalCtrl:ModalController){
     this.device = localStorage.getItem('device');
     this.getData()
   }
@@ -25,6 +27,10 @@ export class Tab4Page {
       this.discounts = data;
     });
   }
+
+  back(){
+    this.navCtrl.back();
+   }
 
  async createPromotion(){
     const modal = await this.modalCtrl.create({

@@ -27,7 +27,8 @@ export class ResultPage implements OnInit {
   grantedCarnet = false;
   grantedHistorial;
   grantedEditPet
-  constructor(private api:DataService,
+  constructor(
+    private api:DataService,
     private alertCtrl:AlertController,
     private toastController:ToastController,
     private modalctrl:ModalController){
@@ -47,6 +48,16 @@ export class ResultPage implements OnInit {
   petId;
   load = true;
 
+  menu = 'pets';
+
+  segmentChange(e){
+    console.log(e.detail.value);
+    if(e.detail.value == 'visits'){
+      if(this.visits.length == 0){
+        this.getVisits();
+      }
+    }
+  }
   ngOnInit(){
 
     let data = {
@@ -59,35 +70,11 @@ export class ResultPage implements OnInit {
 
      this.petId = hashids.encode(this.result.id_pet);
 
-      let dataVisit = {
-        id_user: this.result.id_user,
-        id_pet: this.result.id_pet,
-        id_business: localStorage.getItem('id_company')
-      }
 
       if(this.grantedCarnet){
         this.get_injections()
       }
 
-      if(this.result.id_user){
-        this.api.visitsByUser(dataVisit).subscribe(data => {
-          this.visits = data;
-          if(this.visits.length != 0){
-            let differenceHours = moment().diff(moment(this.visits[0].date), 'hours');
-            this.btnCreate = (differenceHours > 24)?true:false;
-          }else{
-            this.btnCreate = true;
-          }
-
-          this.visits.forEach(data => {
-            if(data.report_id){
-              this.goodbehavior = false;
-              return;
-            }
-          });
-
-        });
-      }
 
       this.load = false;
     },error=>{
@@ -96,6 +83,36 @@ export class ResultPage implements OnInit {
 
     }
   );
+  }
+
+  getVisits(){
+    console.log('get api visits');
+    let dataVisit = {
+      id_user: this.result.id_user,
+      id_pet: this.result.id_pet,
+      id_business: localStorage.getItem('id_company')
+    }
+
+    if(this.result.id_user){
+      this.api.visitsByUser(dataVisit).subscribe(data => {
+        this.visits = data;
+        if(this.visits.length != 0){
+          let differenceHours = moment().diff(moment(this.visits[0].date), 'hours');
+          this.btnCreate = (differenceHours > 24)?true:false;
+        }else{
+          this.btnCreate = true;
+        }
+
+        this.visits.forEach(data => {
+          if(data.report_id){
+            this.goodbehavior = false;
+            return;
+          }
+        });
+
+      });
+    }
+
   }
 
   get_injections(){

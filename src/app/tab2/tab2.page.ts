@@ -21,10 +21,10 @@ export class Tab2Page {
   }
 
   ionViewDidEnter(){
-   if(localStorage.getItem('updateVisits')){
-    this.getInfo();
-    localStorage.removeItem('updateVisits');
-   }
+  //  if(localStorage.getItem('updateVisits')){
+  //   this.getInfo();
+  //   localStorage.removeItem('updateVisits');
+  //  }
   }
 
   getInfo(){

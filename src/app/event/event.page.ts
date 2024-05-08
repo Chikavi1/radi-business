@@ -27,6 +27,9 @@ export class EventPage implements OnInit {
   id;
   hash;
 
+  books(){
+    console.log('hehe');
+  }
 
   ngOnInit(){
     this.hash = this.id;

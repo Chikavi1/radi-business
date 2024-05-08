@@ -1,0 +1,25 @@
+<ion-content >
+  <div style="padding: 1em;">
+
+    <h2>Agregar cliente</h2>
+    <p>Nombre</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="name"  ></ion-input>
+    <p>Correo</p>
+    <ion-input class="new-input" placeholder="Ingresa correo" [(ngModel)]="email"  ></ion-input>
+    <p>Celular</p>
+    <ion-input class="new-input" placeholder="Ingresa número de celular" [(ngModel)]="cellphone"  ></ion-input>
+
+
+  </div>
+
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button color="danger" expand="block" (click)="back()">Volver</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button expand="block" (click)="send()">Agregar cliente</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

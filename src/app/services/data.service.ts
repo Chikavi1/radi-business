@@ -6,7 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class DataService {
 
-  PRODUCTION_URL  = 'https://core.radi.pet/'
+  PRODUCTION_URL  = 'https://p6lde6btg7.execute-api.us-east-1.amazonaws.com/dev/'
   TEST_URL        = 'https://raditest.radi.pet/';
   LOCAL_URL       = 'http://localhost:8080/'
   MODE = this.LOCAL_URL;
@@ -21,10 +21,35 @@ export class DataService {
 
   constructor(private http: HttpClient){
     if(localStorage.getItem('sandbox')){
-      this.MODE = this.TEST_URL;
+      this.MODE = this.LOCAL_URL;
     }else{
       this.MODE = this.PRODUCTION_URL;
     }
+  }
+
+  getRewards(id):any{
+    return this.http.get(this.MODE + 'rewards/company/'+id);
+  }
+
+  createRewards(data):any{
+    return this.http.post(this.MODE + 'rewards/create', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+
+  createRewardsLogs(data):any{
+    return this.http.post(this.MODE + 'rewards/logs/create', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+
+
+  getInfoPlaca(data):any{
+    return this.http.post(this.MODE + 'identifications_info/', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+
+
+  placaUpdate(data):any{
+    return this.http.post(this.MODE + 'identifications/admin', JSON.parse(JSON.stringify(data)), this.options);
   }
 
   removeId(data):any{
@@ -68,11 +93,11 @@ export class DataService {
 
 
   checkUserPay(data):any{
-    return this.http.post(this.MODE + 'checkuserpay',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'business/check-user-payment',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   pay(data):any{
-    return this.http.post(this.MODE + 'userpay',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'business/user-payment',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   getPetsByOrg(id_org):any{
@@ -92,15 +117,15 @@ export class DataService {
   }
 
   getVaccines(id_pet){
-    return this.http.get(this.MODE+'get_vaccines/'+id_pet);
+    return this.http.get(this.MODE+'vaccines/'+id_pet);
   }
 
   createVaccine(data){
-    return this.http.post(this.MODE + 'create_vaccine',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'vaccine/create',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   updateVaccines(data){
-    return this.http.put(this.MODE + 'update_vaccine',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.put(this.MODE + 'vaccine/update',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   deleteVaccine(data){
@@ -108,41 +133,41 @@ export class DataService {
   }
 
   changePassword(data){
-    return this.http.put(this.MODE + 'business_password',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.put(this.MODE + 'business/event/delete',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   getEventsByBusiness(id_company){
-    return this.http.get(this.MODE+'radievents/'+id_company);
+    return this.http.get(this.MODE+'business/events/'+id_company);
   }
 
   getEvent(id):any{
-    return this.http.get(this.MODE+'radievent/'+id);
+    return this.http.get(this.MODE+'business/event/'+id);
   }
 
   createEvent(data):any{
-    return this.http.post(this.MODE + 'eventcreate',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'business/event/create',JSON.parse(JSON.stringify(data)), this.options);
 
   }
 
   updateEvent(data):any{
-    return this.http.put(this.MODE + 'eventupdate',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.put(this.MODE + 'business/event/update',JSON.parse(JSON.stringify(data)), this.options);
   }
 
 
   deleteEvent(data):any{
-    return this.http.post(this.MODE + 'eventdelete',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'business/event/delete',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   checkLink(data){
-    return this.http.post(this.MODE + 'Radilinks',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'business/links',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   createLinks(data):any{
-    return this.http.post(this.MODE + 'links/create',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'business/links/create',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   updateLinks(data):any{
-    return this.http.put(this.MODE + 'links/update',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.put(this.MODE + 'business/links/update',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   checkStatus(data){
@@ -155,15 +180,15 @@ export class DataService {
   }
 
   createReport(data){
-    return this.http.post(this.MODE + 'reportsusersradi',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'business/reports-users',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   visitsByUser(data){
-    return this.http.post(this.MODE + 'radivisitByUser',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'business/visits-by-user',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   getAchiviments(type){
-    return this.http.get(this.MODE+'listachivements/'+type);
+    return this.http.get(this.MODE+'business/achievements/list/'+type);
   }
 
 
@@ -180,7 +205,7 @@ export class DataService {
   }
 
   updateVisit(data){
-    return this.http.put(this.MODE + 'radivisits/update',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.put(this.MODE + 'business/visits/update',JSON.parse(JSON.stringify(data)), this.options);
   }
 
    getCompany(id){
@@ -192,11 +217,11 @@ export class DataService {
    }
 
   getPetInfo(data){
-    return this.http.post(this.MODE + 'radi-pet-info',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'pets/qr-scan-visit',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   getPetInfoOrg(data){
-    return this.http.post(this.MODE + 'radi-pet-info-org',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'pets/qr-scan-visit-org',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   getPetVaccines(){
@@ -208,32 +233,32 @@ export class DataService {
   }
 
   createVisit(data){
-    return this.http.post(this.MODE + 'radivisits/create',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'business/visits/create',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   getRecordsByCompany(id){
-    return this.http.get(this.MODE+'radivisits/'+id);
+    return this.http.get(this.MODE+'business/visits/'+id);
   }
 
   getRecordsById(id){
-    return this.http.get(this.MODE+'radivisit/'+id);
+    return this.http.get(this.MODE+'business/visit/'+id);
   }
 
   createAchivement(data){
-    return this.http.post(this.MODE + 'radiachiviments',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'business/achievements',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   getUsersByCompany(id){
-    return this.http.get(this.MODE+'businessusers/'+id);
+    return this.http.get(this.MODE+'business/users/'+id);
   }
 
   getUsersById(data){
-    return this.http.post(this.MODE + 'businessuser',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'business/user',JSON.parse(JSON.stringify(data)), this.options);
   }
 
 
   createPromotion(data){
-    return this.http.post(this.MODE + 'discount/create',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'discounts/create',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   updatePromotion(data){
@@ -241,7 +266,7 @@ export class DataService {
   }
 
   getStats(id){
-    return this.http.get(this.MODE+'businessstats/'+id);
+    return this.http.get(this.MODE+'business/stats/'+id);
   }
 
 

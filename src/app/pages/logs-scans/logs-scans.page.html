@@ -1,0 +1,105 @@
+<ion-content>
+
+  <div *ngIf="step == 1">
+    <div *ngIf="rewards.length == 0">
+      <h2 style="padding: 1em;text-align: center;">No tienes recompensas creadas</h2>
+    </div>
+    <ion-button style="padding:1em;" expand="block"   color="dark"(click)="createModal()">Crear Recompensa</ion-button>
+
+
+    <div *ngIf="rewards.length != 0">
+      <ion-card *ngFor="let item of rewards" style="padding: 1em;">
+        <ion-icon>edit</ion-icon>
+        <p>Descripción del premio</p>
+        <p>{{item.description}}</p>
+        <p>Premio cada: <br> {{item.count}} compras</p>
+        <p>Finaliza: <br> {{item.finish_date}}</p>
+        <p>Estatus: <br> {{item.status}}</p>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" (click)="showUser()" color="dark">Escanear</ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button  expand="block" color="warning">
+              Editar
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </div>
+
+  </div>
+
+  <div *ngIf="step == 2">
+    <ion-row style="margin-top:2em;">
+      <ion-col size="3" offset="1">
+        <img style="border-radius: 50%;" src="https://luismigueloficial.com/themes/lm/assets/images/2000_s_mov.jpg" alt="">
+      </ion-col>
+      <ion-col size="7">
+        <small>Cliente</small>
+        <h2 style="margin-top: -.1em;">Luis Rojas</h2>
+        <p>Usuario desde 20/Nov/2020</p>
+      </ion-col>
+    </ion-row>
+
+    <h2 style="text-align: center;margin-top: 2em;">Compras</h2>
+    <ion-row>
+      <ion-col size="2" offset="1">
+        <!-- <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
+        </div> -->
+        <img src="../../../assets/img/logo.png" alt="">
+      </ion-col>
+      <ion-col size="2">
+        <!-- <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
+        </div> -->
+        <img src="../../../assets/img/logo.png" alt="">
+
+      </ion-col>
+      <ion-col size="2">
+        <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
+        </div>
+      </ion-col>
+      <ion-col size="2">
+        <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
+        </div>
+      </ion-col>
+      <ion-col size="2">
+        <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="2" offset="1">
+        <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
+        </div>
+      </ion-col>
+      <ion-col size="2">
+        <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
+        </div>
+      </ion-col>
+      <ion-col size="2">
+        <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
+        </div>
+      </ion-col>
+      <ion-col size="2">
+        <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
+        </div>
+      </ion-col>
+      <ion-col size="2">
+        <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-checkbox labelPlacement="end">Agregar visita</ion-checkbox>
+
+    <ion-button expand="block" color="dark" style="padding: 1em;" (click)="scan(1)">Agregar estampa</ion-button>
+  </div>
+
+
+
+
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="block" color="danger" (click)="back()">Volver</ion-button>
+</ion-footer>

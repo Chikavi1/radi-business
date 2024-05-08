@@ -3,29 +3,72 @@
   <app-explore-container></app-explore-container>
   <ion-row>
     <ion-col [size]="device=='tablet'?6:12" [offset]="device=='tablet'?3:0">
-      <div style="padding:1em;margin-top:6em;">
 
-        <h1>Bienvenido</h1>
-        <p>
+        <!-- <h1>Bienvenido</h1> -->
+        <!-- <p>
           Selecciona una opción: puedes escanear el código QR de la placa, el código QR del perfil de la mascota o, si tu dispositivo cuenta con lector, también puedes leer el NFC de la placa.</p>
-        <p>Es importante destacar que tanto los puntos como los pagos solo se generan a través de la placa.</p>
-        <div style="margin-top: 2em;">
-          <ion-row>
-            <ion-col>
-              <ion-button expand="full" color="tertiary" shape="round" (click)="scanResult('visits')"><ion-icon name="add-outline"> </ion-icon> Visita</ion-button>
-            </ion-col>
-            <ion-col *ngIf="grantedPayments">
-              <ion-button expand="full" color="success" shape="round" (click)="scanResult('payments')"><ion-icon name="wallet-outline"> </ion-icon> &nbsp; Cobrar</ion-button>
-            </ion-col>
-          </ion-row>
+        <p>Es importante destacar que tanto los puntos como los pagos solo se generan a través de la placa.</p> -->
+        <!-- <div style="margin-top: 2em;"> -->
+
+
 
           <!-- <ion-button *ngIf="grantedLinks"  expand="full"  shape="round"  color="warning" (click)="createLinks()">Generar links</ion-button> -->
           <!-- <ion-button *ngIf="grantedPayments" expand="full" fill="clear" color="success" (click)="scan(2)">Generar cobro</ion-button>
           <ion-button *ngIf="grantedRoot"  expand="full" fill="clear" color="danger" (click)="createBusiness()">Crear negocio</ion-button> -->
 
-        </div>
+        <!-- </div> -->
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Menú</ion-card-title>
+          <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            <ion-item lines="none" (click)="goTo('/tab3')">
 
-      </div>
+              <ion-label>Listado de Clientes</ion-label>
+            </ion-item>
+
+            <ion-item lines="none" (click)="goTo('/logs-scans')">
+
+              <ion-label>Recompensas</ion-label>
+            </ion-item>
+
+            <ion-item lines="none" (click)="goTo('/tab4')">
+
+              <ion-label>Promociones</ion-label>
+            </ion-item>
+
+            <ion-item lines="none" (click)="openPayments()" *ngIf="grantedPayments">
+
+              <ion-label>Cobrar</ion-label>
+            </ion-item>
+
+            <ion-item lines="none" (click)="goTo('/tab5')">
+
+              <ion-label>Estadisticas</ion-label>
+            </ion-item>
+
+            <ion-item lines="none" *ngIf="grantedLinks" (click)="checkPlacas()" >
+
+              <ion-label>Modificar placas</ion-label>
+            </ion-item>
+
+
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+      <div style="padding:1em;margin-top:1em;">
+      <ion-button expand="full" color="dark" shape="round" (click)="scanResult('visits')">Leer Placa</ion-button>
+    </div>
+
     </ion-col>
   </ion-row>
+
+  <ion-fab  (click)="presentActionSheet()" slot="fixed" color="dark" vertical="bottom" horizontal="end" >
+    <ion-fab-button color="dark" >
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
 </ion-content>

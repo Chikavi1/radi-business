@@ -1,0 +1,22 @@
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense" style="margin-top: 2em;">
+    <ion-toolbar>
+      <ion-title size="large">Reservaciones</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div style="padding:1em;">
+    <ion-button expand="full" shape="round">Escanear Reservación</ion-button>
+  </div>
+
+  <ion-item *ngFor="let i of [1,1,1,1,1,1,1,1,1,1,1,1,1,1]">
+    <ion-avatar aria-hidden="true" slot="start">
+      <img alt="" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+    </ion-avatar>
+    <ion-label>
+      <h3 style="font-weight: bold;">Radi</h3>
+      <p> Luis Rojas</p>
+     </ion-label>
+  </ion-item>
+
+</ion-content>

@@ -1,0 +1,174 @@
+<ion-content [fullscreen]="true">
+<div *ngIf="step == 1">
+  <h2 style="font-size: 1.4em;">Iniciar Campaña</h2>
+  <ion-list>
+    <ion-item>
+      <ion-select aria-label="Fruit" placeholder="Selecciona el tipo de campaña" [multiple]="true">
+        <ion-select-option value="vaccine">Vacunación</ion-select-option>
+        <ion-select-option value="sterilized">Esterilización</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-input placeholder="Encargado">
+
+    </ion-input>
+    <ion-input placeholder="Cedula">
+    </ion-input>
+    <ion-input placeholder="Dirección">
+
+    </ion-input>
+    <ion-button expand="block" color="success"  (click)="next()">
+      Iniciar
+    </ion-button>
+  </ion-list>
+</div>
+
+<div *ngIf="step == 2">
+
+  <img src="https://i.ibb.co/cF6qDcQ/tabla-fondo-radi-pets.png" alt="">
+  <div style="padding:1em;">
+    <ion-card style="padding:1em;">
+
+      <h2>Campaña de vacunación 2023</h2>
+      <p>Promovida por nissan mexico</p>
+      <p>28 de octubre del 2023</p>
+    </ion-card>
+    <ion-card style="padding:1em;">
+      <h2>Especialista encargado</h2>
+      <h3>MVZ. DR Ruben Garcia</h3>
+      <h3>Cédula: 203024234</h3>
+    </ion-card>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button color="success" expand="block"  (click)="next()">
+          Escanear QR
+        </ion-button>
+      </ion-col>
+      <ion-col  size="6" >
+            <ion-button expand="block" >
+              Generar Folio
+            </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-button color="danger" fill="clear" expand="block">Finalizar</ion-button>
+  </div>
+</div>
+
+  <div *ngIf="step == 3" style="padding:1em">
+
+    <h2>Selecciona una opción</h2>
+    <ion-row>
+      <ion-col size="11">
+        <h5>Vacunas</h5>
+      </ion-col>
+      <ion-col size="1">
+       <h5>
+         <ion-checkbox justify="end" checked="true"></ion-checkbox>
+        </h5>
+      </ion-col>
+    </ion-row>
+
+    <swiper-container
+    style="width: 100% !important;height: 95%;"
+    slides-per-view="2.12"
+    [loop]="true"
+    [pagination]="true"
+    >
+      <swiper-slide style="width: 100%;">
+        <ion-card style="width: 98%;padding:2em 0em;text-align: center;">
+          <p>Agregar Vacuna</p>
+        </ion-card>
+      </swiper-slide>
+
+      <swiper-slide style="width: 100%;">
+        <ion-card style="width: 98%;padding:2em 0em;text-align: center;">
+          <p>Parvovirus</p>
+        </ion-card>
+      </swiper-slide>
+      <swiper-slide style="width: 100%;">
+        <ion-card style="width: 98%;padding:2em 0em;text-align: center;">
+          <p>Quintople</p>
+        </ion-card>
+      </swiper-slide>
+      <swiper-slide style="width: 100%;">
+        <ion-card style="width: 98%;padding:2em 0em;text-align: center;">
+          <p>Sextuple</p>
+        </ion-card>
+      </swiper-slide>
+      <swiper-slide style="width: 100%;">
+        <ion-card style="width: 98%;padding:2em 0em;text-align: center;">
+          <p>Rabia</p>
+        </ion-card>
+      </swiper-slide>
+    </swiper-container>
+    <ion-row>
+      <ion-col size="11">
+        <h5>Esterilización</h5>
+      </ion-col>
+      <ion-col size="1">
+       <h5>
+         <ion-checkbox justify="end"></ion-checkbox>
+        </h5>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="11">
+        <h5>Desparasitación</h5>
+      </ion-col>
+      <ion-col size="1">
+       <h5>
+         <ion-checkbox justify="end" checked="true"></ion-checkbox>
+        </h5>
+      </ion-col>
+    </ion-row>
+
+    <swiper-container
+    style="width: 100% !important;height: 95%;padding:.3em"
+    slides-per-view="2"
+    [loop]="true"
+    [pagination]="true"
+    >
+      <swiper-slide style="width: 100%; ">
+        <ion-card style="width: 98%;text-align: center;">
+          <p>Interna</p>
+        </ion-card>
+      </swiper-slide>
+      <swiper-slide style="width: 100%;margin-left:1em;">
+        <ion-card style="width: 98%;text-align: center;">
+          <p>Externa</p>
+        </ion-card>
+      </swiper-slide>
+
+    </swiper-container>
+
+
+    <ion-card style="padding:1em;">
+      <h2>Información</h2>
+      <ion-input placeholder="Propietario" class="new-input"></ion-input>
+      <ion-input placeholder="Radi" class="new-input"  style="margin-top: 1em;"></ion-input>
+    </ion-card>
+
+
+    <ion-card style="padding:1em;">
+      <ion-row>
+        <ion-col>
+          <h3>Domicilio de la aplicación</h3>
+        </ion-col>
+        <ion-col>
+
+        </ion-col>
+      </ion-row>
+      <p>San mateo evangelista 4167-1, lomas de san miguel, tlaquepaque,jalisco.</p>
+    </ion-card>
+
+    <ion-button color="success" expand="block">
+      Crear
+    </ion-button>
+
+
+  </div>
+
+
+</ion-content>

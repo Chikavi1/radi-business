@@ -19,7 +19,7 @@
     <p style="margin-top:2em !important;">Nombre del evento</p>
     <ion-input class="new-input"
     placeholder="Ingresa nombre" type="text" [(ngModel)]="name"  ></ion-input>
-    <p style="margin-top:2em !important;">Fecha Inicia</p>
+    <p style="margin-top:2em !important;">Fecha de inicio</p>
 
     <ion-datetime-button datetime="datetime" ></ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
@@ -28,7 +28,7 @@
           </ng-template>
         </ion-modal>
 
-        <p style="margin-top:1em;">Fecha final</p>
+        <p style="margin-top:1em;">Fecha de finalización</p>
 
         <ion-datetime-button datetime="datetime2" ></ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
@@ -39,7 +39,7 @@
 
     <p style="margin-top:1em;">Costo</p>
     <ion-input class="new-input" (keypress)="numberOnlyValidation($event)"
-    placeholder="Ingresa monto" type="number" [(ngModel)]="price"  ></ion-input>
+    placeholder="Ingresa monto" type="number" [(ngModel)]="price" value="0" ></ion-input>
     <p>* si no tiene costo puedes dejarlo en "0".</p>
     <p style="margin-top:1em;">URL</p>
     <ion-input class="new-input"

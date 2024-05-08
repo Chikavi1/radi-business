@@ -1,0 +1,40 @@
+<ion-content>
+  <div style="padding:1em;">
+    <p>Descripción de la Recompensa</p>
+    <ion-textarea class="new-input" rows="10"  [(ngModel)]="description">
+    </ion-textarea>
+    <p>Cantidad de compras</p>
+    <ion-select  [(ngModel)]="count" class="new-input" style="width: 100%;" aria-label="Selecciona una opción">
+      <ion-select-option value="5">5 veces</ion-select-option>
+      <ion-select-option value="10">10 veces</ion-select-option>
+    </ion-select>
+    <p>Fecha de finalización</p>
+    <ion-datetime-button datetime="datetime2" ></ion-datetime-button>
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime presentation="date" [min]="today" [max]="max"  id="datetime2" [(ngModel)]="finish_date"></ion-datetime>
+      </ng-template>
+    </ion-modal>
+  </div>
+
+</ion-content>
+
+
+<ion-footer>
+
+  <ion-row>
+    <ion-col>
+      <ion-button fill="clear" color="danger" expand="full"  (click)="back()">
+        Regresar
+      </ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button  color="success" expand="full" (click)="create()">
+        Crear
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+
+</ion-footer>
+

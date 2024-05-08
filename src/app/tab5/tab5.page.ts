@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { ProfilePage } from '../profile/profile.page';
 import Chart from 'chart.js/auto';
 import { DataService } from '../services/data.service';
@@ -21,7 +21,7 @@ export class Tab5Page implements AfterViewInit{
   barChart: any;
 
 
-  counter;
+  counter = 0;
   income;
   dogcounter;
   catscounter;
@@ -38,11 +38,15 @@ export class Tab5Page implements AfterViewInit{
   hours ;
   device;
 
-  constructor(private api:DataService,private modalCtrl:ModalController){
+  constructor(private api:DataService,private navCtrl:NavController,private modalCtrl:ModalController){
     this.device = localStorage.getItem('device');
 
 
   }
+
+  back(){
+    this.navCtrl.back();
+   }
 
 
   doRefresh(event) {

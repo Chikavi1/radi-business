@@ -12,140 +12,153 @@
         </h1>
       </div>
 
-      <div style="margin-top: -5em">
-          <ion-card *ngIf="grantedCarnet" style="padding:1em;" >
-            <h1 style="text-align: center;">Carnet Digital de {{result.name}}</h1>
-            <div *ngIf="vaccines.length != 0">
+      <ion-segment mode="md" (ionChange)="segmentChange($event)"  style="margin-top: 3em;" [(ngModel)]="menu" [scrollable]="true">
+        <ion-segment-button value="pets">
+         Mascota
+        </ion-segment-button>
+        <ion-segment-button value="user" *ngIf="!result.org_name">
+         Dueño
+        </ion-segment-button>
+        <ion-segment-button value="visits">
+          Visitas
+        </ion-segment-button>
+      </ion-segment>
 
-              <div *ngIf="allgreen">
-                <h4 style="text-align: center;color:#41cb7d"><ion-icon name="shield-checkmark-outline"></ion-icon></h4>
-                <h4 style="text-align: center;color:#41cb7d">Vacunas verificadas</h4>
-                </div>
 
-                <div *ngIf="!allgreen" style="text-align: center !important;">
-                  <h4 style="text-align: center;color: #e46d23;">
-                    <ion-icon  name="alert-circle-outline"></ion-icon>
-                  </h4>
-                <h4 style="text-align: center;color:#e46d23">Atención</h4>
-                <p  style="text-align: center;">Corrobora la información de las vacunas</p>
-                <p style="padding: 1em;">Desliza a la izquierda para verificar la vacuna o desliza a la derecha para eliminarla</p>
+      <div *ngIf="menu == 'pets'">
+        <ion-card style="padding:1em">
+          <h3>Información de la mascota</h3>
+          <ion-row>
+            <ion-col size="4">
+              <img [src]="result.photo" style="border-radius:50%;" alt="pet image">
+            </ion-col>
+            <ion-col size="8">
+              <p style="font-weight: bold;" class="capital">{{result.name}}</p>
+              <p *ngIf="result.size == 'mn'">Mini</p>
+              <p *ngIf="result.size == 'sm'">Pequeño</p>
+              <p *ngIf="result.size == 'md'">Mediano</p>
+              <p *ngIf="result.size == 'lg'">Grande</p>
+              <p *ngIf="result.size == 'xl'">Extra Grande</p>
+              <p *ngIf="result.gender == 1">Macho</p>
+              <p *ngIf="result.gender == 2">Hembra</p>
+              <p style="color:green;" *ngIf="result.sterelized">Esterilizado</p>
+            </ion-col>
+          </ion-row>
+          <p style="margin-top: 2em;"class="capital"> {{result.description}} </p>
+          <div *ngIf="grantedHistorial">
+            <p style="margin-top: 2em;"> {{result.chronic_disease}} </p>
+          </div>
+
+          <ion-button *ngIf="grantedEditPet" color="dark" (click)="updatePet()" shape="round" expand="full">Modificar datos</ion-button>
+
+        </ion-card>
+
+        <ion-card  style="padding:1em" *ngIf="result.org_name">
+          <img style="width: 5em;height: 5em;border-radius: 50%;" [src]="result.org_photo" alt="">
+          <h2 style="font-weight: bold;color:#41cb7d;">¡Mascota en adopción!</h2>
+          <p>Mascota verificada por <span style="font-weight: bold;">Radi Org</span>, se encuentra en adopción por parte de <span style="font-weight: bold;">{{result.org_name}}</span>.</p>
+        </ion-card>
+
+        <ion-card *ngIf="grantedCarnet" style="padding:1em;" >
+          <h1 style="text-align: center;">Carnet Digital de {{result.name}}</h1>
+          <div *ngIf="vaccines.length != 0">
+
+            <div *ngIf="allgreen">
+              <h4 style="text-align: center;color:#41cb7d"><ion-icon name="shield-checkmark-outline"></ion-icon></h4>
+              <h4 style="text-align: center;color:#41cb7d">Vacunas verificadas</h4>
               </div>
 
-                <ion-item-sliding  *ngFor="let item of vaccines;let i = index">
-                  <ion-item-options side="start" *ngIf="item.status == 1">
-                    <ion-item-option color="primary" (click)="updateInjection(item.id,i,1)">Verificar</ion-item-option>
-                  </ion-item-options>
-
-                  <ion-item-options side="end" >
-                    <ion-item-option color="danger" (click)="aresuredelete(item.id,i,1)">Eliminar</ion-item-option>
-                  </ion-item-options>
-
-                  <ion-item style="background-color: transparent;" >
-                    <ion-icon *ngIf="item.status == 2" style="color: #41cb7d;" slot="start" name="checkmark-circle-outline"></ion-icon>
-                    <ion-icon *ngIf="item.status == 1" style="color: #e46d23;" slot="start" name="alert-circle-outline"></ion-icon>
-                    <ion-label>
-                      <h3 class="capital">{{item.name}}</h3>
-                      <p>{{item.date | date:'dd/MM/Y'}}</p>
-                      <!-- <p>Verificado por Veterinaria Paulo</p> -->
-                    </ion-label>
-                  </ion-item>
-                </ion-item-sliding>
-
-              </div>
-
-
-            <div *ngIf="vaccines.length == 0">
-              <p class="text-center">{{result.name}} no cuenta con sus vacunas</p>
+              <div *ngIf="!allgreen" style="text-align: center !important;">
+                <h4 style="text-align: center;color: #e46d23;">
+                  <ion-icon  name="alert-circle-outline"></ion-icon>
+                </h4>
+              <h4 style="text-align: center;color:#e46d23">Atención</h4>
+              <p  style="text-align: center;">Corrobora la información de las vacunas</p>
+              <p style="padding: 1em;">Desliza a la izquierda para verificar la vacuna o desliza a la derecha para eliminarla</p>
             </div>
 
-            <div style="padding:0em 1em">
-              <ion-button color="tertiary" (click)="createVaccine('vaccine')" shape="round" expand="full">Agregar vacuna</ion-button>
+              <ion-item-sliding  *ngFor="let item of vaccines;let i = index">
+                <ion-item-options side="start" *ngIf="item.status == 1">
+                  <ion-item-option color="dark" (click)="updateInjection(item.id,i,1)">Verificar</ion-item-option>
+                </ion-item-options>
+
+                <ion-item-options side="end" >
+                  <ion-item-option color="danger" (click)="aresuredelete(item.id,i,1)">Eliminar</ion-item-option>
+                </ion-item-options>
+
+                <ion-item style="background-color: transparent;" >
+                  <ion-icon *ngIf="item.status == 2" style="color: #41cb7d;" slot="start" name="checkmark-circle-outline"></ion-icon>
+                  <ion-icon *ngIf="item.status == 1" style="color: #e46d23;" slot="start" name="alert-circle-outline"></ion-icon>
+                  <ion-label>
+                    <h3 class="capital">{{item.name}}</h3>
+                    <p>{{item.date | date:'dd/MM/Y'}}</p>
+                    <!-- <p>Verificado por Veterinaria Paulo</p> -->
+                  </ion-label>
+                </ion-item>
+              </ion-item-sliding>
+
             </div>
 
-          </ion-card>
 
-      <ion-card  style="padding:1em" *ngIf="result.org_name">
-        <img style="width: 5em;height: 5em;border-radius: 50%;" [src]="result.org_photo" alt="">
-        <h2 style="font-weight: bold;color:#41cb7d;">¡Mascota en adopción!</h2>
-        <p>Mascota verificada por <span style="font-weight: bold;">Radi Org</span>, se encuentra en adopción por parte de <span style="font-weight: bold;">{{result.org_name}}</span>.</p>
-      </ion-card>
+          <div *ngIf="vaccines.length == 0">
+            <p class="text-center">{{result.name}} no cuenta con sus vacunas</p>
+          </div>
 
-      <ion-card style="padding:1em">
-        <h3>Información de la mascota</h3>
-        <ion-row>
-          <ion-col size="5">
-            <img [src]="result.photo" style="border-radius:.75em;margin-top:1.5em;" alt="pet image">
-          </ion-col>
-          <ion-col size="6">
-            <p style="font-weight: bold;">{{result.name}}</p>
-            <p *ngIf="result.size == 'mn'">Mini</p>
-            <p *ngIf="result.size == 'sm'">Pequeño</p>
-            <p *ngIf="result.size == 'md'">Mediano</p>
-            <p *ngIf="result.size == 'lg'">Grande</p>
-            <p *ngIf="result.size == 'xl'">Extra Grande</p>
-            <p *ngIf="result.gender == 1">Macho</p>
-            <p *ngIf="result.gender == 2">Hembra</p>
-            <p style="color:green;" *ngIf="result.sterelized">Esterilizado</p>
-          </ion-col>
-        </ion-row>
-        <p style="margin-top: 2em;"> {{result.description}} </p>
-        <div *ngIf="grantedHistorial">
-          <p style="margin-top: 2em;"> {{result.chronic_disease}} </p>
-        </div>
+          <div style="padding:0em 1em">
+            <ion-button color="dark" (click)="createVaccine('vaccine')" shape="round" expand="full">Agregar vacuna</ion-button>
+          </div>
 
-        <ion-button *ngIf="grantedEditPet" color="warning" (click)="updatePet()" shape="round" expand="full">Modificar datos</ion-button>
-
-      </ion-card>
+        </ion-card>
 
 
-
-
-      <ion-card style="padding:1em" *ngIf="result.user_name">
-        <h3>Información del dueño</h3>
-        <ion-row>
-          <ion-col size="4">
-            <img style="width: 5em;height: 5em;border-radius: 50%;margin-top:1.5em;margin-left: 1em;" [src]="result.user_photo" alt="image user">
-          </ion-col>
-          <ion-col size="7">
-            <p style="font-size: 1.3em;font-weight: bold;">{{result.user_name}}</p>
-            <p style="color:green;"  *ngIf="result.user_verified">Verificado por la plataforma</p>
-            <p>Usuario desde {{result.user_created | date:'dd/MM/yyyy'}}</p>
-          </ion-col>
-        </ion-row>
-      </ion-card>
-
-
-      <ion-card style="padding:1em;" *ngIf="result.user_name">
-        <h3 class="text-center">Visitas</h3>
-
-        <div *ngIf="visits.length != 0">
-          <ion-item *ngFor="let item of visits" style="background-color: transparent;" button detail="true" detail-icon="caret-forward-outline">
-            <ion-label (click)="History(item.id)">
-              <h3>{{item.description}}</h3>
-              <p>{{item.date| date:'dd/MM/yyyy'}}</p>
-            </ion-label>
-          </ion-item>
-        </div>
-
-        <div *ngIf="visits.length == 0">
-          <h2 style="text-align: center;">Primera visita con ustedes</h2>
-        </div>
-
-        <ion-button *ngIf="btnCreate" (click)="addVisits()" shape="round" color="success" expand="full">
-          Agregar Visita
-        </ion-button>
-      </ion-card>
-
-
-      <ion-card style="padding:1em;" *ngIf="result.user_name">
-        <h3 class="text-center" style="color:#41cb7d" *ngIf="goodbehavior">No cuenta con ningún reporte</h3>
-        <h3 class="text-center" style="color:#e48f48" *ngIf="!goodbehavior">Cuenta con reporte</h3>
-      </ion-card>
-
-      <ion-card style="padding: 1em;" *ngIf="result.user_name">
-        <p>Para proteger la Información de nuestros usuarios, se le enviará una notificacion al usuario que se esta revisando su historial.</p>
-      </ion-card>
       </div>
+
+      <div *ngIf="menu == 'user'">
+        <ion-card style="padding:1em" *ngIf="result.user_name">
+          <h3>Información del dueño</h3>
+          <ion-row>
+            <ion-col size="4">
+              <img style="width: 5em;height: 5em;border-radius: 50%;margin-top:1.5em;margin-left: 1em;" [src]="result.user_photo" alt="image user">
+            </ion-col>
+            <ion-col size="7">
+              <p style="font-size: 1.3em;font-weight: bold;">{{result.user_name}}</p>
+              <p style="color:green;"  *ngIf="result.user_verified">Verificado por la plataforma</p>
+              <p>Usuario desde {{result.user_created | date:'dd/MM/yyyy'}}</p>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+        <ion-card style="padding: 1em;" *ngIf="result.user_name">
+          <p>Para proteger la Información de nuestros usuarios, se le enviará una notificacion al usuario que se esta revisando su historial.</p>
+        </ion-card>
+        <ion-card style="padding:1em;" *ngIf="result.user_name">
+          <h3 class="text-center" style="color:#41cb7d" *ngIf="goodbehavior">No cuenta con ningún reporte</h3>
+          <h3 class="text-center" style="color:#e48f48" *ngIf="!goodbehavior">Cuenta con reporte</h3>
+        </ion-card>
+      </div>
+
+      <div *ngIf="menu == 'visits'">
+        <ion-card style="padding:1em;" *ngIf="result.user_name">
+          <h3 class="text-center">Visitas</h3>
+
+          <div *ngIf="visits.length != 0">
+            <ion-item *ngFor="let item of visits" style="background-color: transparent;" button detail="true" detail-icon="caret-forward-outline">
+              <ion-label (click)="History(item.id)">
+                <h3>{{item.description}}</h3>
+                <p>{{item.date| date:'dd/MM/yyyy'}}</p>
+              </ion-label>
+            </ion-item>
+          </div>
+
+          <div *ngIf="visits.length == 0">
+            <h2 style="text-align: center;">Primera visita con ustedes</h2>
+          </div>
+
+          <ion-button *ngIf="btnCreate" (click)="addVisits()" shape="round" color="success" expand="full">
+            Agregar Visita
+          </ion-button>
+        </ion-card>
+      </div>
+
     </div>
 
     <div *ngIf="result.length == 0">

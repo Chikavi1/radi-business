@@ -6,14 +6,13 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 import { HttpClientModule,HttpClient } from '@angular/common/http';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { registerLocaleData } from '@angular/common';
 
-import { NFC, Ndef } from '@awesome-cordova-plugins/nfc/ngx';
+// import { NFC, Ndef } from '@awesome-cordova-plugins/nfc/ngx';
 
 import localeEs from '@angular/common/locales/es';
 import localeEn from '@angular/common/locales/en';
@@ -45,9 +44,8 @@ export function createTranslateLoader(http: HttpClient) {
     }),
     HttpClientModule, AppRoutingModule],
   providers: [
-    BarcodeScanner,
-    NFC,
-    Ndef,
+    // NFC,
+    // Ndef,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

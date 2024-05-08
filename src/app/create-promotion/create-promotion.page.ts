@@ -20,7 +20,7 @@ export class CreatePromotionPage implements OnInit {
     private modalCtrl:ModalController,
     private toastController:ToastController,
     private api:DataService) {
-     this.image = "../../assets/img/logo-white.png";
+     this.image = "../../assets/img/default.png";
      }
 
   ngOnInit() {

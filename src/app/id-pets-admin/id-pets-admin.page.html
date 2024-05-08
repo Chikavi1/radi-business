@@ -1,0 +1,128 @@
+<ion-content [fullscreen]="true">
+  <div style="padding:1em;">
+
+    <ion-row>
+      <ion-col size="11">
+        <h2>Admin Placas</h2>
+      </ion-col>
+      <ion-col size="1">
+        <h2 (click)="add()" *ngIf="mode == 'read'">
+          <ion-icon name="add-circle-outline"></ion-icon>
+        </h2>
+      </ion-col>
+    </ion-row>
+
+  <div *ngIf="mode == 'read'">
+    <ion-button expand="block" (click)="scan()">Escanear</ion-button>
+  </div>
+
+
+  <div *ngIf="mode == 'write'">
+    <p>Crear Nueva placa</p>
+    <ion-input [(ngModel)]="url" class="new-input" aria-placeholder="Ingresa URL"></ion-input>
+    <ion-button (click)="generateURL()" fill="clear">Generar url </ion-button>
+    <ion-item>
+      <ion-select [(ngModel)]="version"  label="Version" placeholder="Seleccionar">
+        <ion-select-option value="1">1</ion-select-option>
+        <ion-select-option value="2">2</ion-select-option>
+        <ion-select-option value="3">3</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-select [(ngModel)]="garanty"  label="Garantia" placeholder="Seleccionar">
+        <ion-select-option value="1">Sí</ion-select-option>
+        <ion-select-option value="0">No</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-select [(ngModel)]="nfc"  label="NFC Habilitado" placeholder="Seleccionar">
+        <ion-select-option value="1">Sí</ion-select-option>
+        <ion-select-option value="0">No</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-select [(ngModel)]="color"  label="Color" placeholder="Seleccionar">
+        <ion-select-option value="black">Negro</ion-select-option>
+        <ion-select-option value="pink">Rose</ion-select-option>
+        <ion-select-option value="red">Rojo</ion-select-option>
+        <ion-select-option value="blue">Azul</ion-select-option>
+        <ion-select-option value="green">Verde</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-row>
+      <ion-col>
+        <ion-button expand="full" (click)="cancel()" color="warning">Cancelar</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="full" (click)="create()" color="success">Crear</ion-button>
+      </ion-col>
+    </ion-row>
+
+  </div>
+
+  <div *ngIf="mode == 'result'">
+
+    <ion-item>
+      <ion-select [(ngModel)]="version"  label="Version" placeholder="Seleccionar">
+        <ion-select-option value="1">1</ion-select-option>
+        <ion-select-option value="2">2</ion-select-option>
+        <ion-select-option value="3">3</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-select [(ngModel)]="garanty"  label="Garantia" placeholder="Seleccionar">
+        <ion-select-option value="1">Sí</ion-select-option>
+        <ion-select-option value="0">No</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-select [(ngModel)]="nfc"  label="NFC Habilitado" placeholder="Seleccionar">
+        <ion-select-option value="1">Sí</ion-select-option>
+        <ion-select-option value="0">No</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-select [(ngModel)]="color"  label="Color" placeholder="Seleccionar">
+        <ion-select-option value="black">Negro</ion-select-option>
+        <ion-select-option value="pink">Rose</ion-select-option>
+        <ion-select-option value="red">Rojo</ion-select-option>
+        <ion-select-option value="blue">Azul</ion-select-option>
+        <ion-select-option value="green">Verde</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <p>URL: {{url}}</p>
+    <p>Modelo: {{version}}</p>
+    <p>Garantia: {{garanty}}</p>
+    <p>NFC: {{nfc}}</p>
+    <p>Color: {{color}}</p>
+
+    <ion-row>
+      <ion-col>
+        <ion-button expand="full" (click)="cancel()" color="warning">Cancelar</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="full" (click)="update()" color="primary">Actualizar</ion-button>
+      </ion-col>
+    </ion-row>
+
+  </div>
+
+  <div *ngIf="mode == 'noResult'">
+    <h2>No se encontro ninguna placa en los registros</h2>
+    <ion-button>Volver a buscar</ion-button>
+  </div>
+
+
+
+
+</div>
+
+</ion-content>

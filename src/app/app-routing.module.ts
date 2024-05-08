@@ -7,6 +7,10 @@ const routes: Routes = [
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
   {
+    path: 'tab3',
+    loadChildren: () => import('./tab3/tab3.module').then( m => m.Tab3PageModule)
+  },
+  {
     path: 'tab4',
     loadChildren: () => import('./tab4/tab4.module').then( m => m.Tab4PageModule)
   },
@@ -133,6 +137,30 @@ const routes: Routes = [
   {
     path: 'id-pets',
     loadChildren: () => import('./id-pets/id-pets.module').then( m => m.IdPetsPageModule)
+  },
+  {
+    path: 'id-pets-admin',
+    loadChildren: () => import('./id-pets-admin/id-pets-admin.module').then( m => m.IdPetsAdminPageModule)
+  },
+  {
+    path: 'campaings',
+    loadChildren: () => import('./campaings/campaings.module').then( m => m.CampaingsPageModule)
+  },
+  {
+    path: 'books',
+    loadChildren: () => import('./books/books.module').then( m => m.BooksPageModule)
+  },
+  {
+    path: 'logs-scans',
+    loadChildren: () => import('./pages/logs-scans/logs-scans.module').then( m => m.LogsScansPageModule)
+  },
+  {
+    path: 'add-client',
+    loadChildren: () => import('./add-client/add-client.module').then( m => m.AddClientPageModule)
+  },
+  {
+    path: 'create-reward',
+    loadChildren: () => import('./create-reward/create-reward.module').then( m => m.CreateRewardPageModule)
   }
 ];
 @NgModule({

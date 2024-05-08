@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { LoadingController, ModalController, Platform, ToastController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
+import { BarcodeFormat, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 
 @Component({
   selector: 'app-payment',
@@ -28,6 +29,7 @@ export class PaymentPage implements OnInit {
  constructor(
    private api:DataService,
     private toastController:ToastController,
+    private platform:Platform,
     private loadingCtrl: LoadingController,
     private modalCtrl:ModalController) {
       console.log(this.serviceUser,this.serviceBusiness,this.total,this.radiPets)
@@ -57,19 +59,63 @@ export class PaymentPage implements OnInit {
 
   ngOnInit(){
 
-    this.api.checkUserPay({code:this.code}).subscribe(data => {
-      console.log(data);
+  }
+
+  handlerScanner(d){
+    let hash;
+      if(d.includes('https://radi.pet/pets/')){
+        hash = d.split('pet/pets/');
+      }
+
+    this.api.checkUserPay({code: hash[1]}).subscribe(data => {
       this.messageStatus = data.result;
-      console.log(this.messageStatus);
       this.customer = data.id;
+
       if(data.result == 'success'){
         this.paymentsEnabled = true;
+        this.step == 2;
       }else{
         this.paymentsEnabled = false;
+        this.presentToast('No tiene habilitado los pagos con la placa','danger');
       }
+    },err=>{
+      this.presentToast('No tiene habilitado los pagos con la placa','danger');
     });
-    // checar si tiene habilitado / y si tiene tarjeta
+  }
 
+  async startScanner() {
+    const { barcodes } = await BarcodeScanner.scan({
+      formats: [BarcodeFormat.QrCode, BarcodeFormat.Ean13]
+    });
+    return barcodes;
+  }
+
+  async requestPermissions(): Promise<boolean> {
+    const { camera } = await BarcodeScanner.requestPermissions();
+    return camera === 'granted' || camera === 'limited';
+  }
+
+
+ async checkPayments(){
+    if(this.platform.is('android')){
+      await BarcodeScanner.requestPermissions();
+      const data = await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
+      if (data.available) {
+        const code = await this.startScanner();
+        this.handlerScanner(code[0].displayValue);
+      } else {
+        try {
+          await BarcodeScanner.installGoogleBarcodeScannerModule();
+          const code = await this.startScanner();
+          this.handlerScanner(code[0].displayValue);
+        } catch (e) {
+        }
+      }
+    }else{
+      await BarcodeScanner.requestPermissions();
+      const code = await this.startScanner();
+      this.handlerScanner(code[0].displayValue);
+    }
   }
 
   description = 'Compra en Radi Pets';
@@ -147,8 +193,12 @@ export class PaymentPage implements OnInit {
 
 
   next(){
-    this.step = 2;
-    this.setTotal();
+    if(this.step == 1){
+      this.checkPayments();
+      // this.step = 2;
+      this.setTotal();
+    }
+
   }
   datePayment
 

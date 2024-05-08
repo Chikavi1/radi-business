@@ -9,7 +9,7 @@
       <h1 style="padding: 1em .5em;">Promociones</h1>
       <div style="padding:1em;">
         <div *ngIf="discounts.length != 0">
-          <ion-button expand="block" (click)="createPromotion()" style="padding:0em 1em;" color="success">
+          <ion-button expand="block" (click)="createPromotion()" style="padding:0em 1em;" color="dark">
             Crear Promoción
           </ion-button>
           <ion-row>
@@ -32,7 +32,7 @@
         <div style="margin-top:6em;">
           <div *ngIf="discounts.length == 0">
             <h2 style="text-align: center;">No tienes promociones.</h2>
-            <ion-button (click)="createPromotion()" expand="full">Agregar promoción</ion-button>
+            <ion-button (click)="createPromotion()" expand="full" color="dark" shape="round">Agregar promoción</ion-button>
           </div>
         </div>
       </div>
@@ -40,3 +40,6 @@
   </ion-row>
 
 </ion-content>
+<ion-footer>
+  <ion-button expand="block" color="danger" (click)="back()">Volver</ion-button>
+</ion-footer>

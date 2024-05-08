@@ -4,6 +4,7 @@ import { ModalController, Platform } from '@ionic/angular';
 import { DataService } from './services/data.service';
 import { ModalBlockPage } from './modal-block/modal-block.page';
 import { register } from 'swiper/element/bundle';
+import { ResultPage } from './result/result.page';
 register();
 @Component({
   selector: 'app-root',
@@ -23,7 +24,6 @@ export class AppComponent {
           if(data[0].status == 2){
             this.blockModal(2)
           }
-
           localStorage.setItem('granted',data[0].granted);
         });
 
@@ -31,6 +31,7 @@ export class AppComponent {
       }else{
         this.router.navigateByUrl('/login')
     }
+    // this.openResult('app','214904');
   }
 
   async checkDevice(){
@@ -56,6 +57,25 @@ export class AppComponent {
     modal.onDidDismiss().then((data) => {
       if(data['data']){
 
+      }
+    });
+    return await modal.present();
+  }
+
+  async openResult(modeRead,code){
+    console.log(modeRead,code);
+
+    const modal = await this.modalCtrl.create({
+      component: ResultPage,
+      breakpoints: [.95,1],
+      initialBreakpoint: .95,
+      componentProps:{
+        modeRead: modeRead,
+        code: code,
+      }
+    });
+    modal.onDidDismiss().then((data) => {
+      if(data['data']){
       }
     });
     return await modal.present();

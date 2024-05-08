@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NFC, Ndef } from '@awesome-cordova-plugins/nfc/ngx';
-import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
+// import { NFC, Ndef } from '@awesome-cordova-plugins/nfc/ngx';
 import { ModalController, ToastController } from '@ionic/angular';
 import { PaymentPage } from '../payment/payment.page';
 import { CreateLinksPage } from '../create-links/create-links.page';
@@ -15,10 +14,11 @@ export class SelectReadPage implements OnInit {
     qrlottie;
     nfclottie;
 
-  constructor(private barcodeScanner:BarcodeScanner,
+  constructor(
     private toastController:ToastController,
-    private modalCtrl:ModalController,
-    private nfc:NFC) {
+    private modalCtrl:ModalController
+    // private nfc:NFC
+  ) {
       this.qrlottie  = {
         path: '../../../assets/lotties/readqr.json',
         autoplay: true,
@@ -120,16 +120,16 @@ export class SelectReadPage implements OnInit {
     // console.log(data,this.action,'qr')
     // this.processData(data,this.action,'qr');
 
-
-    this.barcodeScanner.scan({disableSuccessBeep: true}).then(barcodeData => {
-      if(!barcodeData.cancelled){
-        let data = barcodeData.text;
-        this.processData(data,this.action,'qr');
-      }
-    }).catch(err => {
-      this.presentToast('Hubo un error,intenta despues.','danger');
-      console.log('Error', err);
-    });
+// cambio
+    // this.barcodeScanner.scan({disableSuccessBeep: true}).then(barcodeData => {
+    //   if(!barcodeData.cancelled){
+    //     let data = barcodeData.text;
+    //     this.processData(data,this.action,'qr');
+    //   }
+    // }).catch(err => {
+    //   this.presentToast('Hubo un error,intenta despues.','danger');
+    //   console.log('Error', err);
+    // });
   }
 
   async nfcscan(){
@@ -138,11 +138,12 @@ export class SelectReadPage implements OnInit {
     // this.processData(id[1],this.action,'nfc');
 
     try {
-      let data = await this.nfc.scanNdef();
-      let payload = data.ndefMessage[0].payload;
-      let tagContent = this.nfc.bytesToString(payload).substring(3);
-      let id =  tagContent.split('pets/');
-      this.processData(id[1],this.action,'nfc');
+      // cambio nfc
+      // let data = await this.nfc.scanNdef();
+      // let payload = data.ndefMessage[0].payload;
+      // let tagContent = this.nfc.bytesToString(payload).substring(3);
+      // let id =  tagContent.split('pets/');
+      // this.processData(id[1],this.action,'nfc');
    } catch (err) {
    }
   }

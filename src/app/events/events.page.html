@@ -10,7 +10,7 @@
       <h1 style="padding: 1em .5em;">Eventos</h1>
       <div style="padding:1em;">
         <div *ngIf="events.length != 0">
-          <ion-button expand="block" (click)="createEvent()" style="padding:0em 1em;" color="success">
+          <ion-button  (click)="createEvent()" style="padding:0em 1em;" expand="full" color="dark" shape="round">
             Crear evento
           </ion-button>
           <ion-row>
@@ -35,7 +35,7 @@
         <div style="margin-top:6em;">
           <div *ngIf="events.length == 0">
             <h2 style="text-align: center;">No tienes eventos proximos.</h2>
-            <ion-button (click)="createEvent()" expand="full">Agregar evento</ion-button>
+            <ion-button (click)="createEvent()" expand="full" color="dark" shape="round">Agregar evento</ion-button>
           </div>
         </div>
       </div>

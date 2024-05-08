@@ -36,8 +36,8 @@ export class CreateEventPage implements OnInit {
   }
 
   constructor(private modalCtrl:ModalController,private api:DataService) {
-    this.image = "../../assets/img/logo-white.png";
-    this.start_date = moment().format();;
+    this.image = "../../assets/img/default.png";
+    this.start_date = moment().format();
     this.end_date = moment(this.start_date).add(1, 'hours').format();
 
    }

@@ -13,10 +13,11 @@ export class TabsPage {
   constructor() {
     let granted = localStorage.getItem('granted');
     console.log(granted);
-
-    this.grantedEvents = granted.includes('events')
-    this.grantedOrg = granted.includes('orgs')
-    this.grantedBusiness = granted.includes('business');
+    if(granted){
+      this.grantedEvents = granted.includes('events')
+      this.grantedOrg = granted.includes('orgs')
+      this.grantedBusiness = granted.includes('business');
+    }
 
 
   }
