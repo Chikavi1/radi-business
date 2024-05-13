@@ -1,0 +1,39 @@
+
+<ion-content>
+
+  <ion-row>
+    <ion-col [size]="device=='tablet'?8:12" [offset]="device=='tablet'?2:0">
+      <ion-row>
+        <ion-col size="10">
+          <h1 style="padding: 1em .5em;">Mascotas</h1>
+        </ion-col>
+        <ion-col size="1">
+          <h1 style="padding: 1em .5em;"><ion-icon name="add-outline" (click)="addPet()"></ion-icon></h1>
+        </ion-col>
+      </ion-row>
+      <div *ngIf="pets.length != 0">
+        <ion-item *ngFor="let pet of pets" lines="none" style="padding-bottom: .5em;"  button detail="true" detail-icon="caret-forward-outline"(click)="pet(pet.id)">
+          <!-- <ion-avatar slot="start">
+            <img alt="Silhouette of a person's head" [src]="pet.photo" />
+          </ion-avatar> -->
+          <ion-label>
+            <h2>
+              {{pet.name}}
+            </h2>
+            <p *ngIf="pet.code">Con Placa de identificación</p>
+            <p *ngIf="!pet.code">Sin Placa de identificación</p>
+
+          </ion-label>
+        </ion-item>
+      </div>
+
+      <div *ngIf="pets.length == 0" style="padding:1em;margin-top:6em;">
+        <h2 style="text-align: center;">No hay mascotas por el momento.</h2>
+      </div>
+    </ion-col>
+  </ion-row>
+
+</ion-content>
+<ion-footer>
+  <ion-button expand="block" color="danger" (click)="back()">Volver</ion-button>
+</ion-footer>

@@ -13,14 +13,17 @@
         <p>Descripción del premio</p>
         <p>{{item.description}}</p>
         <p>Premio cada: <br> {{item.count}} compras</p>
-        <p>Finaliza: <br> {{item.finish_date}}</p>
-        <p>Estatus: <br> {{item.status}}</p>
+        <p>Finaliza: <br> {{item.finish_date | date:'dd/MM/yyyy'}}</p>
+        <p>Estatus: <br>
+          <span *ngIf="item.status == 1">Activo</span>
+          <span *ngIf="item.status == 0">Finalizado</span>
+        </p>
         <ion-row>
           <ion-col>
-            <ion-button expand="block" (click)="showUser()" color="dark">Escanear</ion-button>
+            <ion-button expand="block" (click)="scan()" color="dark">Escanear</ion-button>
           </ion-col>
           <ion-col>
-            <ion-button  expand="block" color="warning">
+            <ion-button  expand="block" color="warning" (click)="edit(item)">
               Editar
             </ion-button>
           </ion-col>
@@ -90,9 +93,11 @@
         </div>
       </ion-col>
     </ion-row>
-    <ion-checkbox labelPlacement="end">Agregar visita</ion-checkbox>
+    <div style="padding: 1em;">
+      <ion-checkbox labelPlacement="end">Agregar visita</ion-checkbox>
+    </div>
 
-    <ion-button expand="block" color="dark" style="padding: 1em;" (click)="scan(1)">Agregar estampa</ion-button>
+    <ion-button expand="block" color="dark" style="padding: 1em;" (click)="scan()">Agregar estampa</ion-button>
   </div>
 
 

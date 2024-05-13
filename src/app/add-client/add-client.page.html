@@ -25,7 +25,7 @@
       <ion-button color="danger" expand="block" (click)="back()">Volver</ion-button>
     </ion-col>
     <ion-col>
-      <ion-button expand="block" (click)="send()">Agregar cliente</ion-button>
+      <ion-button expand="block" [disabled]="!name || !email " (click)="send()">Agregar cliente</ion-button>
     </ion-col>
   </ion-row>
 </ion-footer>

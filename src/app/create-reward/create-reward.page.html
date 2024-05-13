@@ -5,8 +5,8 @@
     </ion-textarea>
     <p>Cantidad de compras</p>
     <ion-select  [(ngModel)]="count" class="new-input" style="width: 100%;" aria-label="Selecciona una opción">
-      <ion-select-option value="5">5 veces</ion-select-option>
-      <ion-select-option value="10">10 veces</ion-select-option>
+      <ion-select-option [value]="5">5 veces</ion-select-option>
+      <ion-select-option [value]="10">10 veces</ion-select-option>
     </ion-select>
     <p>Fecha de finalización</p>
     <ion-datetime-button datetime="datetime2" ></ion-datetime-button>
@@ -29,8 +29,11 @@
       </ion-button>
     </ion-col>
     <ion-col>
-      <ion-button  color="success" expand="full" (click)="create()">
+      <ion-button *ngIf="!id" [disabled]="!description || !count || !finish_date "   color="success" expand="full" (click)="create()">
         Crear
+      </ion-button>
+      <ion-button *ngIf="id" [disabled]="!description || !count || !finish_date "   color="success" expand="full" (click)="create()">
+        Editar
       </ion-button>
     </ion-col>
   </ion-row>

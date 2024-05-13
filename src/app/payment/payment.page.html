@@ -94,54 +94,65 @@
         </ion-row>
 
         <div style="padding: 1.2em;">
-          <p>
+          <p style="font-size: .75em;">
             <ion-icon style="color:rgb(183, 183, 7)"  name="shield-checkmark-outline"></ion-icon>
-            Esta transacción esta <b>encriptada</b> y protegida por <b>Radi Pets</b>.
+            Esta transacción esta <b>encriptada</b> por <b>Radi Pets</b>.
           </p>
-          <ion-button (click)="showLoading()" [disabled]="4 > pin.length || !enabledButton" expand="full" color="tertiary" shape="round">Procesar Pago</ion-button>
+          <ion-button (click)="payment()" [disabled]="4 > pin.length || !enabledButton" expand="full" color="tertiary" shape="round">Procesar Pago</ion-button>
         </div>
       </div>
 
 
       <div *ngIf="breakdown" style="padding:1em;margin-top: 4em;">
             <h2>Desglose</h2>
-            <div class="progress">
-              <div class="progress-bar bg-success" role="progressbar" [ngStyle]="{ 'width': percent1 + '%' }"></div>
-              <div class="progress-bar bg-warning" role="progressbar" [ngStyle]="{ 'width': percent2 + '%' }"></div>
-              <!-- <div class="progress-bar bg-danger" role="progressbar" [ngStyle]="{ 'width': percent3 + '%' }"></div> -->
-            </div>
+
 
             <ion-row>
-              <ion-col size="6">
-                Cobrar
-              </ion-col>
-              <ion-col size="6" style="text-align: right;">
-                {{total | number : '1.2-2'}} MXN
-              </ion-col>
               <ion-col size="6">
                 Precio ingresado
               </ion-col>
               <ion-col size="6" style="text-align: right;">
                 {{amount | number : '1.2-2'}} MXN
               </ion-col>
-              <ion-col size="6" style="color:purple;font-weight: bold;">
-                Comisión negocio
+              <ion-col size="6">
+                Comisión por servicio
               </ion-col>
               <ion-col size="6" style="text-align: right;">
-                {{serviceBusiness | number : '1.2-2'}} MXN
+                {{radiservice | number : '1.2-2'}} MXN
               </ion-col>
-              <!-- <ion-col size="6">
-                Comisión cliente
+
+              <ion-col size="6">
+                Total cobro
               </ion-col>
               <ion-col size="6" style="text-align: right;">
-                3.50 MXN
-              </ion-col> -->
+                {{total | number : '1.2-2'}} MXN
+              </ion-col>
+            </ion-row>
+
+
+              <ion-row style="margin-top: 2em;">
+
+              <ion-col size="6">
+                Precio ingresado
+              </ion-col>
+              <ion-col size="6" style="text-align: right;">
+                {{amount | number : '1.2-2'}} MXN
+              </ion-col>
+              <ion-col size="6" style="color:#675dff;font-weight: bold;">
+                Comisión stripe
+              </ion-col>
+              <ion-col size="6" style="text-align: right;">
+                {{stripe+ivastripe | number : '1.2-2'}} MXN
+              </ion-col>
+
+
               <ion-col size="6" style="color:green;font-weight: bold;">
                 Tu ganancia
               </ion-col>
               <ion-col size="6" style="text-align: right;">
                 {{business | number : '1.2-2'}} MXN
               </ion-col>
+
             </ion-row>
             <ion-button expand="full" color="success" style="margin-top: 1em;" fill="clear" (click)="setBreakdown(false)">Volver al cobro</ion-button>
       </div>
@@ -150,7 +161,7 @@
         </div>
     <div *ngIf="step == 3">
       <!-- imagen -->
-      <div style="padding:0em 8em;">
+      <div style="padding:0em 8em;margin-top: 1.4em;">
         <ng-lottie  [options]="success">
         </ng-lottie>
       </div>
@@ -192,7 +203,7 @@
         </ion-row>
       </ion-card>
 
-      <ion-button (click)="close()" style="margin: 2em 1em;" expand="full" shape="round" fill="outline">
+      <ion-button color="success" (click)="close()" style="margin: 2em 1em;" expand="full" shape="round" fill="outline">
         Ir a inicio
       </ion-button>
     </div>

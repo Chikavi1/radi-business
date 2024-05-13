@@ -38,7 +38,23 @@ export class CreateRewardPage implements OnInit {
     })
   }
 
+  edit(){
+    let data = {
+      id_business: localStorage.getItem('id_company'),
+      description: this.description,
+      count:       this.count,
+      finish_date: this.finish_date,
+    }
+
+    this.api.updateRewards(data).subscribe(data => {
+      console.log(data);
+    })
+  }
+
+  id;
+
   ngOnInit() {
+    console.log(this.id);
   }
 
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, ToastController } from '@ionic/angular';
+import { LoadingController, NavController, ToastController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
 import jwt_decode from "jwt-decode";
 
@@ -15,6 +15,7 @@ export class LoginPage implements OnInit {
   device;
 
   constructor(private api:DataService,
+    private loadingController:LoadingController,
     private toastController: ToastController,
     private navCtrl:NavController) {
      this.device = localStorage.getItem('device');
@@ -23,7 +24,16 @@ export class LoginPage implements OnInit {
   ngOnInit() {
   }
 
+  async presentLoading(){
+    const loading = await this.loadingController.create({
+      message: 'Verificando identidad',
+      duration: 1200
+    });
+    loading.present();
+  }
+
   login(){
+    this.presentLoading();
 
     let data = {
       email: this.email,
@@ -31,6 +41,8 @@ export class LoginPage implements OnInit {
     }
 
     this.api.loginBusiness(data).subscribe((data:any) => {
+      this.loadingController.dismiss();
+
       var decoded:any = jwt_decode(data.token);
       localStorage.setItem('id_company',decoded.id);
       localStorage.setItem('name',decoded.name);

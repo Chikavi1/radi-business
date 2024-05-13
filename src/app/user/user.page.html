@@ -1,28 +1,110 @@
 <ion-content >
 
   <div style="padding: 1em;">
-    <h1>{{user.name}}</h1>
-    <p *ngIf="user.gender == 1">Hombre</p>
-    <p *ngIf="user.gender == 2">Mujer</p>
-    <p *ngIf="user.birthday">{{user.birthday | date:'dd/MM/yyyy'}} ({{age}} años)</p>
-    <p>{{user.email}}</p>
-    <!-- <p style="margin-top:2em;">Intereses</p> -->
-    <!-- <p>{{user.interest}}</p> -->
-    <p>Usuario desde {{user.createdAt  | date:'dd/MM/yyyy'}}</p>
-  </div>
+    <div style="text-align: center;">
+      <img style="width: 8em; height: 8em; border-radius: 50%;" src="{{user.photo}}" alt="image">
+    </div>
+    <h1 style="text-align: center;">{{user.name}}</h1>
 
+    <ion-segment mode="md" (ionChange)="segmentChange($event)"  style="margin-top: 3em;" [(ngModel)]="menu" [scrollable]="true">
+      <ion-segment-button value="info">
+       Info
+      </ion-segment-button>
+      <ion-segment-button value="visits" >
+        Visitas
+      </ion-segment-button>
+      <ion-segment-button value="pets">
+        Mascotas
+      </ion-segment-button>
+      <ion-segment-button value="extras">
+        Extras
+      </ion-segment-button>
+      <ion-segment-button value="protect">
+        Info sensible
+      </ion-segment-button>
+    </ion-segment>
+
+<div *ngIf="menu == 'info'">
+  <h2>Información del usuario</h2>
+  <small>Celular</small>
+  <p class="bold">{{user.cellphone}}</p>
+  <small>Correo</small>
+  <p class="bold">{{user.email}}</p>
+  <small>Género</small>
+  <p *ngIf="user.gender == 1" class="bold">Hombre</p>
+  <p *ngIf="user.gender == 2" class="bold">Mujer</p>
+  <small>Fecha de nacimiento</small>
+  <p *ngIf="user.birthday" class="bold">{{user.birthday | date:'dd/MM/yyyy'}} ({{age}} años)</p>
+  <p *ngIf="!user.birthday" class="bold">Información no proporcionada</p>
+
+  <small>Intereses</small>
+  <p class="bold">{{interest}}</p>
+  <small>Usuario en Radi Pets</small>
+  <p class="bold">Usuario desde {{user.createdAt  | date:'dd/MM/yyyy'}}</p>
+
+  <a style="text-decoration: none;" href = "mailto: {{user.email}}">
+    <ion-item lines="none">
+      <ion-label>Enviar correo</ion-label>
+      <ion-icon name="mail-outline" slot="end"></ion-icon>
+    </ion-item>
+  </a>
+
+
+</div>
+<div *ngIf="menu == 'visits'">
   <ion-card style="text-align: center;">
     <h1>{{counter}}</h1>
     <h3>visitas</h3>
+
+    <ion-item *ngFor="let record of records" class="capital" lines="none" style="padding-bottom:1em;background-color: transparent;" button detail="true" detail-icon="caret-forward-outline">
+      <ion-label (click)="History(record.id)">
+        <p class="capital" style="font-weight: bold;">{{record.description}}</p>
+        <p class="capital">{{record.date | localizedDate:'fullDate'}}</p>
+      </ion-label>
+    </ion-item>
+
   </ion-card>
+</div>
 
-  <a style="text-decoration: none;" href = "mailto: {{user.email}}">
-  <ion-item lines="none">
-    <ion-label>Enviar correo</ion-label>
-    <ion-icon name="mail-outline" slot="end"></ion-icon>
-  </ion-item>
-</a>
+<div *ngIf="menu == 'pets'">
+  <h2>Mascotas</h2>
+  <ion-card *ngFor="let pet of pets">
+    <ion-row>
+      <ion-col size="4">
+        <img style="border-radius: 50%;" src="https://static.wixstatic.com/media/55424f_5d0eece0efb84834879ae051d26e4752~mv2.jpg/v1/fill/w_428,h_438,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/DSC_1754.jpg" alt="">
+      </ion-col>
+      <ion-col size="8">
+        <h2 class="capital">{{pet.name}}</h2>
+        <p>tamaño</p>
+      </ion-col>
+    </ion-row>
 
+  </ion-card>
+</div>
+
+<div *ngIf="menu == 'extras'">
+  <h2>Extras</h2>
+  <p>Notas</p>
+  <p>Tiene suscripción que finaliza el 30/mayo/2024</p>
+
+  <div style="margin-top: 3em;">
+    <ion-checkbox labelPlacement="end">Acepto terminos y condiciones </ion-checkbox>
+    <ion-checkbox labelPlacement="end">Acepto reglamento </ion-checkbox>
+  </div>
+
+</div>
+
+<div *ngIf="menu == 'protect'">
+  <h2>Información sensible</h2>
+  <p>Dirección</p>
+  <p>san mateo evangelista</p>
+  <ion-button>Ver más</ion-button>
+  <p>Identidad</p>
+  <p>RODL990310HJCJZS05</p>
+</div>
+
+
+  </div>
 
 </ion-content>
 

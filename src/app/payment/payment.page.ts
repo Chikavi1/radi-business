@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { LoadingController, ModalController, Platform, ToastController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
 import { BarcodeFormat, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
+import { LocalNotifications } from '@capacitor/local-notifications';
+
 
 @Component({
   selector: 'app-payment',
@@ -16,15 +18,21 @@ export class PaymentPage implements OnInit {
   code = 'RDa899b6e';
   // cambiar
   customer;
+  correctPin;
 
  amount = 35;
- serviceUser =  ((2.85*this.amount)/100)+1.75; // 2.74
- serviceBusiness = ((3.35*this.amount)/100)+1.75; // 2.92
- total =  this.amount+this.serviceUser; // 37.74
- radiPets = this.serviceUser+this.serviceBusiness; // 5.67
- stripeCost =  ((3.60*this.amount)/100)+3; // 4.26
- business = this.amount-this.serviceBusiness; // 32.07
- totalRadiPets = this.radiPets-this.stripeCost; // 1.41
+ stripe = 0; //4.26;
+ ivastripe = 0; // 0.68;
+ business = 0; //30.06;
+ radiservice = 1.99;
+ total = 0;
+
+ setTotal(){
+  this.stripe = ((3.60*this.amount)/100)+3;
+  this.ivastripe = (this.stripe * 0.16);
+  this.business = this.amount - (this.stripe+this.ivastripe);
+  this.total = this.amount+this.radiservice;
+}
 
  constructor(
    private api:DataService,
@@ -32,11 +40,10 @@ export class PaymentPage implements OnInit {
     private platform:Platform,
     private loadingCtrl: LoadingController,
     private modalCtrl:ModalController) {
-      console.log(this.serviceUser,this.serviceBusiness,this.total,this.radiPets)
       this.success  = {
         path: '../../../assets/lotties/success.json',
         autoplay: true,
-        loop: true
+        loop: false
       }
     }
 
@@ -61,6 +68,7 @@ export class PaymentPage implements OnInit {
 
   }
 
+
   handlerScanner(d){
     let hash;
       if(d.includes('https://radi.pet/pets/')){
@@ -68,18 +76,17 @@ export class PaymentPage implements OnInit {
       }
 
     this.api.checkUserPay({code: hash[1]}).subscribe(data => {
-      this.messageStatus = data.result;
-      this.customer = data.id;
-
-      if(data.result == 'success'){
-        this.paymentsEnabled = true;
-        this.step == 2;
-      }else{
-        this.paymentsEnabled = false;
-        this.presentToast('No tiene habilitado los pagos con la placa','danger');
+      if(data.status == 401){
+        this.presentToast('No tiene habilitado los pagos con la placa','danger','top');
+      }
+      if(data[0].pin){
+        this.customer = data[0].customer;
+        this.correctPin = data[0].pin;
+        this.idUser = data[0].id;
+        this.step += 1;
       }
     },err=>{
-      this.presentToast('No tiene habilitado los pagos con la placa','danger');
+      this.presentToast('Placa no valida','danger','top');
     });
   }
 
@@ -97,41 +104,102 @@ export class PaymentPage implements OnInit {
 
 
  async checkPayments(){
-    if(this.platform.is('android')){
-      await BarcodeScanner.requestPermissions();
-      const data = await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
-      if (data.available) {
-        const code = await this.startScanner();
-        this.handlerScanner(code[0].displayValue);
-      } else {
-        try {
-          await BarcodeScanner.installGoogleBarcodeScannerModule();
-          const code = await this.startScanner();
-          this.handlerScanner(code[0].displayValue);
-        } catch (e) {
-        }
+  this.handlerScanner('https://radi.pet/pets/RD39uc98q4');
+    // if(this.platform.is('android')){
+    //   await BarcodeScanner.requestPermissions();
+    //   const data = await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
+    //   if (data.available) {
+    //     const code = await this.startScanner();
+    //     this.handlerScanner(code[0].displayValue);
+    //   } else {
+    //     try {
+    //       await BarcodeScanner.installGoogleBarcodeScannerModule();
+    //       const code = await this.startScanner();
+    //       this.handlerScanner(code[0].displayValue);
+    //     } catch (e) {
+    //     }
+    //   }
+    // }else{
+    //   await BarcodeScanner.requestPermissions();
+    //   const code = await this.startScanner();
+    //   this.handlerScanner(code[0].displayValue);
+    // }
+  }
+
+  description = 'Compra en '+localStorage.getItem('name');
+  intents = 0;
+  idc;
+  idUser;
+
+  payment(){
+    console.log(this.correctPin,this.pin);
+
+    if(this.correctPin == this.pin){
+      this.showLoading();
+
+      let data = {
+        customer: this.customer,
+        account: 'acct_1NhHerBGXEEdgI6X',
+        total: this.total,
+        description: this.description
       }
+      console.log(data);
+
+      this.datePayment = new Date();
+
+
+      this.api.paymentbusiness(data).subscribe(async(data) => {
+        if(data.status == 'succeeded'){
+            this.loadingCtrl.dismiss();
+            this.enabledButton = true;
+            this.step = 3;
+            await LocalNotifications.schedule({
+              notifications: [
+                {
+                  id: 1,
+                  title: 'Cobro realizado correctamente',
+                  body: 'Se realizo un cobro por $165.00',
+                  extra: {
+                    data: 'pass'
+                  },
+                  iconColor: "#17202F"
+                }
+              ]
+            });
+        }
+
+        if(data.status == 204){
+          this.presentToast('No tiene tarjeta vinculada','danger','top');
+          this.pin = '';
+          this.enabledButton = true;
+        }
+      });
+
     }else{
-      await BarcodeScanner.requestPermissions();
-      const code = await this.startScanner();
-      this.handlerScanner(code[0].displayValue);
+      this.pin = '';
+      this.enabledButton = true;
+      this.presentToast('Pin Invalido','danger','top');
+      this.intents += 1;
+      console.log(this.intents);
+
+      if(this.intents > 3){
+        this.step = 1;
+
+        let data = {
+          "payments_enabled": false,
+          "id": this.idUser
+        }
+
+        this.api.updateGranted(data).subscribe((data:any) => {
+          if(data.status == 200){
+            this.presentToast('Por seguridad, se deshabilitaron los pagos con la placa','danger','top')
+          }
+        });
+
+      }
+
     }
   }
-
-  description = 'Compra en Radi Pets';
-
-  setTotal(){
-    this.serviceUser =  ((2.85*this.amount)/100)+1.75; // 2.74
-    this.serviceBusiness = ((3.35*this.amount)/100)+1.75; // 2.92
-    this.total =  this.amount+this.serviceUser; // 37.74
-    this.radiPets = this.serviceUser+this.serviceBusiness; // 5.67
-    this.stripeCost =  ((3.60*this.amount)/100)+3; // 4.26
-    this.business = this.amount-this.serviceBusiness; // 32.07
-    this.totalRadiPets = this.radiPets-this.stripeCost; // 1.41
-  }
-
-  intents = 3;
-  idc;
 
   async showLoading() {
     const loading = await this.loadingCtrl.create({
@@ -143,49 +211,50 @@ export class PaymentPage implements OnInit {
     this.enabledButton = false;
     // checa nip, se hace pago y envia notificación
 
-    let data = {
-      customer: this.customer,
-      account: localStorage.getItem('account'),
-      pin: this.pin,
-      description: this.description,
-      serviceUser :this.serviceUser,
-      serviceBusiness:this.serviceBusiness,
-      total: this.total,
-      radiPets:this.radiPets,
-      stripeCost:this.stripeCost,
-      business:this.business
-    }
-    this.api.pay(data).subscribe(resp => {
-       console.log(resp);
-      if(resp.status == 'succeeded'){
-        this.idc = resp.id;
-        setTimeout(()=>{
-          this.datePayment = new Date();
-          this.enabledButton = true;
-          this.step = 3;
-        },3000)
-      }else{
-        if(this.intents < 0){
-          this.presentToast('Pagos bloqueados','danger');
-          this.modalCtrl.dismiss();
-        }
+    // let data = {
+    //   customer: this.customer,
+    //   account: localStorage.getItem('account'),
+    //   pin: this.pin,
+    //   description: this.description,
+    //   serviceUser :this.serviceUser,
+    //   serviceBusiness:this.serviceBusiness,
+    //   total: this.total,
+    //   radiPets:this.radiPets,
+    //   stripeCost:this.stripeCost,
+    //   business:this.business
+    // }
+    // this.api.pay(data).subscribe(resp => {
+    //    console.log(resp);
+    //   if(resp.status == 'succeeded'){
+    //     this.idc = resp.id;
+    //     setTimeout(()=>{
+    //       this.datePayment = new Date();
+    //       this.enabledButton = true;
+    //       this.step = 3;
+    //     },3000)
+    //   }else{
+    //     if(this.intents < 0){
+    //       this.presentToast('Pagos bloqueados','danger');
+    //       this.modalCtrl.dismiss();
+    //     }
 
-        this.pin = '';
-        this.presentToast('Pin incorrecto, quedan '+this.intents+' intentos antes de bloquear','danger');
-        this.intents -= 1;
-        this.enabledButton = true;
+    //     this.pin = '';
+    //     this.presentToast('Pin incorrecto, quedan '+this.intents+' intentos antes de bloquear','danger');
+    //     this.intents -= 1;
+    //     this.enabledButton = true;
 
-      }
-    });
+    //   }
+    // });
 
 
   }
 
-  async presentToast(message,color) {
+  async presentToast(message,color,position) {
     const toast = await this.toastController.create({
       message,
       duration: 2000,
-      color
+      color,
+      position
     });
     toast.present();
   }

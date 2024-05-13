@@ -12,7 +12,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { registerLocaleData } from '@angular/common';
 
-// import { NFC, Ndef } from '@awesome-cordova-plugins/nfc/ngx';
+import { NFC, Ndef } from '@awesome-cordova-plugins/nfc/ngx';
 
 import localeEs from '@angular/common/locales/es';
 import localeEn from '@angular/common/locales/en';
@@ -44,8 +44,8 @@ export function createTranslateLoader(http: HttpClient) {
     }),
     HttpClientModule, AppRoutingModule],
   providers: [
-    // NFC,
-    // Ndef,
+    NFC,
+    Ndef,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

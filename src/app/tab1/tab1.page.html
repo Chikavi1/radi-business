@@ -17,7 +17,7 @@
           <ion-button *ngIf="grantedRoot"  expand="full" fill="clear" color="danger" (click)="createBusiness()">Crear negocio</ion-button> -->
 
         <!-- </div> -->
-      <ion-card>
+      <ion-card style="background-color: transparent !important;">
         <ion-card-header>
           <ion-card-title>Menú</ion-card-title>
           <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
@@ -25,8 +25,11 @@
         <ion-card-content>
           <ion-list>
             <ion-item lines="none" (click)="goTo('/tab3')">
-
               <ion-label>Listado de Clientes</ion-label>
+            </ion-item>
+
+            <ion-item lines="none" (click)="goTo('/pets')">
+              <ion-label>Listado de Mascotas</ion-label>
             </ion-item>
 
             <ion-item lines="none" (click)="goTo('/logs-scans')">

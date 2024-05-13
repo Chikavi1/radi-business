@@ -23,8 +23,21 @@ export class DataService {
     if(localStorage.getItem('sandbox')){
       this.MODE = this.LOCAL_URL;
     }else{
-      this.MODE = this.PRODUCTION_URL;
+      this.MODE = this.LOCAL_URL;
     }
+  }
+
+
+  updateRewards(data):any{
+    return this.http.post(this.MODE + 'rewards/update', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  getVisitsByUser(data):any{
+    return this.http.post(this.MODE + 'business/visits-by-iduser', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  getPetsByUser(id):any{
+    return this.http.get(this.MODE + 'pets/user/'+id);
   }
 
   createUser(data):any{
@@ -97,12 +110,20 @@ export class DataService {
 
 
   checkUserPay(data):any{
-    return this.http.post(this.MODE + 'business/check-user-payment',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'business/checkUserPaymentsEnabled',JSON.parse(JSON.stringify(data)), this.options);
   }
 
-  pay(data):any{
-    return this.http.post(this.MODE + 'business/user-payment',JSON.parse(JSON.stringify(data)), this.options);
+  paymentbusiness(data):any{
+    return this.http.post(this.MODE + 'business/userpay',JSON.parse(JSON.stringify(data)), this.options);
   }
+
+  updateGranted(data){
+    return this.http.post(this.MODE + 'user/update-granted',JSON.parse(JSON.stringify(data)), this.options);
+   }
+
+  // pay(data):any{
+  //   return this.http.post(this.MODE + 'business/user-payment',JSON.parse(JSON.stringify(data)), this.options);
+  // }
 
   getPetsByOrg(id_org):any{
     return this.http.get(this.MODE + 'pets/organizationsInAdoptions/'+id_org);
@@ -254,6 +275,10 @@ export class DataService {
 
   getUsersByCompany(id){
     return this.http.get(this.MODE+'business/users/'+id);
+  }
+
+  getPetsByCompany(id){
+    return this.http.get(this.MODE+'business/pets/'+id);
   }
 
   getUsersById(data){

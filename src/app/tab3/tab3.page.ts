@@ -58,6 +58,8 @@ export class Tab3Page {
     this.navCtrl.back();
    }
 
+
+
   async User(id){
     const modal = await this.modalCtrl.create({
       component: UserPage,

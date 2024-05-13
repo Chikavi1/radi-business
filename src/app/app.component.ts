@@ -5,6 +5,7 @@ import { DataService } from './services/data.service';
 import { ModalBlockPage } from './modal-block/modal-block.page';
 import { register } from 'swiper/element/bundle';
 import { ResultPage } from './result/result.page';
+
 register();
 @Component({
   selector: 'app-root',
