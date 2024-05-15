@@ -21,7 +21,7 @@
     placeholder="Ingresa nombre" type="text" [(ngModel)]="name"  ></ion-input>
     <p style="margin-top:2em !important;">Fecha de inicio</p>
 
-    <ion-datetime-button datetime="datetime" ></ion-datetime-button>
+       <ion-datetime-button datetime="datetime" ></ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
             <ion-datetime id="datetime" [(ngModel)]="start_date"></ion-datetime>

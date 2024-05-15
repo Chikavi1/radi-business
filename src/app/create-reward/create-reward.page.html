@@ -17,6 +17,7 @@
     </ion-modal>
   </div>
 
+<ion-button expand="block" fill="clear" color="danger" (click)="deleteReward()" *ngIf="id">Eliminar Recompensa</ion-button>
 </ion-content>
 
 
@@ -32,8 +33,8 @@
       <ion-button *ngIf="!id" [disabled]="!description || !count || !finish_date "   color="success" expand="full" (click)="create()">
         Crear
       </ion-button>
-      <ion-button *ngIf="id" [disabled]="!description || !count || !finish_date "   color="success" expand="full" (click)="create()">
-        Editar
+      <ion-button *ngIf="id" [disabled]="!description || !count || !finish_date "   color="success" expand="full" (click)="update()">
+        Actualizar
       </ion-button>
     </ion-col>
   </ion-row>

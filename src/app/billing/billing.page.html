@@ -19,8 +19,54 @@
   </div>
 
   <div *ngIf="!needConfigurate" style="padding:1em;">
-    <h2>Billing</h2>
-    <ion-card style="background-color: #101727;padding:1em;">
+    <h2>Información</h2>
+
+
+    <p>Nombre de la cuenta</p>
+    <h4 class="bold">{{account_data.settings.dashboard.display_name}}</h4>
+
+    <p>Moneda de pago</p>
+    <h4 class="bold capital">{{account_data.default_currency}}</h4>
+
+    <p>Pais</p>
+    <h4 class="bold capital">{{account_data.country}}</h4>
+
+    <p>Cobros habilitados</p>
+    <h4 class="bold" *ngIf="account_data.charges_enabled">Sí</h4>
+    <h4 class="bold" *ngIf="!account_data.charges_enabled">No</h4>
+
+    <p>Tipo de cuenta</p>
+    <h4 class="bold capital">{{account_data.type}}</h4>
+
+    <p>Cuenta</p>
+    <h4 class="bold capital">{{account_data.id}}</h4>
+    <ion-button style="margin-top: 2em;" expand="block" fill="clear" color="warning" (click)="updateDataGeneral()">Editar Información General</ion-button>
+
+
+    <ion-card style="padding: 1em;">
+      <ion-row>
+        <ion-col size="10">
+          <h2>Tarjetas</h2>
+        </ion-col>
+        <ion-col size="1" (click)="showCards()">
+          <h2>
+            <ion-icon name="chevron-up-outline" *ngIf="!isShowCards"></ion-icon>
+            <ion-icon name="chevron-down-outline" *ngIf="isShowCards"></ion-icon>
+          </h2>
+        </ion-col>
+      </ion-row>
+
+      <div *ngIf="isShowCards">
+        <div *ngFor="let item of banks">
+          <p> {{item.bank_name}} ****  {{item.last4}} </p>
+        </div>
+        <ion-button expand="block" color="warning" (click)="updateBank()">Editar cuentas bancarias</ion-button>
+
+      </div>
+    </ion-card>
+
+
+    <!-- <ion-card style="background-color: #101727;padding:1em;">
       <ion-row>
         <ion-col>
           <h2>Cuenta</h2>
@@ -31,70 +77,9 @@
       </ion-row>
       <h1>{{ external_accounts.bank_name }}</h1>
       <p>Con terminación {{ external_accounts.last4 }}</p>
-    </ion-card>
-    <h3>Movimientos</h3>
+    </ion-card> -->
 
-    <div *ngIf="movements.length != 0">
-      <ion-card style="padding:1em;" *ngFor="let movement of movements">
-        <h1>$ 35.00 {{movement.currency}}</h1>
-        <ion-row>
-          <ion-col  size="9">
-            <p class="capital">{{movement.created*1000 | localizedDate:'fullDate'}}</p>
-          </ion-col>
-          <ion-col size="3" *ngIf="movement.status === 'succeeded'">
-            <ion-chip color="success">Exitoso</ion-chip>
-          </ion-col>
-        </ion-row>
 
-        <div class="progress">
-          <div class="progress-bar bg-success" role="progressbar" [ngStyle]="{ 'width': percent1 + '%' }"></div>
-          <div class="progress-bar bg-warning" role="progressbar" [ngStyle]="{ 'width': percent2 + '%' }"></div>
-          <!-- <div class="progress-bar bg-danger" role="progressbar" [ngStyle]="{ 'width': percent3 + '%' }"></div> -->
-        </div>
-
-        <ion-row>
-          <ion-col size="6">
-            Cobrado
-          </ion-col>
-          <ion-col size="6" style="text-align: right;">
-            37.75 MXN
-          </ion-col>
-          <ion-col size="6">
-            Precio ingresado
-          </ion-col>
-          <ion-col size="6" style="text-align: right;">
-            35.0 MXN
-          </ion-col>
-          <ion-col size="6" style="color:purple;">
-            Comisión negocio
-          </ion-col>
-          <ion-col size="6" style="text-align: right;">
-            2.92 MXN
-          </ion-col>
-          <!-- <ion-col size="6">
-            Comisión cliente
-          </ion-col>
-          <ion-col size="6" style="text-align: right;">
-            3.50 MXN
-          </ion-col> -->
-          <ion-col size="6" style="color:green;">
-            Tu ganancia
-          </ion-col>
-          <ion-col size="6" style="text-align: right;">
-            32.08 MXN
-          </ion-col>
-        </ion-row>
-
-        <ion-button (click)="openBrowser(movement.receipt_url)" fill="clear" expand="full">Ver recibo</ion-button>
-      </ion-card>
-    </div>
-
-    <div *ngIf="movements.length == 0">
-      <ion-card style="padding:1em;text-align: center;">
-        <h1>Sin Movimientos</h1>
-        <p>No has realizado ningun movimiento.</p>
-      </ion-card>
-    </div>
   </div>
 </div>
 

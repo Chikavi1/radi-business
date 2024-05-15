@@ -63,8 +63,8 @@ export class Tab3Page {
   async User(id){
     const modal = await this.modalCtrl.create({
       component: UserPage,
-      breakpoints: [.75,1],
-      initialBreakpoint: .75,
+      breakpoints: [1],
+      initialBreakpoint: 1,
       componentProps:{
         id: id,
       }

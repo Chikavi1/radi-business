@@ -65,7 +65,6 @@ export class IdPetsPage implements OnInit {
     }
 
   ngOnInit(){
-
     // buscar si ya tiene
     this.dataService.getIdentification(hashids.decode(this.id)[0]).subscribe((data:any) => {
       if(data.length == 0){
@@ -118,9 +117,12 @@ export class IdPetsPage implements OnInit {
         code: code[1]
       }
       this.dataService.associatedId(data).subscribe((result:any) => {
+        console.log(result);
+
         if(result.status == 200){
           this.verified = true;
           this.presentToast('Se ha vinculado exitosamente','success');
+          localStorage.setItem('updatePets','true');
           this.modalCtrl.dismiss(data);
         }
 
@@ -128,8 +130,13 @@ export class IdPetsPage implements OnInit {
           this.presentToast('No se puede asociar','warning');
         }
       },err => {
+        console.log(err)
         this.presentToast('No se puede asociar','warning');
       })
+  }
+
+  close(){
+    this.modalCtrl.dismiss();
   }
 
 

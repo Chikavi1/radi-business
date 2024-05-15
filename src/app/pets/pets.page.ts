@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { ModalController, NavController } from '@ionic/angular';
+import { PetPage } from '../pet/pet.page';
 
 @Component({
   selector: 'app-pets',
@@ -53,12 +54,15 @@ export class PetsPage {
    back(){
     this.navCtrl.back();
    }
+   showPet(id){
+    this.pet(id);
+   }
 
   async pet(id){
     const modal = await this.modalCtrl.create({
-      component: PetsPage,
-      breakpoints: [.75,1],
-      initialBreakpoint: .75,
+      component: PetPage,
+      breakpoints: [1],
+      initialBreakpoint: 1,
       componentProps:{
         id: id,
       }
@@ -67,6 +71,10 @@ export class PetsPage {
       if(data['data']){
         const info = data['data'];
         console.log(info);
+        if( localStorage.getItem('updatePets')){
+          this.getInfo();
+          localStorage.removeItem('updatePets');
+        }
       }
     });
     return await modal.present();

@@ -99,8 +99,8 @@ export class SelectReadPage implements OnInit {
 
     const modal = await this.modalCtrl.create({
       component: ResultPage,
-      breakpoints: [.95,1],
-      initialBreakpoint: .95,
+      breakpoints: [1,1],
+      initialBreakpoint: 1,
       componentProps:{
         modeRead: modeRead,
         code: code,

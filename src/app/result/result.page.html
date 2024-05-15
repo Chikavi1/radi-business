@@ -28,7 +28,7 @@
       <div *ngIf="menu == 'pets'">
         <ion-card style="padding:1em">
           <h3>Información de la mascota</h3>
-          <ion-row>
+          <ion-row (click)="goPet(result.id_pet)">
             <ion-col size="4">
               <img [src]="result.photo" style="border-radius:50%;" alt="pet image">
             </ion-col>
@@ -116,12 +116,12 @@
       <div *ngIf="menu == 'user'">
         <ion-card style="padding:1em" *ngIf="result.user_name">
           <h3>Información del dueño</h3>
-          <ion-row>
+          <ion-row (click)="goUser(result.id_user)">
             <ion-col size="4">
               <img style="width: 5em;height: 5em;border-radius: 50%;margin-top:1.5em;margin-left: 1em;" [src]="result.user_photo" alt="image user">
             </ion-col>
             <ion-col size="7">
-              <p style="font-size: 1.3em;font-weight: bold;">{{result.user_name}}</p>
+              <p style="font-size: 1.3em;font-weight: bold;" class="capital">{{result.user_name}}</p>
               <p style="color:green;"  *ngIf="result.user_verified">Verificado por la plataforma</p>
               <p>Usuario desde {{result.user_created | date:'dd/MM/yyyy'}}</p>
             </ion-col>

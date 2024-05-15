@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { BarcodeFormat, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
-import { ModalController, NavController, Platform } from '@ionic/angular';
+import { ModalController, NavController, Platform, ToastController } from '@ionic/angular';
 import * as moment from 'moment';
 import { CreateRewardPage } from 'src/app/create-reward/create-reward.page';
 import { DataService } from 'src/app/services/data.service';
+
+
+declare var require: any;
+const Hashids = require('hashids/cjs');
+const hashids = new Hashids('Elradipet10Lt', 6,'ABCEIU1234567890');
 
 @Component({
   selector: 'app-logs-scans',
@@ -19,8 +24,13 @@ createModal(){
   this.openAdds(CreateRewardPage)
 }
 
-back(){
+close(){
   this.navCtrl.back();
+}
+
+back(){
+  this.step = 1;
+  this.successful = null;
 }
 
 async openAdds(page){
@@ -36,7 +46,6 @@ async openAdds(page){
   return await modal.present();
 }
 description;
-count;
 finish
 
 edit(item){
@@ -63,10 +72,18 @@ async editModal(page,data){
   return await modal.present();
 }
 
+count = 0;
+limit = 10;
+device;
+logo;
+
   constructor(private api:DataService,
+    private toastController:ToastController,
     private navCtrl:NavController,
     private platform:Platform,
     private modalCtrl:ModalController) {
+    this.device = localStorage.getItem('device');
+    this.logo = localStorage.getItem('image');
 
     this.api.getRewards(localStorage.getItem('id_company')).subscribe(data => {
       console.log(data);
@@ -107,26 +124,56 @@ async editModal(page,data){
   // }
 
 
-  async scan(){
+  async scan(c,id){
     if(this.platform.is('android')){
       await BarcodeScanner.requestPermissions();
       const data = await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
       if (data.available) {
         const code = await this.startScanner();
-        this.handlerScanner(code[0].displayValue);
+        this.handlerScanner(code[0].displayValue,c,id);
       } else {
         try {
           await BarcodeScanner.installGoogleBarcodeScannerModule();
           const code = await this.startScanner();
-          this.handlerScanner(code[0].displayValue);
+          this.handlerScanner(code[0].displayValue,c,id);
         } catch (e) {
         }
       }
     }else{
       await BarcodeScanner.requestPermissions();
       const code = await this.startScanner();
-      this.handlerScanner(code[0].displayValue);
+      this.handlerScanner(code[0].displayValue,c,id);
     }
+  }
+
+  user_id;
+  isreset = false;
+
+  updateReward(){
+    this.isreset = true;
+
+    let data = {
+      user_id: this.user_id,
+      limit: this.limit
+    }
+    this.api.resetRewardLogs(data).subscribe(data => {
+      if(data.status == 200 ){
+        this.count = this.count-this.limit;
+        this.presentToast('¡Se canjeo recompensa!','success','top')
+      }
+    },err=> {
+      this.isreset = false;
+    });
+  }
+
+  async presentToast(message,color,p) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      color,
+      position: p
+    });
+    toast.present();
   }
 
   async startScanner() {
@@ -141,15 +188,29 @@ async editModal(page,data){
     return camera === 'granted' || camera === 'limited';
   }
 
-  handlerScanner(d){
+  successful;
+
+  handlerScanner(d,c,id){
+    console.log(d,c,id);
+
+      this.limit = c;
       let code = d.split('https://radi.pet/pets/')
-      alert(code);
+      this.showUser()
+      let data = {
+        code: code[1],
+        rewards_id:  id
+      }
+      this.api.createRewardLog(data).subscribe(data => {
+        console.log(data);
+        this.count = data.count;
+        this.user_id = data.user_id;
+        this.successful = true;
+      },err => {
+        this.successful = false;
+      });
+  }
 
-      // let data = {
-      //   id: hashids.decode(this.id)[0],
-      //   code: code[1]
-      // }
-
-
+  getPorcentaje(recaudado,limite): number {
+    return  (recaudado % limite) / limite * 100;
   }
 }

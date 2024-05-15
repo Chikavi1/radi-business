@@ -3,6 +3,7 @@ import { LoadingController, ModalController, Platform, ToastController } from '@
 import { DataService } from '../services/data.service';
 import { BarcodeFormat, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { PaymentsPage } from '../payments/payments.page';
 
 
 @Component({
@@ -34,12 +35,16 @@ export class PaymentPage implements OnInit {
   this.total = this.amount+this.radiservice;
 }
 
+account;
+
  constructor(
    private api:DataService,
     private toastController:ToastController,
     private platform:Platform,
     private loadingCtrl: LoadingController,
     private modalCtrl:ModalController) {
+      // 'acct_1NhHerBGXEEdgI6X'
+      this.account = localStorage.getItem('account');
       this.success  = {
         path: '../../../assets/lotties/success.json',
         autoplay: true,
@@ -66,6 +71,22 @@ export class PaymentPage implements OnInit {
 
   ngOnInit(){
 
+  }
+
+  seePayments(){
+    this.payments();
+  }
+
+  async payments(){
+    const modal = await this.modalCtrl.create({
+      component: PaymentsPage,
+      breakpoints: [1],
+      initialBreakpoint: 1
+    });
+    modal.onDidDismiss().then((data) => {
+
+    });
+    return await modal.present();
   }
 
 
@@ -139,7 +160,7 @@ export class PaymentPage implements OnInit {
 
       let data = {
         customer: this.customer,
-        account: 'acct_1NhHerBGXEEdgI6X',
+        account: this.account,
         total: this.total,
         description: this.description
       }

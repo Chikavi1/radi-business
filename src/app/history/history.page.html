@@ -9,8 +9,8 @@
         </ion-fab-button>
       </ion-fab>
       <ion-card style="padding:1em;">
-        <h2  class="capital" style="font-weight: bold;">{{history.name}} </h2>
-        <p class="capital">
+        <h2  class="capital" style="font-weight: bold;"  (click)="seePet(history.pet_id)">{{history.name}} </h2>
+        <p class="capital" (click)="seeUser(history.user_id)">
           {{history.user_name}}
         </p>
         <p class="capital">

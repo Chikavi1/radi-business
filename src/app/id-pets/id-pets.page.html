@@ -12,6 +12,10 @@
       <p class="text-center">{{ date |  date:'dd/MM/yyyy' }}</p>
   </div>
   <ion-button (click)="delete()" *ngIf="verified" style="padding: 0em 1em;" color="danger"  expand="block" >Cambiar Placa</ion-button>
-  <ion-button (click)="scan()" *ngIf="!verified" style="padding: 0em 1em;"  expand="block" >Enlazar</ion-button>
+  <ion-button (click)="handlerScanner('https://radi.pet/pets/RDxqp83r35')" *ngIf="!verified" style="padding: 0em 1em;"  expand="block" >Enlazar</ion-button>
 
 </ion-content>
+
+<ion-footer>
+  <ion-button expand="block" color="danger" (click)="close()">Cerrar</ion-button>
+</ion-footer>

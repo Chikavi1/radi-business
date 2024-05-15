@@ -5,6 +5,7 @@ import { DataService } from './services/data.service';
 import { ModalBlockPage } from './modal-block/modal-block.page';
 import { register } from 'swiper/element/bundle';
 import { ResultPage } from './result/result.page';
+import { TranslateService } from '@ngx-translate/core';
 
 register();
 @Component({
@@ -13,8 +14,10 @@ register();
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(private router:Router,private modalCtrl:ModalController,private api:DataService,private platform:Platform){
-
+  constructor(private router:Router,
+    private translateService:TranslateService,
+    private modalCtrl:ModalController,private api:DataService,private platform:Platform){
+      this.translate();
     this.checkDevice();
       if(localStorage.getItem('id_company')){
 
@@ -68,8 +71,8 @@ export class AppComponent {
 
     const modal = await this.modalCtrl.create({
       component: ResultPage,
-      breakpoints: [.95,1],
-      initialBreakpoint: .95,
+      breakpoints: [1],
+      initialBreakpoint: 1,
       componentProps:{
         modeRead: modeRead,
         code: code,
@@ -80,6 +83,13 @@ export class AppComponent {
       }
     });
     return await modal.present();
+  }
+
+  translate(){
+    this.translateService.addLangs(['es']);
+    let language = localStorage.getItem('language')?localStorage.getItem('language'):'es';
+    this.translateService.setDefaultLang(language);
+    this.translateService.currentLang = language;
   }
 
 }

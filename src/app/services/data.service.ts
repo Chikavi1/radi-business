@@ -23,10 +23,48 @@ export class DataService {
     if(localStorage.getItem('sandbox')){
       this.MODE = this.LOCAL_URL;
     }else{
-      this.MODE = this.LOCAL_URL;
+      this.MODE = this.PRODUCTION_URL;
     }
   }
 
+  getExtraData(data):any{
+    return this.http.post(this.MODE + 'extra-business/get', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  createExtraData(data):any{
+    return this.http.post(this.MODE + 'extra-business/create', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  updateExtraData(data):any{
+    return this.http.post(this.MODE + 'extra-business/update', JSON.parse(JSON.stringify(data)), this.options);
+
+  }
+
+  showOrganizationPets(PetId): any {
+    return this.http.get(this.MODE + 'pets/showOrg/' + PetId);
+  }
+
+  getPaymentsByUser(data):any{
+    return this.http.post(this.MODE + 'business/payments-by-user', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  getPaymentsByCompany(data):any{
+    return this.http.post(this.MODE + 'business/payments-by-company', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  createRewardLog(data):any{
+    return this.http.post(this.MODE + 'rewards/logs/create', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  resetRewardLogs(data):any{
+    return this.http.post(this.MODE + 'rewards/logs/reset', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+
+
+  getAddresses(id):any{
+    return this.http.get(this.MODE + 'addresses/user/'+id);
+  }
 
   updateRewards(data):any{
     return this.http.post(this.MODE + 'rewards/update', JSON.parse(JSON.stringify(data)), this.options);
@@ -78,7 +116,7 @@ export class DataService {
   }
 
   getBreedInfo(data){
-    return this.http.post(this.MODE + 'breeds/search', JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'animal-breeds/search', JSON.parse(JSON.stringify(data)), this.options);
   }
 
 
@@ -86,22 +124,26 @@ export class DataService {
     return this.http.post(this.MODE + 'identifications/get', JSON.parse(JSON.stringify({id:id_pet})), this.options);
   }
 
-  associatedId(data){
-    return this.http.post(this.MODE + 'identifications/associated', JSON.parse(JSON.stringify(data)), this.options);
+  associatedId(data):any{
+    return this.http.post(this.MODE + 'identifications/associate', JSON.parse(JSON.stringify(data)), this.options);
   }
 
   deleteIdentification(data){
-    return this.http.post(this.MODE+'deleteIdentification',JSON.parse(JSON.stringify(data)),this.options);
+    return this.http.post(this.MODE+'identifications/remove',JSON.parse(JSON.stringify(data)),this.options);
   }
 
 
   getAccount(data):any{
-    return this.http.post(this.MODE + 'getAccount',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'stripe/account',JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  getBanks(data):any{
+    return this.http.post(this.MODE + 'stripe/accounts/bank',JSON.parse(JSON.stringify(data)), this.options);
   }
 
 
   createLink(data):any{
-    return this.http.post(this.MODE + 'createLinks',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.post(this.MODE + 'stripe/addLink',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   getMovements(data):any{
@@ -158,7 +200,7 @@ export class DataService {
   }
 
   changePassword(data){
-    return this.http.put(this.MODE + 'business/event/delete',JSON.parse(JSON.stringify(data)), this.options);
+    return this.http.put(this.MODE + 'business/password',JSON.parse(JSON.stringify(data)), this.options);
   }
 
   getEventsByBusiness(id_company){
@@ -299,7 +341,7 @@ export class DataService {
   }
 
 
-  loginBusiness(data){
+  loginBusiness(data):any{
     return this.http.post(this.MODE + 'business/login',JSON.parse(JSON.stringify(data)), this.options);
   }
 

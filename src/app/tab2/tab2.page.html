@@ -9,7 +9,7 @@
           <ion-item *ngFor="let record of records" class="capital" lines="none" style="padding-bottom:1em;background-color: transparent;" button detail="true" detail-icon="caret-forward-outline">
             <ion-label (click)="History(record.id)">
               <h3 class="capital">{{record.name}}</h3>
-              <p class="capital" style="font-weight: bold;">{{record.user_name}}</p>
+              <p class="capital" style="font-weight: bold;" >{{record.user_name}}</p>
               <p class="capital">{{record.date | localizedDate:'fullDate'}}</p>
             </ion-label>
           </ion-item>
@@ -17,7 +17,7 @@
 
         <div *ngIf="records.length == 0" style="padding:1em;margin-top:6em;">
           <h2 style="text-align: center;">No hay historial por el momento.</h2>
-          <ion-button  color="dark" expand="full" color="dark" shape="round">Agregar visita</ion-button>
+          <!-- <ion-button  color="dark" expand="full" color="dark" shape="round">Agregar visita</ion-button> -->
 
         </div>
     </ion-col>

@@ -7,21 +7,21 @@
         <ion-col size="10">
           <h1 style="padding: 1em .5em;">Mascotas</h1>
         </ion-col>
-        <ion-col size="1">
+        <!-- <ion-col size="1">
           <h1 style="padding: 1em .5em;"><ion-icon name="add-outline" (click)="addPet()"></ion-icon></h1>
-        </ion-col>
+        </ion-col> -->
       </ion-row>
       <div *ngIf="pets.length != 0">
-        <ion-item *ngFor="let pet of pets" lines="none" style="padding-bottom: .5em;"  button detail="true" detail-icon="caret-forward-outline"(click)="pet(pet.id)">
+        <ion-item *ngFor="let pet of pets" lines="none" style="padding-bottom: .5em;"  button detail="true" detail-icon="caret-forward-outline">
           <!-- <ion-avatar slot="start">
             <img alt="Silhouette of a person's head" [src]="pet.photo" />
           </ion-avatar> -->
-          <ion-label>
+          <ion-label (click)="showPet(pet.id)">
             <h2>
               {{pet.name}}
             </h2>
-            <p *ngIf="pet.code">Con Placa de identificación</p>
-            <p *ngIf="!pet.code">Sin Placa de identificación</p>
+            <p *ngIf="pet.code" style="color:green;">Con Placa de identificación</p>
+            <p *ngIf="!pet.code" style="color:red;">Sin Placa de identificación</p>
 
           </ion-label>
         </ion-item>

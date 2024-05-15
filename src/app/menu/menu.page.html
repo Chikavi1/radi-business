@@ -1,0 +1,56 @@
+<ion-content [fullscreen]="true">
+<ion-row style="padding: 1em;" (click)="profile()">
+
+  <ion-col size="4" style="padding: .5em;" >
+    <img style="border-radius: 50%;" src="{{image}}" alt="">
+  </ion-col>
+  <ion-col  size="7">
+    <h1 style="font-weight: bold;">{{name}}</h1>
+    <p>Ver Perfil</p>
+  </ion-col>
+</ion-row>
+
+  <h2 style="padding:1em;">Menú de  Configuración</h2>
+  <div style="padding: 1em;">
+    <ion-item (click)="profile()" *ngIf="grantedPayments">
+      <ion-icon slot="end" name="person-circle-outline"></ion-icon>
+      Ver Perfil
+    </ion-item>
+
+    <ion-item (click)="billing()" *ngIf="grantedPayments">
+      <ion-icon slot="end" name="cash-outline"></ion-icon>
+      Configuración de pagos
+    </ion-item>
+
+    <ion-item (click)="changePass()" >
+      <ion-icon slot="end" name="lock-closed-outline"></ion-icon>
+      Cambiar contraseña
+    </ion-item>
+    <ion-item (click)="support()" >
+      <ion-icon slot="end" name="help-circle-outline"></ion-icon>
+      Soporte
+    </ion-item>
+
+    <ion-item  (click)="openBlank('https://www.radi.pet/privacy')" >
+      <ion-icon slot="end" name="finger-print-outline"></ion-icon>
+      Politicas de privacidad
+    </ion-item>
+    <ion-item (click)="openBlank('https://www.radi.pet/terms')" >
+      <ion-icon slot="end" name="globe-outline"></ion-icon>
+      Terminos y condiciones
+    </ion-item>
+
+    <ion-item (click)="infoApp()" >
+      <ion-icon slot="end" name="information-circle-outline"></ion-icon>
+      Acerca de
+    </ion-item>
+    <ion-item style="color: red !important;" (click)="logout()">
+      <ion-icon slot="end" name="exit-outline"></ion-icon>
+      Cerrar sesión
+    </ion-item>
+  </div>
+
+</ion-content>
+<ion-footer>
+  <ion-button color="danger" expand="block" (click)="close()">Cerrar</ion-button>
+</ion-footer>

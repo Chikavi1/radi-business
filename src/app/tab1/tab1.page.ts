@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ActionSheetController, ModalController, NavController, Platform, ToastController } from '@ionic/angular';
 import { ResultPage } from '../result/result.page';
-import { CreateLinksPage } from '../create-links/create-links.page';
 import { PaymentPage } from '../payment/payment.page';
 import { CreateBusinessPage } from '../create-business/create-business.page';
 import { SelectReadPage } from '../select-read/select-read.page';
@@ -13,6 +12,7 @@ import { CreatePromotionPage } from '../create-promotion/create-promotion.page';
 import { CreateEventPage } from '../create-event/create-event.page';
 import { CreateRewardPage } from '../create-reward/create-reward.page';
 import { BarcodeFormat, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
+import { CreateAdPage } from '../create-ad/create-ad.page';
 
 @Component({
   selector: 'app-tab1',
@@ -121,8 +121,8 @@ export class Tab1Page {
   async openResult(modeRead,code){
     const modal = await this.modalCtrl.create({
       component: ResultPage,
-      breakpoints: [.95,1],
-      initialBreakpoint: .95,
+      breakpoints: [1],
+      initialBreakpoint: 1,
       componentProps:{
         modeRead: modeRead,
         code: code,
@@ -182,21 +182,21 @@ export class Tab1Page {
  async  presentActionSheet(){
   let options = [
     {
-        text: 'Agregar Cliente',
+        text: 'Crear Cliente',
         icon: 'person-add',
         handler: () => {
           this.openAdds(AddClientPage)
         }
     },
     {
-      text: 'Agregar Evento',
+      text: 'Crear Evento',
       icon: 'calendar',
       handler: () => {
         this.openAdds(CreateEventPage);
       }
     },
     {
-      text: 'Agregar Promoción',
+      text: 'Crear Promoción',
       icon: 'pricetag',
       handler: () => {
        this.openAdds(CreatePromotionPage);
@@ -210,13 +210,21 @@ export class Tab1Page {
       }
     },
     {
-      text: 'Agregar Recompensa',
+      text: 'Crear Recompensa',
       icon: 'trophy',
       handler: () => {
         this.openAdds(CreateRewardPage);
 
       }
     },
+    // {
+    //   text: 'Crear Anuncio',
+    //   icon: 'megaphone',
+    //   handler: () => {
+    //     this.openAdds(CreateAdPage);
+
+    //   }
+    // },
     {
       text: 'Cancelar',
       icon: 'close',

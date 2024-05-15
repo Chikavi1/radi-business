@@ -72,6 +72,7 @@ export class ChangePasswordPage  {
           this.presentToast('Se ha actualizado correctamente','success');
           this.beforePage();
       },err=>{
+        console.log(err);
         this.presentToast('Hubo un error intente luego','warning');
       });
 

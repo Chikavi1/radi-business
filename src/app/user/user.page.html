@@ -5,7 +5,6 @@
       <img style="width: 8em; height: 8em; border-radius: 50%;" src="{{user.photo}}" alt="image">
     </div>
     <h1 style="text-align: center;">{{user.name}}</h1>
-
     <ion-segment mode="md" (ionChange)="segmentChange($event)"  style="margin-top: 3em;" [(ngModel)]="menu" [scrollable]="true">
       <ion-segment-button value="info">
        Info
@@ -16,32 +15,34 @@
       <ion-segment-button value="pets">
         Mascotas
       </ion-segment-button>
+      <ion-segment-button value="payments">
+        Cobros
+      </ion-segment-button>
       <ion-segment-button value="extras">
         Extras
       </ion-segment-button>
-      <ion-segment-button value="protect">
-        Info sensible
-      </ion-segment-button>
+
     </ion-segment>
 
 <div *ngIf="menu == 'info'">
   <h2>Información del usuario</h2>
   <small>Celular</small>
-  <p class="bold">{{user.cellphone}}</p>
+  <h2 class="bold">{{user.cellphone}}</h2>
   <small>Correo</small>
-  <p class="bold">{{user.email}}</p>
+  <h2 class="bold">{{user.email}}</h2>
   <small>Género</small>
-  <p *ngIf="user.gender == 1" class="bold">Hombre</p>
-  <p *ngIf="user.gender == 2" class="bold">Mujer</p>
+  <h2 *ngIf="user.gender == 1" class="bold">Hombre</h2>
+  <h2 *ngIf="user.gender == 2" class="bold">Mujer</h2>
   <small>Fecha de nacimiento</small>
-  <p *ngIf="user.birthday" class="bold">{{user.birthday | date:'dd/MM/yyyy'}} ({{age}} años)</p>
-  <p *ngIf="!user.birthday" class="bold">Información no proporcionada</p>
+  <h2 *ngIf="user.birthday" class="bold">{{user.birthday | date:'dd/MM/yyyy'}} ({{age}} años)</h2>
+  <h2 *ngIf="!user.birthday" class="bold">Información no proporcionada</h2>
 
   <small>Intereses</small>
   <p class="bold">{{interest}}</p>
   <small>Usuario en Radi Pets</small>
-  <p class="bold">Usuario desde {{user.createdAt  | date:'dd/MM/yyyy'}}</p>
+  <h2 class="bold">Usuario desde {{user.createdAt  | date:'dd/MM/yyyy'}}</h2>
 
+  <h2 style="margin-top: 2em;">Acciones</h2>
   <a style="text-decoration: none;" href = "mailto: {{user.email}}">
     <ion-item lines="none">
       <ion-label>Enviar correo</ion-label>
@@ -49,12 +50,37 @@
     </ion-item>
   </a>
 
+  <a *ngIf="user.cellphone" style="text-decoration: none;" href="tel:{{user.cellphone}}">
+    <ion-item lines="none">
+      <ion-label>Llamar </ion-label>
+      <ion-icon name="call-outline" slot="end"></ion-icon>
+    </ion-item>
+  </a>
+
+  <ion-card style="padding: 1em;">
+    <ion-item lines="none" (click)="setVisibleAddress()">
+      <ion-label>Ver direcciones </ion-label>
+      <ion-icon name="pin-outline" slot="end"></ion-icon>
+    </ion-item>
+
+    <div *ngIf="visibleAddress">
+      <div *ngIf="addresses.length != 0">
+        <div *ngFor="let address of addresses">
+          <p>{{address.thoroughfare}} {{ address.subThoroughfare }},{{ address.subLocality }},{{ address.postalCode }},{{ address.locality }}, <br> {{ address.administrativeArea }}, {{ address.country }}</p>
+        </div>
+      </div>
+      <div *ngIf="addresses.length == 0">
+        <p style="text-align: center !important;">No tiene direcciones agregadas</p>
+      </div>
+    </div>
+  </ion-card>
+
+
 
 </div>
 <div *ngIf="menu == 'visits'">
   <ion-card style="text-align: center;">
-    <h1>{{counter}}</h1>
-    <h3>visitas</h3>
+    <h3>Visitas</h3>
 
     <ion-item *ngFor="let record of records" class="capital" lines="none" style="padding-bottom:1em;background-color: transparent;" button detail="true" detail-icon="caret-forward-outline">
       <ion-label (click)="History(record.id)">
@@ -68,14 +94,20 @@
 
 <div *ngIf="menu == 'pets'">
   <h2>Mascotas</h2>
-  <ion-card *ngFor="let pet of pets">
+  <ion-card *ngFor="let pet of pets" (click)="seePets(pet.id)">
     <ion-row>
       <ion-col size="4">
-        <img style="border-radius: 50%;" src="https://static.wixstatic.com/media/55424f_5d0eece0efb84834879ae051d26e4752~mv2.jpg/v1/fill/w_428,h_438,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/DSC_1754.jpg" alt="">
+        <img style="border-radius: 50%;" [src]="pet.photo" alt="">
       </ion-col>
       <ion-col size="8">
         <h2 class="capital">{{pet.name}}</h2>
-        <p>tamaño</p>
+        <p *ngIf="pet.size == 'mn'">Mini</p>
+        <p *ngIf="pet.size == 'sm'">Pequeño</p>
+        <p *ngIf="pet.size == 'md'">Mediano</p>
+        <p *ngIf="pet.size == 'lg'">Grande</p>
+        <p *ngIf="pet.size == 'xl'">Extra grade</p>
+        <p *ngIf="pet.code" style="color:green;">Con Placa de identificación</p>
+        <p *ngIf="!pet.code" style="color:red;">Sin Placa de identificación</p>
       </ion-col>
     </ion-row>
 
@@ -85,22 +117,72 @@
 <div *ngIf="menu == 'extras'">
   <h2>Extras</h2>
   <p>Notas</p>
-  <p>Tiene suscripción que finaliza el 30/mayo/2024</p>
+  <div *ngIf="crudIs == 'create'">
+    <ion-textarea maxlength="350" rows="8" cols="17"  [(ngModel)]="notes" class="new-input" placeholder="Ingresa alguna nota sobre tu cliente" type="text"></ion-textarea>
+    <p>
+      <ion-icon  style="color: green;font-size: 1.3em;" (click)="setTos(false)" *ngIf="tos_accept" name="checkmark-circle-outline"></ion-icon>
+      <ion-icon style="color: red;font-size: 1.3em;" (click)="setTos(true)" *ngIf="!tos_accept" name="ban-outline"></ion-icon>
+      Acepto terminos y condiciones
+    </p>
+    <p>
+      <ion-icon  style="color: green;font-size: 1.3em;" (click)="setTof(false)" *ngIf="tof_accept" name="checkmark-circle-outline"></ion-icon>
+      <ion-icon  style="color: red;font-size: 1.3em;" (click)="setTof(true)"  *ngIf="!tof_accept" name="ban-outline"></ion-icon>
+      Acepto reglamento
+    </p>
 
-  <div style="margin-top: 3em;">
-    <ion-checkbox labelPlacement="end">Acepto terminos y condiciones </ion-checkbox>
-    <ion-checkbox labelPlacement="end">Acepto reglamento </ion-checkbox>
+    <ion-button color="dark" (click)="createExtraData()">Crear</ion-button>
+
+
   </div>
+  <div *ngIf="crudIs == 'update'">
+    <ion-textarea maxlength="350" rows="8" cols="17"  [(ngModel)]="notes" class="new-input" placeholder="Ingresa alguna nota sobre tu cliente" type="text"></ion-textarea>
+    <div style="margin-top: 3em;">
+      <p>
+        <ion-icon  style="color: green;font-size: 1.3em;" (click)="setTos(false)" *ngIf="tos_accept" name="checkmark-circle-outline"></ion-icon>
+        <ion-icon  style="color: red;font-size: 1.3em;" (click)="setTos(true)" *ngIf="!tos_accept" name="ban-outline"></ion-icon>
+        Acepto terminos y condiciones
+      </p>
+
+      <p>
+        <ion-icon style="color: green;font-size: 1.3em;" (click)="setTof(false)" *ngIf="tof_accept" name="checkmark-circle-outline"></ion-icon>
+        <ion-icon  style="color: red;font-size: 1.3em;" (click)="setTof(true)"   *ngIf="!tof_accept" name="ban-outline"></ion-icon>
+        Acepto reglamento
+      </p>
+
+    </div>
+    <ion-button color="dark" (click)="updateExtraData()">Actualizar</ion-button>
+
+  </div>
+
+
 
 </div>
 
-<div *ngIf="menu == 'protect'">
-  <h2>Información sensible</h2>
-  <p>Dirección</p>
-  <p>san mateo evangelista</p>
-  <ion-button>Ver más</ion-button>
-  <p>Identidad</p>
-  <p>RODL990310HJCJZS05</p>
+
+<div *ngIf="menu == 'payments'">
+  <h2>Cobros recientes </h2>
+  <div *ngIf="!account">
+    <p style="padding:1em;text-align: center !important;">No tienes habilitado los pagos</p>
+  </div>
+  <div  *ngIf="account">
+    <div *ngIf="payments.length != 0">
+      <div *ngFor="let payment of payments">
+        <ion-row>
+          <ion-col size="11">
+            <h3 style="font-weight: bold;">{{(payment.amount - payment.application_fee_amount)/100}} <span style="text-transform: uppercase;">{{ payment.currency}}</span> </h3>
+            <p> {{payment.created * 1000 | date:'dd/MM/yyyy'}}</p>
+          </ion-col>
+          <ion-col size="1" (click)="seeReceipt(payment.receipt_url)">
+            <h2><ion-icon name="document-text-outline"></ion-icon></h2>
+          </ion-col>
+        </ion-row>
+
+      </div>
+    </div>
+    <div  *ngIf="payments.length == 0">
+      <h2 style="text-align: center;margin-top: 4em;">No tiene cobros</h2>
+    </div>
+  </div>
 </div>
 
 

@@ -5,6 +5,8 @@ import * as moment from 'moment';
 import { HistoryPage } from '../history/history.page';
 import { VaccinePage } from '../vaccine/vaccine.page';
 import { UpdatePetPage } from '../update-pet/update-pet.page';
+import { PetPage } from '../pet/pet.page';
+import { UserPage } from '../user/user.page';
 
 
 declare var require: any;
@@ -148,8 +150,8 @@ export class ResultPage implements OnInit {
   async History(id){
     const modal = await this.modalctrl.create({
       component: HistoryPage,
-      breakpoints: [.75,1],
-      initialBreakpoint: .75,
+      breakpoints: [1],
+      initialBreakpoint: 1,
       componentProps:{
         id: id,
       }
@@ -211,8 +213,8 @@ export class ResultPage implements OnInit {
   async updatePet(){
     const modal = await this.modalctrl.create({
       component: UpdatePetPage,
-      breakpoints: [.75,1],
-      initialBreakpoint: .75,
+      breakpoints: [1],
+      initialBreakpoint: 1,
       componentProps:{
         id: this.petId,
       }
@@ -251,6 +253,34 @@ export class ResultPage implements OnInit {
 
     await alert.present();
   }
+
+  goUser(id){
+    console.log(id);
+    this.goto(id,UserPage);
+  }
+
+  goPet(id){
+    console.log(id);
+    this.goto(id,PetPage);
+  }
+
+  async goto(id,page){
+    const modal = await this.modalctrl.create({
+      component: page,
+      breakpoints: [1],
+      initialBreakpoint: 1,
+      componentProps:{
+        id: id,
+      }
+    });
+    modal.onDidDismiss().then((data) => {
+      if(data['data']){
+      }
+    });
+    return await modal.present();
+  }
+
+
 
   async aresuredelete(id,index,type) {
     const alert = await this.alertCtrl.create({

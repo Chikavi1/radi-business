@@ -58,8 +58,8 @@ export class Tab4Page {
   async promotion(id){
     const modal = await this.modalCtrl.create({
       component: PromotionPage,
-      breakpoints: [.75,1],
-      initialBreakpoint: .75,
+      breakpoints: [1],
+      initialBreakpoint: 1,
       componentProps:{
         id: id,
       }

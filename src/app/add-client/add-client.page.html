@@ -1,21 +1,69 @@
 <ion-content >
   <div style="padding: 1em;">
+    <h2 style="font-weight: bold;">Agregar cliente</h2>
 
-    <h2>Agregar cliente</h2>
+      <h1>Cliente</h1>
+      <p>Nombre</p>
+      <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="name"  ></ion-input>
+      <p>Correo</p>
+      <ion-input class="new-input" placeholder="Ingresa correo" [(ngModel)]="email"  ></ion-input>
+      <p>Celular</p>
+      <ion-input class="new-input" placeholder="Ingresa número de celular" [(ngModel)]="cellphone"  ></ion-input>
+      <p>Género</p>
+      <ion-chip (click)="setGender(1)" [ngClass]="{'selected' : gender == 1 }">
+        Hombre
+      </ion-chip>
+      <ion-chip (click)="setGender(2)" [ngClass]="{'selected' : gender == 2 }">
+        Mujer
+      </ion-chip>
+
+      <ion-datetime-button datetime="datetime" ></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime id="datetime" presentation="date" [(ngModel)]="birthday"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+
+    <h1 style="margin-top: 2em;">Mascota</h1>
     <p>Nombre</p>
-    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="name"  ></ion-input>
-    <p>Correo</p>
-    <ion-input class="new-input" placeholder="Ingresa correo" [(ngModel)]="email"  ></ion-input>
-    <p>Celular</p>
-    <ion-input class="new-input" placeholder="Ingresa número de celular" [(ngModel)]="cellphone"  ></ion-input>
+    <ion-input class="new-input" placeholder="Ingresa nombre de la mascota" [(ngModel)]="pet_name"></ion-input>
     <p>Género</p>
-    <ion-chip (click)="setGender(1)" [ngClass]="{'selected' : gender == 1 }">
-      Hombre
+    <ion-chip (click)="setPetGender(1)" [ngClass]="{'selected' : pet_gender == 1 }">
+      Macho
     </ion-chip>
-    <ion-chip (click)="setGender(2)" [ngClass]="{'selected' : gender == 2 }">
-      Mujer
+    <ion-chip (click)="setPetGender(2)" [ngClass]="{'selected' : pet_gender == 2 }">
+      Hembra
+    </ion-chip>
+    <p>Especie</p>
+    <ion-chip (click)="setSpecie(2)" [ngClass]="{'selected' : pet_specie == 2 }">
+      Perro
+    </ion-chip>
+    <ion-chip (click)="setSpecie(1)" [ngClass]="{'selected' : pet_specie == 1 }">
+      Gato
+    </ion-chip>
+    <p>Tamaño</p>
+    <ion-chip (click)="setSize('mn')" [ngClass]="{'selected' : pet_size == 'mn' }">
+      Mini
+    </ion-chip>
+    <ion-chip (click)="setSize('sm')" [ngClass]="{'selected' : pet_size == 'sm' }">
+      Pequeño
+    </ion-chip>
+    <ion-chip (click)="setSize('md')" [ngClass]="{'selected' : pet_size == 'md' }">
+      Mediano
+    </ion-chip>
+    <ion-chip (click)="setSize('lg')" [ngClass]="{'selected' : pet_size == 'lg' }">
+      Grande
+    </ion-chip>
+    <ion-chip (click)="setSize('xl')" [ngClass]="{'selected' : pet_size == 'xl' }">
+      Extra Grande
     </ion-chip>
 
+    <ion-datetime-button datetime="datetime2" ></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime id="datetime2" presentation="date"  [(ngModel)]="pet_birthday"></ion-datetime>
+          </ng-template>
+        </ion-modal>
   </div>
 
 </ion-content>
@@ -25,7 +73,8 @@
       <ion-button color="danger" expand="block" (click)="back()">Volver</ion-button>
     </ion-col>
     <ion-col>
-      <ion-button expand="block" [disabled]="!name || !email " (click)="send()">Agregar cliente</ion-button>
+      <ion-button expand="block"
+      [disabled]="!name || !email || !pet_name || !pet_gender || !pet_specie || !pet_size" (click)="send()">Agregar cliente</ion-button>
     </ion-col>
   </ion-row>
 </ion-footer>

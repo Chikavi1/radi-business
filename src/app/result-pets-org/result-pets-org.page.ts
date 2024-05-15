@@ -250,8 +250,8 @@ export class ResultPetsOrgPage implements OnInit {
   async updatePet(){
     const modal = await this.modalctrl.create({
       component: UpdatePetPage,
-      breakpoints: [.75,1],
-      initialBreakpoint: .75,
+      breakpoints: [1],
+      initialBreakpoint: 1,
       componentProps:{
         id: this.petId,
       }

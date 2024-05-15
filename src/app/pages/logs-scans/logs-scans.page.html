@@ -1,8 +1,11 @@
 <ion-content>
+  <ion-row>
+    <ion-col [size]="device=='tablet'?10:12" [offset]="device=='tablet'?1:0">
+
 
   <div *ngIf="step == 1">
     <div *ngIf="rewards.length == 0">
-      <h2 style="padding: 1em;text-align: center;">No tienes recompensas creadas</h2>
+      <h2 style="padding: 1em;text-align: center;margin-top: 4em;">No tienes recompensas creadas</h2>
     </div>
     <ion-button style="padding:1em;" expand="block"   color="dark"(click)="createModal()">Crear Recompensa</ion-button>
 
@@ -20,7 +23,7 @@
         </p>
         <ion-row>
           <ion-col>
-            <ion-button expand="block" (click)="scan()" color="dark">Escanear</ion-button>
+            <ion-button expand="block" (click)="handlerScanner('https://radi.pet/pets/RDxqp83r35',item.count,item.id)" color="dark">Escanear</ion-button>
           </ion-col>
           <ion-col>
             <ion-button  expand="block" color="warning" (click)="edit(item)">
@@ -34,77 +37,45 @@
   </div>
 
   <div *ngIf="step == 2">
-    <ion-row style="margin-top:2em;">
-      <ion-col size="3" offset="1">
-        <img style="border-radius: 50%;" src="https://luismigueloficial.com/themes/lm/assets/images/2000_s_mov.jpg" alt="">
-      </ion-col>
-      <ion-col size="7">
-        <small>Cliente</small>
-        <h2 style="margin-top: -.1em;">Luis Rojas</h2>
-        <p>Usuario desde 20/Nov/2020</p>
-      </ion-col>
-    </ion-row>
 
-    <h2 style="text-align: center;margin-top: 2em;">Compras</h2>
-    <ion-row>
-      <ion-col size="2" offset="1">
-        <!-- <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
-        </div> -->
-        <img src="../../../assets/img/logo.png" alt="">
-      </ion-col>
-      <ion-col size="2">
-        <!-- <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
-        </div> -->
-        <img src="../../../assets/img/logo.png" alt="">
+    <div *ngIf="successful">
+      <div style="text-align: center !important;">
 
-      </ion-col>
-      <ion-col size="2">
-        <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
-        </div>
-      </ion-col>
-      <ion-col size="2">
-        <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
-        </div>
-      </ion-col>
-      <ion-col size="2">
-        <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
-        </div>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size="2" offset="1">
-        <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
-        </div>
-      </ion-col>
-      <ion-col size="2">
-        <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
-        </div>
-      </ion-col>
-      <ion-col size="2">
-        <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
-        </div>
-      </ion-col>
-      <ion-col size="2">
-        <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
-        </div>
-      </ion-col>
-      <ion-col size="2">
-        <div style="height: 4em;width: 4em;background-color: gray;border-radius: 50%;border-style: dotted solid;">
-        </div>
-      </ion-col>
-    </ion-row>
-    <div style="padding: 1em;">
-      <ion-checkbox labelPlacement="end">Agregar visita</ion-checkbox>
+        <img [src]="logo" style="border-radius: 50%;width: 25em;height: 25em;padding: 5em;" alt="">
+        <h2 style="text-align: center;margin-top: 2em;">Colección</h2>
+      </div>
+
+      <ion-card>
+        <ion-progress-bar value="{{ (count*limit)/100 }}" color="success"></ion-progress-bar>
+        <ion-row>
+          <ion-col size="1">
+            {{count}}
+          </ion-col>
+          <ion-col offset="10" size="1">
+            {{limit}}
+          </ion-col>
+        </ion-row>
+        <p style="text-align: center;">Faltan {{limit - count }} para la recompensa</p>
+        <ion-button [disabled]="limit > count || isreset" expand="block" color="dark" style="padding: 1em;" (click)="updateReward()">Entregar recompensa</ion-button>
+      </ion-card>
+    </div>
+    <div *ngIf="!successful" style="padding: 1em;margin-top:4em;">
+      <h2 class="text-center">La placa no es válida, no se encontró ningún resultado</h2>
+      <ion-button (click)="back()" expand="block" color="dark">Intenta con otra placa</ion-button>
     </div>
 
-    <ion-button expand="block" color="dark" style="padding: 1em;" (click)="scan()">Agregar estampa</ion-button>
+
+
   </div>
 
-
-
+</ion-col>
+</ion-row>
 
 </ion-content>
 
 <ion-footer>
-  <ion-button expand="block" color="danger" (click)="back()">Volver</ion-button>
+  <ion-button expand="block" color="danger" *ngIf="step == 1" (click)="close()">Volver</ion-button>
+
+  <ion-button expand="block" color="danger" *ngIf="step == 2" (click)="back()">Regresar</ion-button>
+
 </ion-footer>

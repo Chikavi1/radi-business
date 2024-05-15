@@ -89,8 +89,8 @@ export class PetsOrgPage implements OnInit {
   async openResult(modeRead,code,id?){
     const modal = await this.modalCtrl.create({
       component: ResultPetsOrgPage,
-      breakpoints: [.95,1],
-      initialBreakpoint: .95,
+      breakpoints: [1],
+      initialBreakpoint: 1,
       componentProps:{
         modeRead: modeRead,
         code: code,

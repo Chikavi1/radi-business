@@ -39,8 +39,8 @@ export class Tab2Page {
   async History(id){
     const modal = await this.modalCtrl.create({
       component: HistoryPage,
-      breakpoints: [.75,1],
-      initialBreakpoint: .75,
+      breakpoints: [1],
+      initialBreakpoint: 1,
       componentProps:{
         id: id,
       }
@@ -54,4 +54,6 @@ export class Tab2Page {
     });
     return await modal.present();
   }
+
+
 }

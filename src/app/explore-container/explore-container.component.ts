@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { ProfilePage } from '../profile/profile.page';
 import { QrcodeappPage } from '../qrcodeapp/qrcodeapp.page';
+import { MenuPage } from '../menu/menu.page';
 
 @Component({
   selector: 'app-explore-container',
@@ -19,9 +19,9 @@ export class ExploreContainerComponent {
 
   async Profile(){
     const modal = await this.modalCtrl.create({
-      component: ProfilePage,
-      breakpoints: [.95,1],
-      initialBreakpoint: .95,
+      component: MenuPage,
+      breakpoints: [1],
+      initialBreakpoint: 1,
       componentProps:{
         id:1,
       }

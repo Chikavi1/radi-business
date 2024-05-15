@@ -35,6 +35,10 @@ const routes: Routes = [
         path: 'adoptions',
         loadChildren: () => import('../pets-org/pets-org.module').then(m => m.PetsOrgPageModule)
       },
+      {
+        path: 'ads',
+        loadChildren: () => import('../ads/ads-routing.module').then(m => m.AdsPageRoutingModule)
+      },
 
       {
         path: '',

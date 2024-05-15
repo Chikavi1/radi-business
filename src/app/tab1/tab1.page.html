@@ -19,38 +19,42 @@
         <!-- </div> -->
       <ion-card style="background-color: transparent !important;">
         <ion-card-header>
-          <ion-card-title>Menú</ion-card-title>
+          <ion-card-title>Inicio</ion-card-title>
           <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
         </ion-card-header>
         <ion-card-content>
           <ion-list>
+
             <ion-item lines="none" (click)="goTo('/tab3')">
+              <ion-icon slot="end" name="people-outline"></ion-icon>
               <ion-label>Listado de Clientes</ion-label>
             </ion-item>
 
             <ion-item lines="none" (click)="goTo('/pets')">
+              <ion-icon slot="end" name="paw-outline"></ion-icon>
               <ion-label>Listado de Mascotas</ion-label>
             </ion-item>
 
             <ion-item lines="none" (click)="goTo('/logs-scans')">
-
+              <ion-icon slot="end" name="gift-outline"></ion-icon>
               <ion-label>Recompensas</ion-label>
             </ion-item>
 
             <ion-item lines="none" (click)="goTo('/tab4')">
-
+              <ion-icon slot="end" name="pricetags-outline"></ion-icon>
               <ion-label>Promociones</ion-label>
             </ion-item>
 
             <ion-item lines="none" (click)="openPayments()" *ngIf="grantedPayments">
-
+              <ion-icon slot="end" name="card-outline"></ion-icon>
               <ion-label>Cobrar</ion-label>
             </ion-item>
 
             <ion-item lines="none" (click)="goTo('/tab5')">
-
+              <ion-icon slot="end" name="stats-chart-outline"></ion-icon>
               <ion-label>Estadisticas</ion-label>
             </ion-item>
+
 
             <ion-item lines="none" *ngIf="grantedLinks" (click)="checkPlacas()" >
 

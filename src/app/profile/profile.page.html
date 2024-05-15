@@ -38,9 +38,7 @@
     <h1 style="font-weight: bold;" [ngStyle]="{'color': company.fn_color ? company.fn_color : '#17202F' }">{{company.name}}</h1>
   </ion-col>
 </ion-row>
-
 <div style="padding: 1em;">
-
   <div *ngIf="!edit">
     <ion-fab color="light" vertical="top" horizontal="end"  slot="fixed" (click)="editing()">
       <ion-fab-button mode="ios" size="small"color="light"  style="outline: none !important">
@@ -64,32 +62,12 @@
      {{company.description}}
     </p>
 
-    <ion-button style="margin-bottom:4em;" expand="full" color="tertiary"  (click)="share()" shape="round">Compartir Perfil</ion-button>
+    <p>Dirección</p>
+    {{company.address}}
 
-    <ion-item (click)="billing()" *ngIf="grantedPayments">
-      Configuración de pagos
-    </ion-item>
+    <ion-button style="margin-bottom:4em;margin-top:2em" expand="full" color="tertiary"  (click)="share()" shape="round">Compartir Perfil</ion-button>
 
-    <ion-item (click)="changePass()" >
-      Cambiar contraseña
-    </ion-item>
-    <ion-item (click)="support()" >
-      Soporte
-    </ion-item>
 
-    <ion-item  (click)="openBlank('https://www.radi.pet/privacy')" >
-      Politicas de privacidad
-    </ion-item>
-    <ion-item (click)="openBlank('https://www.radi.pet/terms')" >
-      Terminos y condiciones
-    </ion-item>
-
-    <ion-item (click)="infoApp()" >
-      Acerca de
-    </ion-item>
-    <ion-item style="color: red !important;" (click)="logout()">
-      Cerrar sesión
-    </ion-item>
   </div>
   <div *ngIf="edit">
     <p>Descripción</p>

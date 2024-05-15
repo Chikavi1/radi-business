@@ -165,6 +165,34 @@ const routes: Routes = [
   {
     path: 'pets',
     loadChildren: () => import('./pets/pets.module').then( m => m.PetsPageModule)
+  },
+  {
+    path: 'pet',
+    loadChildren: () => import('./pet/pet.module').then( m => m.PetPageModule)
+  },
+  {
+    path: 'payments',
+    loadChildren: () => import('./payments/payments.module').then( m => m.PaymentsPageModule)
+  },
+  {
+    path: 'menu',
+    loadChildren: () => import('./menu/menu.module').then( m => m.MenuPageModule)
+  },
+  {
+    path: 'ads',
+    loadChildren: () => import('./ads/ads.module').then( m => m.AdsPageModule)
+  },
+  {
+    path: 'ad',
+    loadChildren: () => import('./ad/ad.module').then( m => m.AdPageModule)
+  },
+  {
+    path: 'create-ad',
+    loadChildren: () => import('./create-ad/create-ad.module').then( m => m.CreateAdPageModule)
+  },
+  {
+    path: 'method-payments',
+    loadChildren: () => import('./method-payments/method-payments.module').then( m => m.MethodPaymentsPageModule)
   }
 ];
 @NgModule({

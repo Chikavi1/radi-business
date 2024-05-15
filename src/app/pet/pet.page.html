@@ -1,0 +1,239 @@
+
+
+<ion-content [fullscreen]="true">
+  <div *ngIf="!show">
+    <ion-skeleton-text animated="true" style="width: 100%;height: 23em;margin-top:-1em;"></ion-skeleton-text>
+    <div style="padding:1em;">
+      <ion-skeleton-text animated="true" style="width: 35%;margin-top:1.5em;"></ion-skeleton-text>
+      <ion-skeleton-text animated="true" style="width: 25%;height:1.7em;margin-top:.5em;border-radius: 1em;"></ion-skeleton-text>
+      <ion-skeleton-text animated="true" style="width: 45%;height:1.7em;margin-top:2.5em;"></ion-skeleton-text>
+      <ion-skeleton-text animated="true" style="width: 75%;"></ion-skeleton-text>
+      <ion-skeleton-text animated="true" style="width: 85%;"></ion-skeleton-text>
+      <ion-skeleton-text animated="true" style="width: 75%;"></ion-skeleton-text>
+      <ion-skeleton-text animated="true" style="width: 75%;margin-top: 1.3em;"></ion-skeleton-text>
+      <ion-row style="margin-top: 1em;">
+        <ion-col size="6">
+          <ion-skeleton-text animated="true" style="width: 100%;height: 8em;border-radius: 1em;"></ion-skeleton-text>
+
+        </ion-col>
+        <ion-col size="6">
+          <ion-skeleton-text animated="true" style="width: 100%;height: 8em;border-radius: 1em;"></ion-skeleton-text>
+        </ion-col>
+
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-skeleton-text animated="true" style="width: 100%;height: 8em;border-radius: 1em;"></ion-skeleton-text>
+
+        </ion-col>
+        <ion-col size="6">
+          <ion-skeleton-text animated="true" style="width: 100%;height: 8em;border-radius: 1em;"></ion-skeleton-text>
+        </ion-col>
+
+      </ion-row>
+
+    </div>
+  </div>
+
+  <div *ngIf="show">
+
+    <div *ngIf="!noContent">
+
+
+    <ion-row [ngClass]="{'wrapper' : device == 'tablet' }" >
+      <ion-col [size]="device == 'tablet'?5:12"  [ngClass]="{'stuck' : device == 'tablet' }" >
+        <img  style="object-fit: cover;height: 20em;width: 100%;" [src]="pet.photo" [alt]="pet.name">
+
+
+      <ion-row >
+        <ion-col size="9" style="margin-left: 1em;" class="padding-1">
+          <span style="font-weight: 300;font-size: 1.1em;" *ngIf="pet.status === 0">{{ 'pets.restinpeace' | translate }}</span>
+          <h3 style="font-weight: bold;font-size:1.5em; text-transform: capitalize;
+          ">{{pet.name}}</h3>
+          <ion-chip *ngIf="necklaceTitle">
+            <ion-label>{{ necklaceTitle | translate }}</ion-label>
+          </ion-chip>
+          <!-- <img style="width: 20%;" src={{necklaceSrc}} alt=""> -->
+          <ion-chip color="success" *ngIf="pet.sterelized">
+            <ion-label>{{ 'pets.sterilized' | translate }}</ion-label>
+          </ion-chip>
+          <!-- <ion-chip color="success" >
+            <ion-label>Adoptado</ion-label>
+          </ion-chip> -->
+          <ion-chip color="danger" *ngIf="!pet.sterelized">
+            <ion-label>{{ 'pets.nosterilezed' | translate }}</ion-label>
+          </ion-chip>
+          <ion-chip color="warning" *ngIf="pet.muzzle">
+            <ion-icon name="warning-outline"></ion-icon>
+            <ion-label>{{ 'pets.needmuzzle' | translate }}</ion-label>
+          </ion-chip>
+
+
+
+
+
+        </ion-col>
+        <ion-col size="1"></ion-col>
+        <ion-col size="1">
+          <svg *ngIf="pet.status === 0" style="height:3em;width: 3em;margin-top:1em" enable-background="new 0 0 504.928 504.928" height="512" viewBox="0 0 504.928 504.928" width="512" xmlns="http://www.w3.org/2000/svg"><g><g><path d="m195.764 153.542c-20.378-28.302-23.348-65.262-7.752-96.456 13.147-26.291 39.572-42.624 68.967-42.624s55.82 16.333 68.967 42.624c15.597 31.194 12.627 68.154-7.751 96.456l-42.876 59.55 45.805 63.016 54.171-89.79.222-.379c22.004-39.041 21.644-85.45-.965-124.144s-62.862-61.795-107.697-61.795l-9.876.014v-.014h-9.897c-44.815 0-85.068 23.101-107.675 61.795-22.609 38.695-22.969 85.103-.965 124.144l192.436 318.988 85.077-47.856z"/><path d="m256.979 89.069c18.62 0 35.859 7.59 48.224 20.789 2.304-13.195.425-27.02-5.812-39.494-8.084-16.168-24.336-26.212-42.412-26.212s-34.327 10.045-42.412 26.213c-6.238 12.477-8.117 26.304-5.81 39.502 12.364-13.203 29.601-20.798 48.222-20.798z"/><path d="m186.828 324.334-97.855 127.66 94.106 52.934 56.639-93.883z"/></g></g></svg>
+        </ion-col>
+      </ion-row>
+
+      <ion-card *ngIf="pet.status === 0" style="border-radius: 1em;padding: 1em">
+        <ion-card-title>{{ 'pets.restinpeace' | translate }} <span style="text-transform: capitalize; ">{{ pet.name }}</span> </ion-card-title>
+        <p style="font-size: 1.3em;font-weight: 300;">{{ 'pets.messagerest' | translate }}</p>
+      </ion-card>
+
+
+
+
+      <h3 style="padding: 1em;font-weight: bold;">{{ 'pets.about' | translate }}</h3>
+      <p style="margin-left: 2em;" class="capital" >{{ pet.description }}</p>
+
+      <h3 style="padding: 1em;font-weight: bold;" *ngIf="pet.chronic_disease">{{ 'pets.chronicdiseases' | translate }}</h3>
+      <p style="margin-left: 2em;color:gray" *ngIf="!pet.chronic_disease">{{ 'pets.nochronicdiseases' | translate }}</p>
+      <p style="margin-left: 2em;" *ngIf="pet.chronic_disease" >{{ pet.chronic_disease }}</p>
+
+
+      </ion-col>
+
+      <ion-col [size]="device === 'tablet'?7:12" [ngClass]="{'fixedbox' : device == 'tablet' }" >
+        <ion-grid style="padding: .5em;">
+          <ion-row >
+            <ion-col>
+              <div style="height:10em;background-color: #6495ED;padding:1em;color:white;border-radius: 1em;">
+                <ion-icon  style="zoom:2.0;" name="calendar-outline"></ion-icon>
+                <h3>{{ 'pets.age' | translate }}</h3>
+                <h2>
+                  <div *ngIf="pet.birthday != null">
+                      <span *ngIf="dateFormat === 'days'">
+                        <span *ngIf="age === 1">{{ age }} {{ 'pets.day' | translate }} </span>
+                        <span *ngIf="age != 1">{{ 'pets.newborn' | translate }}</span>
+                      </span>
+                      <span *ngIf="dateFormat === 'months'">
+                        <span *ngIf="age === 1">{{ age }} {{ 'pets.month' | translate }}</span>
+                        <span *ngIf="age != 1">{{ age }} {{ 'pets.months' | translate }}</span>
+                      </span>
+                      <span *ngIf="dateFormat === 'years'">
+                        <span *ngIf="age === 1">{{ age }} {{ 'pets.year' | translate }}</span>
+                        <span *ngIf="age != 1">{{ age }} {{ 'pets.years' | translate }}</span>
+                      </span>
+                      <!-- {{ 'pets.years' | translate }} -->
+                    </div>
+                    <div *ngIf="pet.birthday === null">
+                      <span>{{ 'pets.nodefined' | translate }}</span>
+                    </div>
+                  </h2>
+                </div>
+            </ion-col>
+            <ion-col>
+              <div style="height:10em;background-color: #9E700B;padding:1em;color:white;border-radius: 1em;">
+                <ion-icon  style="zoom:2.0;" name="paw"></ion-icon>
+                <h3> {{ 'pets.size' | translate }}</h3>
+                <h2 class="bold" *ngIf="pet.size === 'mn'">{{ 'pets.mini' | translate }}</h2>
+                <h2 class="bold" *ngIf="pet.size === 'sm'">{{ 'pets.small' | translate }}</h2>
+                <h2 class="bold" *ngIf="pet.size === 'md'">{{ 'pets.medium' | translate }}</h2>
+                <h2 class="bold" *ngIf="pet.size === 'lg'">{{ 'pets.big' | translate }}</h2>
+                <h2 class="bold" *ngIf="pet.size === 'xl'">{{ 'pets.extra-big' | translate }}</h2>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <div style="height:10em;background-color: #1B499E;padding:1em;color:white;border-radius: 1em;">
+                <ion-icon  style="zoom:2.0;" name="male-female-outline"></ion-icon>
+                <h3>{{ 'pets.gender' | translate }} </h3>
+                <h2 class="bold" *ngIf="pet.gender == 1">{{ 'pets.male' | translate }}</h2>
+                <h2 class="bold" *ngIf="pet.gender == 2">{{ 'pets.female' | translate }}</h2>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div style="height:10em;background-color: #EBB53F;padding:1em;color:white;border-radius: 1em;">
+                <ion-icon  style="zoom:2.0;" name="color-palette-outline"></ion-icon>
+                <h3>{{ 'pets.specie' | translate }}</h3>
+                <h2 class="bold" *ngIf="pet.specie === 1">{{ 'pets.cat' | translate }}</h2>
+                <h2 class="bold" *ngIf="pet.specie === 2">{{ 'pets.dog' | translate }}</h2>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid>
+
+
+          <ion-card (click)="openBlank(pet.photo_booklet)" style="background-color: #293ce1;color:white;padding:1em;">
+            <ion-row >
+              <ion-col size="4">
+                <h1><ion-icon style="font-size: 3em;" name="clipboard-outline"></ion-icon></h1>
+              </ion-col>
+              <ion-col size="8" style="padding:.5em">
+                <h2>Cartilla de vacunación</h2>
+              </ion-col>
+            </ion-row>
+          </ion-card>
+
+
+    <ion-card *ngIf="pet.breed" >
+    <img style="width: 100%;" [src]="breedData.image" alt="image pet breed">
+    <div style=padding:1em;>
+
+      <h2>{{breedData.name}}</h2>
+      <!-- <p>{{ breedData.size }}</p> -->
+      <ion-row>
+        <ion-col>
+          <p>{{ 'pets.lifeexpentacy' | translate }}<br>
+          {{ breedData.lifeExpentacy }} {{ 'pets.years' | translate }}</p>
+        </ion-col>
+        <ion-col>
+          <p>{{ 'pets.minweight' | translate }} <br>
+            {{ breedData.minWeight }} KG
+          </p>
+
+        </ion-col>
+        <ion-col>
+          <p>
+            {{ 'pets.maxweight' | translate }}
+            <br>
+            {{ breedData.maxWeight }} KG
+          </p>
+
+        </ion-col>
+      </ion-row>
+      <p>{{ breedData.clean }}</p>
+      <p>{{ breedData.description }}</p>
+      <p>{{ breedData.behavior }}</p>
+      <p>
+        {{ 'pets.infobreed' | translate }}
+
+      </p>
+      <small>
+        {{ 'pets.source' | translate }}
+
+      </small>
+    </div>
+    </ion-card>
+
+        </ion-grid>
+
+      </ion-col>
+    </ion-row>
+  </div>
+  <div *ngIf="noContent">
+    <h2 class="text-center" style="margin-top:4em;">{{ 'pets.noexist' | translate }}</h2>
+    <ion-button (click)="close()" color="primary" expand="block" fill="clear">{{ 'createpet.back' | translate }}</ion-button>
+  </div>
+
+</div>
+
+<ion-fab (click)="presentActionSheet()" slot="fixed" color="success" vertical="bottom" horizontal="end" >
+  <ion-fab-button>
+    <ion-icon   name="ellipsis-vertical"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button (click)="close()" expand="block" color="danger" >Cerrar</ion-button>
+</ion-footer>

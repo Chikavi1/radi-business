@@ -4,6 +4,8 @@ import * as moment from 'moment';
 import { DataService } from '../services/data.service';
 import { CreateAchivementPage } from '../create-achivement/create-achivement.page';
 import { ReportPage } from '../report/report.page';
+import { UserPage } from '../user/user.page';
+import { PetPage } from '../pet/pet.page';
 
 
 @Component({
@@ -53,8 +55,8 @@ income;
   async createReport(){
     const modal = await this.modalctrl.create({
       component: ReportPage,
-      breakpoints: [.95,1],
-      initialBreakpoint: .95,
+      breakpoints: [1],
+      initialBreakpoint: 1,
       componentProps:{
         id: this.history.id,
         user_id: this.history.user_id,
@@ -71,8 +73,8 @@ income;
   async createAchivementModal(){
     const modal = await this.modalctrl.create({
       component: CreateAchivementPage,
-      breakpoints: [.95,1],
-      initialBreakpoint: .95,
+      breakpoints: [1],
+      initialBreakpoint: 1,
       componentProps:{
         id: this.history.id,
         pet_id: this.history.pet_id
@@ -113,5 +115,49 @@ income;
       duration: 2000
     });
     toast.present();
+  }
+
+  async pet(id){
+    const modal = await this.modalctrl.create({
+      component: PetPage,
+      breakpoints: [1],
+      initialBreakpoint: 1,
+      componentProps:{
+        id: id,
+      }
+    });
+    modal.onDidDismiss().then((data) => {
+      if(data['data']){
+        const info = data['data'];
+        console.log(info);
+      }
+    });
+    return await modal.present();
+  }
+
+  seePet(id){
+    this.pet(id);
+  }
+
+  async User(id){
+    const modal = await this.modalctrl.create({
+      component: UserPage,
+      breakpoints: [1],
+      initialBreakpoint: 1,
+      componentProps:{
+        id: id,
+      }
+    });
+    modal.onDidDismiss().then((data) => {
+      if(data['data']){
+        const info = data['data'];
+        console.log(info);
+      }
+    });
+    return await modal.present();
+  }
+
+  seeUser(id){
+    this.User(id);
   }
 }

@@ -44,11 +44,15 @@ export class LoginPage implements OnInit {
       this.loadingController.dismiss();
 
       var decoded:any = jwt_decode(data.token);
+      console.log(decoded);
+      console.log(data);
+
       localStorage.setItem('id_company',decoded.id);
       localStorage.setItem('name',decoded.name);
       localStorage.setItem('image',decoded.image);
-      localStorage.setItem('type',decoded.type);
+      // localStorage.setItem('type',decoded.type);
       localStorage.setItem('email',decoded.email);
+      localStorage.setItem('account',decoded.account);
       localStorage.setItem('granted',decoded.granted);
       this.navCtrl.navigateRoot('/')
     },err => {

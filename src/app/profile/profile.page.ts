@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController, ToastController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
-import { Browser } from '@capacitor/browser';
-import { InfoAppPage } from '../info-app/info-app.page';
 import { Share } from '@capacitor/share';
-import { ChangePasswordPage } from '../change-password/change-password.page';
-import { SupportPage } from '../support/support.page';
-import { BillingPage } from '../billing/billing.page';
+import { Browser } from '@capacitor/browser';
+
 
 
 declare var require: any;
@@ -26,17 +23,14 @@ export class ProfilePage implements OnInit {
   fb_url;
   ig_url;
   web_url;
-  grantedPayments;
 
   constructor(private api:DataService,
     private navCtrl: NavController,
     private modalctrl:ModalController,private toastController:ToastController) {
-      let granted = localStorage.getItem('granted');
-      if(granted){
-        this.grantedPayments = granted.includes('payments')
-      }
+
 
     this.api.getCompany(localStorage.getItem('id_company')).subscribe(data => {
+      console.log(data)
       this.company = data[0];
 
       this.description = this.company.description;
@@ -64,65 +58,11 @@ export class ProfilePage implements OnInit {
   }
 
 
-  logout(){
-    localStorage.removeItem('id_company');
-    localStorage.removeItem('name');
-    localStorage.removeItem('image');
-    localStorage.removeItem('type');
-    localStorage.removeItem('email');
-    localStorage.removeItem('name_organization');
-    localStorage.removeItem('id_organization');
-
-    this.navCtrl.navigateRoot('/login');
-    this.close();
-
-  }
 
 
-  async changePass(){
-    const modal = await this.modalctrl.create({
-      component: ChangePasswordPage,
-      breakpoints: [.95,1],
-      initialBreakpoint: .95,
-      componentProps:{
-        id:1,
-      }
-    });
-    modal.onDidDismiss().then((data) => {
-      if(data['data']){
-        const info = data['data'];
-        console.log(info);
-      }
-    });
-    return await modal.present();
-  }
 
-  infoApp(){
-    this.openModal(InfoAppPage)
-  }
 
-  support(){
-    this.openModal(SupportPage)
-  }
 
-  billing(){
-    this.openModal(BillingPage)
-  }
-
-  async openModal(Page){
-    const modal = await this.modalctrl.create({
-      component: Page,
-      breakpoints: [.95,1],
-      initialBreakpoint: .95,
-      componentProps:{
-        id:1,
-      }
-    });
-    modal.onDidDismiss().then((data) => {
-
-    });
-    return await modal.present();
-  }
 
   update(){
   let data = {
@@ -161,10 +101,10 @@ export class ProfilePage implements OnInit {
   ngOnInit() {
   }
 
+
   async openBlank(url){
     await Browser.open({ url });
   }
-
 
   close(){
     this.modalctrl.dismiss();

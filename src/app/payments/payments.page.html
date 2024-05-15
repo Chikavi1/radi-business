@@ -1,0 +1,33 @@
+<ion-content>
+  <div style="padding: 1em;">
+
+    <h2 style="font-weight: bold;">Cobros</h2>
+
+    <div *ngIf="payments.length != 0">
+      <ion-card  *ngFor="let payment of payments" style="padding: 1em;">
+        <ion-row>
+          <ion-col size="11">
+            <h3 style="font-weight: bold;">{{(payment.amount - payment.application_fee_amount)/100}} <span style="text-transform: uppercase;">{{ payment.currency}}</span> </h3>
+            <!-- <small>{{payment.amount/100}}</small> -->
+            <p> {{payment.created * 1000 | date:'dd/MM/yyyy'}}</p>
+
+            <!-- <p *ngIf="payment.paid">Pagado</p>
+            <p *ngIf="payment.paid">Exitoso</p> -->
+          </ion-col>
+          <ion-col size="1" (click)="seeReceipt(payment.receipt_url)">
+            <h2><ion-icon name="document-text-outline"></ion-icon></h2>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+  </div>
+
+  <div *ngIf="payments.length == 0">
+    <h2 style="text-align: center !important;margin-top:3em;">No hay cobros por el momento.</h2>
+  </div>
+</div>
+</ion-content>
+<ion-footer>
+  <ion-button color="danger" expand="block" (click)="close()">
+    Cerrar
+  </ion-button>
+</ion-footer>
