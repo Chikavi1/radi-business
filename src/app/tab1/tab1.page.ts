@@ -4,7 +4,7 @@ import { ResultPage } from '../result/result.page';
 import { PaymentPage } from '../payment/payment.page';
 import { CreateBusinessPage } from '../create-business/create-business.page';
 import { SelectReadPage } from '../select-read/select-read.page';
-import { NFC, Ndef } from '@awesome-cordova-plugins/nfc/ngx';
+// import { NFC, Ndef } from '@awesome-cordova-plugins/nfc/ngx';
 import { DataService } from '../services/data.service';
 import { AddClientPage } from '../add-client/add-client.page';
 import { PromotionPage } from '../promotion/promotion.page';
@@ -29,7 +29,7 @@ export class Tab1Page {
   grantedRoot;
 
   constructor(private modalCtrl:ModalController,
-    private nfc:NFC,
+    // private nfc:NFC,
     private api: DataService,
     private actionSheetController: ActionSheetController,
     private navCtrl: NavController,
@@ -59,11 +59,11 @@ export class Tab1Page {
     this.action = action; // visit
     // this.processData('https://radi.pet/pets/RD1a3ad0e','visits')
 
-    this.nfc.enabled().then( () => {
-      this.openSelectRead();
-    }).catch(() => {
+    // this.nfc.enabled().then( () => {
+    //   this.openSelectRead();
+    // }).catch(() => {
       this.qrcodescan(action);
-    });
+    // });
   }
 
   goTo(page){
