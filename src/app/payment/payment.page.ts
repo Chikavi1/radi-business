@@ -96,15 +96,18 @@ account;
         hash = d.split('pet/pets/');
       }
 
+      console.log(hash);
     this.api.checkUserPay({code: hash[1]}).subscribe(data => {
+      console.log(data)
       if(data.status == 401){
         this.presentToast('No tiene habilitado los pagos con la placa','danger','top');
-      }
-      if(data[0].pin){
-        this.customer = data[0].customer;
-        this.correctPin = data[0].pin;
-        this.idUser = data[0].id;
-        this.step += 1;
+      }else{
+        if(data[0].pin){
+          this.customer = data[0].customer;
+          this.correctPin = data[0].pin;
+          this.idUser = data[0].id;
+          this.step += 1;
+        }
       }
     },err=>{
       this.presentToast('Placa no valida','danger','top');
@@ -125,26 +128,29 @@ account;
 
 
  async checkPayments(){
-  this.handlerScanner('https://radi.pet/pets/RD39uc98q4');
-    // if(this.platform.is('android')){
-    //   await BarcodeScanner.requestPermissions();
-    //   const data = await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
-    //   if (data.available) {
-    //     const code = await this.startScanner();
-    //     this.handlerScanner(code[0].displayValue);
-    //   } else {
-    //     try {
-    //       await BarcodeScanner.installGoogleBarcodeScannerModule();
-    //       const code = await this.startScanner();
-    //       this.handlerScanner(code[0].displayValue);
-    //     } catch (e) {
-    //     }
-    //   }
-    // }else{
-    //   await BarcodeScanner.requestPermissions();
-    //   const code = await this.startScanner();
-    //   this.handlerScanner(code[0].displayValue);
-    // }
+  // let url = 'https://radi.pet/pets/RD39uc98q4';
+  // this.handlerScanner(url);
+
+
+    if(this.platform.is('android')){
+      await BarcodeScanner.requestPermissions();
+      const data = await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
+      if (data.available) {
+        const code = await this.startScanner();
+        this.handlerScanner(code[0].displayValue);
+      } else {
+        try {
+          await BarcodeScanner.installGoogleBarcodeScannerModule();
+          const code = await this.startScanner();
+          this.handlerScanner(code[0].displayValue);
+        } catch (e) {
+        }
+      }
+    }else{
+      await BarcodeScanner.requestPermissions();
+      const code = await this.startScanner();
+      this.handlerScanner(code[0].displayValue);
+    }
   }
 
   description = 'Compra en '+localStorage.getItem('name');
@@ -171,6 +177,7 @@ account;
 
       this.api.paymentbusiness(data).subscribe(async(data) => {
         if(data.status == 'succeeded'){
+            this.idc = data.id;
             this.loadingCtrl.dismiss();
             this.enabledButton = true;
             this.step = 3;
