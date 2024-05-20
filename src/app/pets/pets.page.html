@@ -7,29 +7,37 @@
         <ion-col size="10">
           <h1 style="padding: 1em .5em;">Mascotas</h1>
         </ion-col>
-        <!-- <ion-col size="1">
-          <h1 style="padding: 1em .5em;"><ion-icon name="add-outline" (click)="addPet()"></ion-icon></h1>
-        </ion-col> -->
       </ion-row>
-      <div *ngIf="pets.length != 0">
-        <ion-item *ngFor="let pet of pets" lines="none" style="padding-bottom: .5em;"  button detail="true" detail-icon="caret-forward-outline">
-          <!-- <ion-avatar slot="start">
-            <img alt="Silhouette of a person's head" [src]="pet.photo" />
-          </ion-avatar> -->
-          <ion-label (click)="showPet(pet.id)">
-            <h2>
-              {{pet.name}}
-            </h2>
-            <p *ngIf="pet.code" style="color:green;">Con Placa de identificación</p>
-            <p *ngIf="!pet.code" style="color:red;">Sin Placa de identificación</p>
 
+      <div *ngIf="!loading">
+        <ion-item *ngFor="let i of [1,1,1,1,1,1,1]" lines="none" style="padding-bottom: .5em;"  button detail="true" detail-icon="caret-forward-outline">
+          <ion-label class="capital">
+            <ion-skeleton-text [animated]="true" style="width: 35%;height: 1.2em;"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width: 55%"></ion-skeleton-text>
           </ion-label>
         </ion-item>
       </div>
 
-      <div *ngIf="pets.length == 0" style="padding:1em;margin-top:6em;">
-        <h2 style="text-align: center;">No hay mascotas por el momento.</h2>
+      <div *ngIf="loading">
+        <div *ngIf="pets.length != 0">
+          <ion-item *ngFor="let pet of pets" lines="none" style="padding-bottom: .5em;"  button detail="true" detail-icon="caret-forward-outline">
+            <ion-label (click)="showPet(pet.id)">
+              <h2 class="capital">
+                {{pet.name}}
+              </h2>
+              <p *ngIf="pet.code" style="color:green;">Con Placa de identificación</p>
+              <p *ngIf="!pet.code" style="color:red;">Sin Placa de identificación</p>
+
+            </ion-label>
+          </ion-item>
+        </div>
+
+        <div *ngIf="pets.length == 0" style="padding:1em;margin-top:6em;">
+          <h2 style="text-align: center;">No hay mascotas por el momento.</h2>
+        </div>
       </div>
+
+
     </ion-col>
   </ion-row>
 

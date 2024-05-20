@@ -44,6 +44,8 @@ export class AddClientPage implements OnInit {
 
   birthday;
   pet_birthday;
+  inserpassword = 1;
+  password;
 
   setPetGender(g){
     this.pet_gender = g;
@@ -57,13 +59,20 @@ export class AddClientPage implements OnInit {
     this.pet_size = s;
   }
 
+  setinserpassword(s){
+    this.inserpassword = s;
+  }
 
+  buttondisabled = false;
   send(){
+    this.buttondisabled = true;
+
     this.presentLoading();
 
     let data = {
       name:      this.name,
       email:     this.email,
+      password: this.password,
       cellphone: this.cellphone,
       birthday: this.birthday,
       gender:    this.gender,
@@ -85,19 +94,11 @@ export class AddClientPage implements OnInit {
     this.api.createUser(data).subscribe(data => {
      if(data.status){
       this.presentToast('Usuario creado','success');
-      this.name = '';
-      this.email = '';
-      this.cellphone = '';
-      this.gender =  null;
-      this.birthday = null;
-      this.pet_name = '';
-      this.pet_gender = null;
-      this.pet_size = null;
-      this.pet_specie = null;
-      this.pet_birthday = null;
-
+      localStorage.setItem('update_clients','true')
+      this.modalCtrl.dismiss();
      }
     },err =>{
+      this.buttondisabled = false;
     if(err.error.status == 401){
       this.presentToast('Usuario ya existe con ese correo','danger');
     }

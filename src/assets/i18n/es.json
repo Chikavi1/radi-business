@@ -59,5 +59,27 @@
   "pets.minweight":"Peso Mínimo",
   "pets.maxweight":" Peso Maximo",
   "pets.infobreed":"* Información puede variar. por el momento información solo en español",
-  "pets.source":"FUENTE: Royalcanin"
+  "pets.source":"FUENTE: Royalcanin",
+
+  "idpets.verified":"Verificada",
+  "idpets.sync":"Emparejar",
+  "idpets.success":"Se asoció correctamente.",
+  "idpets.wrong":"No se pudo asociar",
+  "idpets.link":"Para vincular la cuenta de tu mascota, escanea el código QR en su placa de identificación con tu teléfono para acceder a sus datos de manera segura y sencilla.",
+  "idpets.change":"Cambiar Placa",
+  "idpets.model":"Modelo",
+  "idpets.nfc":"NFC",
+  "idpets.enabled":"Habilitado",
+  "idpets.disabled":"Inhabilitado",
+  "idpets.color":"Color",
+  "idpets.edition":"Edición",
+  "idpets.founder":"Fundador",
+  "idpets.radi":"Radi Pets",
+  "idpets.numberserie":"Número de serie",
+  "idpets.guarantee":"Garantia Reemplazo",
+  "idpets.apply":"Aplica",
+  "idpets.noapply":"No aplica, versión unica",
+  "idpets.moreinfoguarantee":"  Mira más información de la garantia de reemplazo de Radi Pets",
+  "idpets.seemore":"Ver más",
+  "idpets.close":"Cerrar"
 }

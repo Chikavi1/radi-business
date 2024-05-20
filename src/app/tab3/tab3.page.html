@@ -12,20 +12,32 @@
           <h1 style="padding: 1em .5em;"><ion-icon name="add-outline" (click)="addClient()"></ion-icon></h1>
         </ion-col>
       </ion-row>
-      <div *ngIf="clients.length != 0">
-        <ion-item *ngFor="let client of clients" lines="none" style="padding-bottom: .5em;"  button detail="true" detail-icon="caret-forward-outline"(click)="User(client.id)">
-          <!-- <ion-avatar slot="start">
-            <img alt="Silhouette of a person's head" [src]="client.photo" />
-          </ion-avatar> -->
+
+      <div *ngIf="!loading">
+        <ion-item *ngFor="let i of [1,1,1,1,1,1,1]" lines="none" style="padding-bottom: .5em;"  button detail="true" detail-icon="caret-forward-outline">
           <ion-label class="capital">
-            {{client.name}}
+            <ion-skeleton-text [animated]="true" style="width: 65%"></ion-skeleton-text>
           </ion-label>
         </ion-item>
       </div>
 
-      <div *ngIf="clients.length == 0" style="padding:1em;margin-top:6em;">
-        <h2 style="text-align: center;">No hay clientes por el momento.</h2>
+      <div *ngIf="loading">
+        <div *ngIf="clients.length != 0">
+          <ion-item *ngFor="let client of clients" lines="none" style="padding-bottom: .5em;"  button detail="true" detail-icon="caret-forward-outline"(click)="User(client.id)">
+            <ion-label class="capital">
+              {{client.name}}
+            </ion-label>
+          </ion-item>
+        </div>
+
+        <div *ngIf="clients.length == 0" style="padding:1em;margin-top:6em;">
+          <h2 style="text-align: center;">No hay clientes por el momento.</h2>
+        </div>
       </div>
+
+
+
+
     </ion-col>
   </ion-row>
 

@@ -13,9 +13,13 @@ import { QrcodeappPage } from '../qrcodeapp/qrcodeapp.page';
 export class Tab2Page {
   records:any = [];
   device;
+  loading = false;
 
   constructor(private api:DataService,private modalCtrl:ModalController){
     this.getInfo();
+    setTimeout(() => {
+      this.loading = true;
+    },1200);
     this.device = localStorage.getItem('device');
 
   }

@@ -1,4 +1,4 @@
-<ion-content>
+<!-- <ion-content>
   <ion-row style="margin-top:4em;">
       <ion-col size="6" offset="3">
           <img src="../../../assets/img/tag-radi.png" alt="">
@@ -18,4 +18,103 @@
 
 <ion-footer>
   <ion-button expand="block" color="danger" (click)="close()">Cerrar</ion-button>
+</ion-footer> -->
+
+
+<ion-content>
+
+
+  <div *ngIf="!verified">
+
+    <img src="../../../assets/scanqr.png" alt="">
+
+    <p style="padding: 1em;">{{ 'idpets.link' | translate }} </p>
+
+    <ion-button (click)="scan()" *ngIf="!verified" style="padding: 0em 1em;"  expand="block" >{{ 'idpets.sync' | translate }}</ion-button>
+
+  </div>
+
+  <div *ngIf="verified">
+    <ion-row style="margin-top:4em;">
+        <ion-col size="6" offset="3">
+          <img *ngIf="info.version == 1" src="../../../assets/tag-radi.png" alt="">
+          <img *ngIf="info.version != 1 && info.color == 'black' " src="../../../assets/tag-black.png" alt="">
+          <img *ngIf="info.version != 1 && info.color == 'red' " src="../../../assets/tag-red.png" alt="">
+          <img *ngIf="info.version != 1 && info.color == 'blue' " src="../../../assets/tag-blue.png" alt="">
+          <img *ngIf="info.version != 1 && info.color == 'pink' " src="../../../assets/tag-pink.png" alt="">
+          <img *ngIf="info.version != 1 && info.color == 'green' " src="../../../assets/tag-green.png" alt="">
+        </ion-col>
+    </ion-row>
+
+      <p style="text-align: center !important;">
+          <ion-icon style="color:green;font-size:1.8em" name="checkmark-circle-outline"></ion-icon>
+      </p>
+      <p style="text-align: center;color:green;">{{ 'idpets.verified' | translate }}</p>
+      <p  style="text-align: center">{{ date |  date:'dd/MM/yyyy' }}</p>
+      <ion-button (click)="delete()" *ngIf="verified" style="padding: 0em 1em;" color="danger"  expand="block" >{{ 'idpets.change' | translate }} </ion-button>
+      <ion-row style="padding:1em;">
+        <ion-col size="6">
+          <p>{{ 'idpets.model' | translate }} </p>
+        </ion-col>
+        <ion-col size="6" style="text-align: right;">
+          <p>{{info.version}}</p>
+        </ion-col>
+        <ion-col size="6">
+          <p>{{ 'idpets.nfc' | translate }} </p>
+        </ion-col>
+        <ion-col size="6" style="text-align: right;">
+          <p *ngIf="info.nfc == '1'">
+            {{ 'idpets.enabled' | translate }}
+          </p>
+          <p *ngIf="info.nfc == '0'">
+            {{ 'idpets.disabled' | translate }}
+          </p>
+        </ion-col>
+        <ion-col size="6">
+          <p>{{ 'idpets.color' | translate }} </p>
+        </ion-col>
+        <ion-col size="6" style="text-align: right;">
+          <p>
+            {{info.color}}
+          </p>
+        </ion-col>
+        <ion-col size="6">
+          <p>{{ 'idpets.edition' | translate }} </p>
+        </ion-col>
+        <ion-col size="6" style="text-align: right;">
+          <p *ngIf="info.version == 1">
+            {{ 'idpets.founder' | translate }}
+          </p>
+          <p *ngIf="info.version != 1">
+            {{ 'idpets.radi' | translate }}
+          </p>
+        </ion-col>
+        <ion-col size="6">
+          <p>{{ 'idpets.numberserie' | translate }} </p>
+        </ion-col>
+        <ion-col size="6" style="text-align: right;">
+          <p>
+            RG-1039{{info.id}}
+          </p>
+        </ion-col>
+        <ion-col size="6">
+          <p>{{ 'idpets.guarantee' | translate }} </p>
+        </ion-col>
+        <ion-col  size="6" style="text-align: right;">
+          <p *ngIf="info.version != 1">
+            {{ 'idpets.apply' | translate }}
+          </p >
+          <p *ngIf="info.version == 1">
+            {{ 'idpets.noapply' | translate }}
+            </p>
+        </ion-col>
+      </ion-row>
+
+    </div>
+
+</ion-content>
+<ion-footer>
+  <ion-button color="dark" expand="block" (click)="close()">
+    {{ 'idpets.close' | translate }}
+  </ion-button>
 </ion-footer>

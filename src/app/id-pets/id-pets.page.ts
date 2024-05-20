@@ -21,6 +21,7 @@ export class IdPetsPage implements OnInit {
   success;
   wrong;
 
+  info:any = [];
 
   constructor(
     public modalCtrl: ModalController,
@@ -67,6 +68,7 @@ export class IdPetsPage implements OnInit {
   ngOnInit(){
     // buscar si ya tiene
     this.dataService.getIdentification(hashids.decode(this.id)[0]).subscribe((data:any) => {
+      this.info = data[0];
       if(data.length == 0){
         this.verified = false;
       }else{

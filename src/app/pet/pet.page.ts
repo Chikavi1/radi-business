@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController, ModalController } from '@ionic/angular';
+import { ActionSheetController, ModalController, ToastController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
 import * as moment from 'moment';
 import { Browser } from '@capacitor/browser';
@@ -20,6 +20,7 @@ export class PetPage implements OnInit {
 
   constructor(
     private api:DataService,
+    private toastController:ToastController,
     private actionSheetController:ActionSheetController,
     private modalCtrl:ModalController) {
 
@@ -137,7 +138,11 @@ export class PetPage implements OnInit {
   }
 
   async openBlank(url){
-    await Browser.open({ url });
+    if(url){
+      await Browser.open({ url });
+    }else{
+      this.presentToast('No tiene imagen del carnet ','danger');
+    }
    }
 
    async presentActionSheet() {
@@ -199,5 +204,14 @@ export class PetPage implements OnInit {
 
 
     return await modal.present();
+  }
+
+  async presentToast(message,color) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000,
+      color
+    });
+    toast.present();
   }
 }

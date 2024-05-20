@@ -4,7 +4,7 @@
     <div style="text-align: center;">
       <img style="width: 8em; height: 8em; border-radius: 50%;" src="{{user.photo}}" alt="image">
     </div>
-    <h1 style="text-align: center;">{{user.name}}</h1>
+    <h1 style="text-align: center;" class="capital">{{user.name}}</h1>
     <ion-segment mode="md" (ionChange)="segmentChange($event)"  style="margin-top: 3em;" [(ngModel)]="menu" [scrollable]="true">
       <ion-segment-button value="info">
        Info

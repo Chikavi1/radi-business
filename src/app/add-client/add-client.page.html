@@ -7,8 +7,23 @@
       <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="name"  ></ion-input>
       <p>Correo</p>
       <ion-input class="new-input" placeholder="Ingresa correo" [(ngModel)]="email"  ></ion-input>
+      <p>Contraseña</p>
+      <ion-chip (click)="setinserpassword(1)" [ngClass]="{'selected' : inserpassword == 1}">
+        Manual
+      </ion-chip>
+      <ion-chip (click)="setinserpassword(0)" [ngClass]="{'selected' : inserpassword == 0 }">
+        Generar
+      </ion-chip>
+
+      <div *ngIf="inserpassword">
+        <ion-input class="new-input" style="margin-top: .5em;" type="password" placeholder="Ingresa contraseña de tu cliente" [(ngModel)]="password"  ></ion-input>
+      </div>
+      <div *ngIf="!inserpassword">
+        <p>Se le enviará un correo con la contraseña a tu cliente</p>
+      </div>
+
       <p>Celular</p>
-      <ion-input class="new-input" placeholder="Ingresa número de celular" [(ngModel)]="cellphone"  ></ion-input>
+      <ion-input class="new-input" type="phone" placeholder="Ingresa número de celular" [(ngModel)]="cellphone"  ></ion-input>
       <p>Género</p>
       <ion-chip (click)="setGender(1)" [ngClass]="{'selected' : gender == 1 }">
         Hombre

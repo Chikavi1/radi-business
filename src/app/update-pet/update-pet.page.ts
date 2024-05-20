@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, ToastController } from '@ionic/angular';
+import { ActionSheetController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 import * as moment from 'moment';
 import { DataService } from '../services/data.service';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 
 
@@ -32,14 +33,96 @@ muzzle;
 name;
 today
 
+menu = "general"
+
+segmentChange(e){
+  console.log(e.detail.value);
+}
+
+async editPhoto(){
+  let options = [];
+    options = [
+
+    {
+      text: 'Tomar foto',
+      icon: 'camera',
+      handler: () => {
+
+        Camera.checkPermissions().then((res) => {
+          if(res.camera != 'denied'){
+            this.getPicture('camera');
+          }else{
+            alert('Necesitas autorizar los permisos');
+          }
+        })
+
+      }
+    },
+    {
+        text: 'Galeria',
+        icon: 'image',
+        handler: () => {
+          Camera.checkPermissions().then((res) => {
+            if(res.photos != 'denied'){
+              this.getPicture('photos');
+            }else{
+             alert('Necesitas autorizar los permisos');
+            }
+            // alert(JSON.stringify(res));
+          })
+        }
+    },
+    {
+      text: 'Cancelar',
+      icon: 'close',
+      role: 'cancel',
+      handler: () => {
+      }
+    }
+  ];
+
+  const actionSheet = await this.actionSheetController.create({
+    header: 'Selecciona una opción',
+    mode: 'md',
+    buttons: options
+  });
+  await actionSheet.present();
+
+  const { role } = await actionSheet.onDidDismiss();
+
+  // this.presentModalSmall(SelectBinaryPage);
+}
+
+async getPicture(src){
+  let source = src=='camera'?CameraSource.Camera:CameraSource.Photos;
+
+  const image = await Camera.getPhoto({
+    quality: 100,
+    saveToGallery:true,
+    allowEditing: false,
+    resultType: CameraResultType.Base64,
+    source: source,
+    promptLabelHeader: 'Carnet de la mascota',
+    promptLabelCancel: 'Cancelar',
+    promptLabelPhoto:  'Galeria',
+    promptLabelPicture: 'Tomar Foto'
+  });
+
+
+    this.modalImage(image.base64String);
+}
+
+
   constructor(private modalCtrl:ModalController,
     private toastController:ToastController,
+    private loadingController: LoadingController,
+    private actionSheetController:ActionSheetController,
     private api:DataService) {
     this.today =  moment().format('yyyy-MM-DD');
   }
 
   ngOnInit(){
-    console.log(this.id);
+    this.photo = 'https://ionicframework.com/docs/img/demos/card-media.png';
     this.api.getPet(this.id).subscribe(data => {
       let pet = data[0];
       this.name = pet.name;
@@ -52,6 +135,43 @@ today
       this.sterelized = pet.sterelized;
       this.sterelized_date = pet.sterelized_date;
       this.muzzle = pet.muzzle;
+    });
+  }
+
+  async presentLoading(){
+    const loading = await this.loadingController.create({
+      message: 'Actualizando información, un momento...',
+      duration: 1200
+    });
+    loading.present();
+  }
+
+
+  uploadPhoto;
+  photo;
+
+
+  modalImage(image){
+    this.uploadPhoto = image;
+    this.photo = `data:image/jpeg;base64,`+image;
+    this.uploadImage(this.uploadPhoto);
+
+  }
+
+
+  uploadImage(photo){
+    this.presentLoading();
+    let data = {
+      id: hashids.decode(this.id)[0],
+      photo: photo
+    }
+    console.log(data)
+
+    this.api.updatePhotoCarnet(data).subscribe((data:any) => {
+      if(data.status == 200){
+        this.loadingController.dismiss();
+        this.presentToast('Se ha subido exitosamente el carnet, espera unos segundos para que se actualice','success');
+      }
     });
   }
 

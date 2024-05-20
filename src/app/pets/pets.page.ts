@@ -12,12 +12,15 @@ export class PetsPage {
 
   pets:any = [];
   device;
+  loading = false;
   constructor(private api:DataService,
     private navCtrl:NavController,
     private modalCtrl:ModalController){
     this.device = localStorage.getItem('device');
     this.getInfo();
-
+    setTimeout(() => {
+      this.loading = true;
+    },1200);
   }
 
   ionViewDidEnter(){

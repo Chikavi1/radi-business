@@ -18,10 +18,14 @@ const hashids = new Hashids('Elradipet10Lt', 6,'ABCEIU1234567890');
 export class EventsPage implements OnInit {
   device;
   events:any = [];
+  loading = false;
 
   constructor(private modalCtrl:ModalController,private api:DataService){
     this.device = localStorage.getItem('device');
     this.getData();
+    setTimeout(() => {
+      this.loading = true;
+    },1200);
   }
 
   getData(){

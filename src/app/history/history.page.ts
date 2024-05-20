@@ -71,13 +71,16 @@ income;
     return await modal.present();
   }
   async createAchivementModal(){
+    console.log(this.history.user_id)
     const modal = await this.modalctrl.create({
       component: CreateAchivementPage,
       breakpoints: [1],
       initialBreakpoint: 1,
       componentProps:{
         id: this.history.id,
-        pet_id: this.history.pet_id
+        pet_id: this.history.pet_id,
+        user_id: this.history.user_id
+
       }
     });
     modal.onDidDismiss().then((data) => {

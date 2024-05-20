@@ -12,6 +12,7 @@ export class PaymentsPage implements OnInit {
 
   constructor(private api:DataService,private modalCtrl:ModalController) { }
   payments:any = [];
+  loading = false;
 
   ngOnInit() {
     let data = {
@@ -21,6 +22,9 @@ export class PaymentsPage implements OnInit {
       console.log(data);
       this.payments = data.data;
     });
+    setTimeout(() => {
+      this.loading = true;
+    },1500);
   }
 
   seeReceipt(url){

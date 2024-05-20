@@ -193,6 +193,10 @@ const routes: Routes = [
   {
     path: 'method-payments',
     loadChildren: () => import('./method-payments/method-payments.module').then( m => m.MethodPaymentsPageModule)
+  },
+  {
+    path: 'photo-rounded-modal',
+    loadChildren: () => import('./photo-rounded-modal/photo-rounded-modal.module').then( m => m.PhotoRoundedModalPageModule)
   }
 ];
 @NgModule({

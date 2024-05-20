@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { IdPetsPageRoutingModule } from './id-pets-routing.module';
 
 import { IdPetsPage } from './id-pets.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    TranslateModule,
     IdPetsPageRoutingModule
   ],
   declarations: [IdPetsPage]

@@ -9,11 +9,32 @@
     <ion-col [size]="device=='tablet'?10:12" [offset]="device=='tablet'?1:0">
       <h1 style="padding: 1em .5em;">Eventos</h1>
       <div style="padding:1em;">
-        <div *ngIf="events.length != 0">
-          <ion-button  (click)="createEvent()" style="padding:0em 1em;" expand="full" color="dark" shape="round">
-            Crear evento
-          </ion-button>
-          <ion-row>
+
+        <ion-button  (click)="createEvent()" style="padding:0em 1em;" expand="full" color="dark" shape="round">
+          Crear evento
+        </ion-button>
+
+
+        <div *ngIf="!loading">
+         <ion-col *ngFor="let i of [1,1,1,1,1,1,1]" [size]="device=='tablet'?6:12">
+              <ion-card >
+                <ion-row>
+                  <ion-col size="5">
+                    <ion-skeleton-text [animated]="true" style="width: 100%;height: 10em;"></ion-skeleton-text>
+                  </ion-col>
+                  <ion-col size="7" style="padding: 1em;">
+                    <ion-skeleton-text [animated]="true" style="width: 45%"></ion-skeleton-text>
+                    <ion-skeleton-text [animated]="true" style="width: 85%"></ion-skeleton-text>
+                    <ion-skeleton-text [animated]="true" style="width: 20%"></ion-skeleton-text>
+                  </ion-col>
+                </ion-row>
+              </ion-card>
+            </ion-col>
+        </div>
+
+        <div *ngIf="loading">
+
+          <ion-row *ngIf="events.length != 0">
             <ion-col *ngFor="let event of events" [size]="device=='tablet'?6:12">
               <ion-card  (click)="eventOpen(event.id)">
                 <ion-row>
@@ -30,14 +51,14 @@
               </ion-card>
             </ion-col>
           </ion-row>
+
+            <div *ngIf="events.length == 0"  style="margin-top:6em;">
+              <h2 style="text-align: center;">No tienes eventos proximos.</h2>
+              <ion-button (click)="createEvent()" expand="full" color="dark" shape="round">Agregar evento</ion-button>
+            </div>
         </div>
 
-        <div style="margin-top:6em;">
-          <div *ngIf="events.length == 0">
-            <h2 style="text-align: center;">No tienes eventos proximos.</h2>
-            <ion-button (click)="createEvent()" expand="full" color="dark" shape="round">Agregar evento</ion-button>
-          </div>
-        </div>
+
       </div>
     </ion-col>
   </ion-row>

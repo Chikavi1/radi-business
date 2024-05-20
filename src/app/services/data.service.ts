@@ -27,6 +27,10 @@ export class DataService {
     }
   }
 
+  updatePhotoCarnet(data):any{
+    return this.http.post(this.MODE + 'uploadPetsBooklet', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
   getExtraData(data):any{
     return this.http.post(this.MODE + 'extra-business/get', JSON.parse(JSON.stringify(data)), this.options);
   }

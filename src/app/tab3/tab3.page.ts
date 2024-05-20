@@ -15,12 +15,15 @@ export class Tab3Page {
 
   clients:any = [];
   device;
+  loading = false;
   constructor(private api:DataService,
     private navCtrl:NavController,
     private modalCtrl:ModalController){
     this.device = localStorage.getItem('device');
     this.getInfo();
-
+    setTimeout(() => {
+      this.loading = true;
+    },1200);
   }
 
   ionViewDidEnter(){
@@ -46,7 +49,9 @@ export class Tab3Page {
     });
     modal.onDidDismiss().then((data) => {
       if(data['data']){
-        console.log('update Cliente')
+        if(localStorage.getItem('update_clients')){
+          this.getInfo();
+        }
       }
     });
     return await modal.present();
