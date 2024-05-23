@@ -89,8 +89,6 @@ async editPhoto(){
   await actionSheet.present();
 
   const { role } = await actionSheet.onDidDismiss();
-
-  // this.presentModalSmall(SelectBinaryPage);
 }
 
 async getPicture(src){
@@ -155,7 +153,6 @@ async getPicture(src){
     this.uploadPhoto = image;
     this.photo = `data:image/jpeg;base64,`+image;
     this.uploadImage(this.uploadPhoto);
-
   }
 
 

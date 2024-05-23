@@ -31,6 +31,19 @@ ion-item{
   --background: transparent !important;
 }
 
+.custom-icon {
+  border-radius: 50%; /* Hace que el ícono sea circular */
+  overflow: hidden;
+}
+
+.custom-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ajusta la imagen dentro del contenedor circular */
+  border-radius: 50%; /* Asegura que la imagen dentro también sea circular */
+}
+
+
 .capital:first-letter {text-transform: uppercase}
 
 .new-input{

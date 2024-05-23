@@ -11,6 +11,7 @@ import { HttpClientModule,HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { registerLocaleData } from '@angular/common';
+import { Stripe } from '@awesome-cordova-plugins/stripe/ngx';
 
 // import { NFC, Ndef } from '@awesome-cordova-plugins/nfc/ngx';
 
@@ -44,6 +45,7 @@ export function createTranslateLoader(http: HttpClient) {
     }),
     HttpClientModule, AppRoutingModule],
   providers: [
+    Stripe,
     // NFC,
     // Ndef,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],

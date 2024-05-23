@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { CreateAdPage } from '../create-ad/create-ad.page';
+import { DataService } from '../services/data.service';
+import { AdPage } from '../ad/ad.page';
 
 @Component({
   selector: 'app-ads',
@@ -10,14 +12,36 @@ import { CreateAdPage } from '../create-ad/create-ad.page';
 export class AdsPage implements OnInit {
 
   device;
-  constructor(private modalCtrl:ModalController) {
-    this.device = localStorage.getItem('device');
+  now: Date = new Date();
 
+  ads:any = [];
+  constructor(private modalCtrl:ModalController,private api:DataService) {
+    this.device = localStorage.getItem('device');
+    this.getAds()
+
+   }
+
+
+   getAds(){
+    this.api.getAds(localStorage.getItem('id_company')).subscribe(data =>{
+      console.log(data);
+      this.ads = data.map(item => ({
+        ...item,
+        statusText: this.getStatus(item)
+      }));
+    });
    }
 
   ngOnInit() {
   }
 
+  getStatus(item: any): string {
+    if (item.status == 1 && new Date(item.finish_date) > this.now) {
+      return 'Activo';
+    } else {
+      return 'Inactivo';
+    }
+  }
 
   async createAd(){
     const modal = await this.modalCtrl.create({
@@ -35,8 +59,8 @@ export class AdsPage implements OnInit {
 
   async openAd(id){
       const modal = await this.modalCtrl.create({
-        component: AdsPage,
-        breakpoints: [ 1],
+        component: AdPage,
+        breakpoints: [1],
         initialBreakpoint: 1,
         componentProps:{
           id: id,
@@ -44,6 +68,7 @@ export class AdsPage implements OnInit {
       });
       modal.onDidDismiss().then((data) => {
         if(data['data']){
+          this.getAds();
         }
       });
       return await modal.present();

@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { LogsScansPageRoutingModule } from './logs-scans-routing.module';
 
 import { LogsScansPage } from './logs-scans.page';
+import { ExploreContainerComponentModule } from 'src/app/explore-container/explore-container.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    ExploreContainerComponentModule,
     LogsScansPageRoutingModule
   ],
   declarations: [LogsScansPage],

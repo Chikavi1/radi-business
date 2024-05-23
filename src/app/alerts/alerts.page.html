@@ -1,0 +1,17 @@
+<ion-content>
+  <app-explore-container></app-explore-container>
+
+  <h1 style="padding: 1em .5em;">Alertas</h1>
+      <div style="padding:1em;">
+          <ion-button expand="block" style="padding:0em 1em;"(click)="addAlert()" color="dark">
+            Crear alerta
+          </ion-button>
+          <ion-card style="padding: 1em;" *ngFor="let alert of alerts" (click)="openAlert(alert)">
+            <h2>{{alert.title}}</h2>
+            <p>Enviado el {{alert.createdAt  | localizedDate:'fullDate'}} </p>
+          </ion-card>
+      </div>
+</ion-content>
+<ion-footer>
+  <ion-button color="danger" (click)="close()" expand="block">Cerrar</ion-button>
+</ion-footer>

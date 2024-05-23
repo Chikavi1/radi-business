@@ -197,6 +197,26 @@ const routes: Routes = [
   {
     path: 'photo-rounded-modal',
     loadChildren: () => import('./photo-rounded-modal/photo-rounded-modal.module').then( m => m.PhotoRoundedModalPageModule)
+  },
+  {
+    path: 'card',
+    loadChildren: () => import('./card/card.module').then( m => m.CardPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
+  },
+  {
+    path: 'alert',
+    loadChildren: () => import('./alert/alert.module').then( m => m.AlertPageModule)
+  },
+  {
+    path: 'create-alert',
+    loadChildren: () => import('./create-alert/create-alert.module').then( m => m.CreateAlertPageModule)
+  },
+  {
+    path: 'alerts',
+    loadChildren: () => import('./alerts/alerts.module').then( m => m.AlertsPageModule)
   }
 ];
 @NgModule({

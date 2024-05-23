@@ -1,38 +1,8 @@
-<!--
-<ion-content >
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Perfil</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div style="padding:1em;">
-    <img style="width: 6em;height: 6em;border-radius: 50%;" src="https://i.ibb.co/x5X3Pqj/icon.png" alt="imagen">
-    <h2>Radi Pets</h2>
-    <p>Descripción</p>
-    <p>Somos la app #1 de mascotas en el mundo.</p>
-    <ion-item style="margin-top:8em;">
-      Politicas de privacidad
-    </ion-item>
-    <ion-item>
-      Terminos y condiciones
-    </ion-item>
-    <ion-item color="danger">
-      Cerrar sesión
-    </ion-item>
-
-  </div>
-</ion-content>
-<ion-footer>
-  <ion-button (click)="close()" fill="clear" color="danger" expand="block">
-    Cerrar
-  </ion-button>
-</ion-footer> -->
 <ion-content>
 
 <ion-row style="padding:3em 1em;" [ngStyle]="{'background': company.bg_color ? company.bg_color : 'transparent' }">
   <ion-col size="4" style="padding: .5em;">
-    <img style="border-radius: 50%;" src="{{company.image}}" alt="">
+    <img (click)="setImage()" style="border-radius: 50%;" src="{{company.image}}" alt="">
   </ion-col>
   <ion-col  size="7">
     <h1 style="font-weight: bold;" [ngStyle]="{'color': company.fn_color ? company.fn_color : '#17202F' }">{{company.name}}</h1>
@@ -49,13 +19,16 @@
     <ion-icon (click)="openBlank(company.ig_url)" *ngIf="company.ig_url" style="font-size: 1.5em;margin:0em .2em" name="logo-instagram"></ion-icon>
     <ion-icon (click)="openBlank(company.web_url)" *ngIf="company.web_url" style="font-size: 1.5em;margin:0em .2em" name="browsers-outline"></ion-icon>
     <h2>{{company.name}}</h2>
+
     <p *ngIf="company.type == 1">Especial</p>
     <p *ngIf="company.type == 2">Parque</p>
-    <p *ngIf="company.type == 3">Estilista</p>
+    <p *ngIf="company.type == 3">Estetica</p>
     <p *ngIf="company.type == 4">Veterinaria</p>
     <p *ngIf="company.type == 5">Lugar petfriendly</p>
     <p *ngIf="company.type == 6">Guarderia</p>
-    <p *ngIf="company.type == 6">Escuela</p>
+    <p *ngIf="company.type == 7">Escuela</p>
+    <p *ngIf="company.type == 8">Alimentos para mascotas</p>
+    <p *ngIf="company.type == 9">Accesorios para mascotas</p>
 
 
     <p class="capital">
@@ -64,9 +37,61 @@
 
 
     <p>Dirección</p>
-    {{company.address}}
+    <p class="capital">{{company.address}}</p>
 
-    <ion-button style="margin-bottom:4em;margin-top:2em" expand="full" color="tertiary"  (click)="share()" shape="round">Compartir Perfil</ion-button>
+    <ion-card style="padding: 1em;">
+      <h2>Comparte el perfil de tu negocio</h2>
+      <p>Comparte con tus clientes el perfil de tu negocio para que puedan verlo en Radi Running</p>
+      <ion-button style="margin-bottom:4em;margin-top:2em" expand="full" color="tertiary"  (click)="share()" shape="round">Compartir Perfil</ion-button>
+    </ion-card>
+
+
+    <ion-card style="padding: 1em;">
+      <h2>Permisos</h2>
+
+      <p>
+        <span style="color: green;" *ngIf="grantedPayments"><ion-icon name="checkmark-outline"></ion-icon></span>
+        <span style="color: red;" *ngIf="!grantedPayments"><ion-icon name="close-outline"></ion-icon></span>
+        Hacer cobros
+      </p>
+
+      <p>
+        <span style="color: green;" *ngIf="grantedEvents"><ion-icon name="checkmark-outline"></ion-icon></span>
+        <span style="color: red;"  *ngIf="!grantedEvents"><ion-icon name="close-outline"></ion-icon></span>
+        Eventos
+      </p>
+
+      <p>
+        <span style="color: green;"  *ngIf="grantedEditProfile"><ion-icon name="checkmark-outline"></ion-icon></span>
+        <span style="color: red;"  *ngIf="!grantedEditProfile"> <ion-icon name="close-outline"></ion-icon></span>
+        Editar Perfiles
+      </p>
+      <p>
+        <span style="color: green;" *ngIf="grantedCreateClients"><ion-icon name="checkmark-outline"></ion-icon></span>
+        <span style="color: red;" *ngIf="!grantedCreateClients"><ion-icon name="close-outline"></ion-icon></span>
+        Crear clientes
+      </p>
+
+      <p>
+        <span style="color: green;" *ngIf="grantedBusiness"><ion-icon name="checkmark-outline"></ion-icon></span>
+        <span style="color: red;" *ngIf="!grantedBusiness"><ion-icon name="close-outline"></ion-icon></span>
+        Crear Promociones
+      </p>
+
+      <p>
+        <span style="color: green;" *ngIf="grantedBusiness"><ion-icon name="checkmark-outline"></ion-icon></span>
+        <span style="color: red;" *ngIf="!grantedBusiness"><ion-icon name="close-outline"></ion-icon></span>
+        Crear Recompensas
+      </p>
+
+      <p>*Esta información solo lo puedes ver tu</p>
+
+    </ion-card>
+
+    <ion-card style="padding: 1em;">
+      <h2>Eliminar cuenta</h2>
+      <ion-button expand="block" color="danger" (click)="presentAlertPrompt()">Eliminar Cuenta</ion-button>
+    </ion-card>
 
 
   </div>
@@ -79,6 +104,13 @@
     <ion-input class="new-input"  placeholder="Ingresa url Instagram (opcional)" type="url" [(ngModel)]="ig_url"  ></ion-input>
     <p>Web</p>
     <ion-input class="new-input"  placeholder="Ingresa Web (opcional)" type="url" [(ngModel)]="web_url"  ></ion-input>
+
+    <p>Color del Fondo</p>
+    <input [(ngModel)]="company.bg_color" type="color" />
+
+    <p>Color del texto</p>
+    <input [(ngModel)]="company.fn_color" type="color" />
+
     <p>Si deseas cambiar el nombre, foto o información de la dirección, estaremos encantados de ayudarte. ¡Contáctanos a través de nuestras redes sociales para solicitar el cambio y nuestro equipo se asegurará de hacerlo sin problemas! </p>
   </div>
 <!--

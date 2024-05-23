@@ -13,6 +13,7 @@ import { CreateEventPage } from '../create-event/create-event.page';
 import { CreateRewardPage } from '../create-reward/create-reward.page';
 import { BarcodeFormat, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { CreateAdPage } from '../create-ad/create-ad.page';
+import { CreateAlertPage } from '../create-alert/create-alert.page';
 
 @Component({
   selector: 'app-tab1',
@@ -217,14 +218,22 @@ export class Tab1Page {
 
       }
     },
-    // {
-    //   text: 'Crear Anuncio',
-    //   icon: 'megaphone',
-    //   handler: () => {
-    //     this.openAdds(CreateAdPage);
+    {
+      text: 'Crear Alerta',
+      icon: 'notifications',
+      handler: () => {
+        this.openAdds(CreateAlertPage);
 
-    //   }
-    // },
+      }
+    },
+    {
+      text: 'Crear Anuncio',
+      icon: 'megaphone',
+      handler: () => {
+        this.openAdds(CreateAdPage);
+
+      }
+    },
     {
       text: 'Cancelar',
       icon: 'close',

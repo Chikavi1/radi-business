@@ -45,6 +45,12 @@
               <ion-label>Promociones</ion-label>
             </ion-item>
 
+
+            <ion-item lines="none" (click)="goTo('/alerts')">
+              <ion-icon slot="end" name="notifications-outline"></ion-icon>
+              <ion-label>Alertas</ion-label>
+            </ion-item>
+
             <ion-item lines="none" (click)="openPayments()" *ngIf="grantedPayments">
               <ion-icon slot="end" name="card-outline"></ion-icon>
               <ion-label>Cobrar</ion-label>

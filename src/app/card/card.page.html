@@ -1,0 +1,163 @@
+<ion-content>
+
+  <h2 style="text-align: center;margin-top:3em;" > <span *ngIf="type === 1">{{ 'addcard.add' | translate }}</span><span *ngIf="type === 2">{{ 'addcard.redeem' | translate }}</span> {{ 'addcard.card' | translate }}</h2>
+
+  <div *ngIf="type === 1">
+    <ion-grid>
+      <ion-card
+      style="color:white;border-radius:1em;margin:2em; padding: 1.4em;height:14em; background-image: url('../assets/card.jpeg');">
+
+      <ion-row>
+        <ion-col size="10">
+          <h3>{{ numero || '**** **** **** ****' }} </h3>
+        </ion-col>
+        <ion-col size="2">
+          <div *ngIf="logoimg === 'MasterCard'">
+            <img  width="60" src="https://raw.githubusercontent.com/muhammederdem/vue-interactive-paycard/master/src/assets/images/mastercard.png" >
+          </div>
+          <div *ngIf="logoimg === 'Visa'">
+            <img  width="60" src="https://raw.githubusercontent.com/muhammederdem/vue-interactive-paycard/master/src/assets/images/visa.png" >
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+
+        <ion-col size="8">
+          <p><b>{{ 'addcard.cardholder' | translate }}</b></p>
+          <P><b>{{ titular | uppercase }}</b></P>
+        </ion-col>
+        <ion-col size="4">
+          <p><b>{{ 'addcard.expiration' | translate }}</b></p>
+          <P> {{ month }} / {{ year }}</P>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+    </ion-grid>
+
+      <p style="text-align: center;color:green;margin-bottom: 4 em;"><ion-icon name="lock-closed-outline"></ion-icon>{{ 'addcard.securitymessage' | translate }}</p>
+
+    <ion-grid style="padding:1.5em !important;">
+      <ion-label style="margin-left: 1.5em;" color="primary">{{ 'addcard.numbercard' | translate }}</ion-label>
+      <ion-row justify-content-center align-items-center  style="margin:1em;">
+        <ion-col size="12">
+          <ion-input
+          type="tel"
+          name="numero"
+          maxLength="19"
+          class="new-input"
+          [(ngModel)]="numero"
+          required
+          placeholder="{{ 'addcard.placeholdernumber' | translate }}"
+          (keypress)="numberOnlyValidation($event);onEvent($event)"
+          credit-card></ion-input>
+        </ion-col>
+      </ion-row>
+
+      <ion-label style="margin-left: 1.5em;" color="primary">{{ 'addcard.cardholder' | translate }}</ion-label>
+      <ion-row justify-content-center align-items-center  style="margin:1em;">
+        <ion-col size="12">
+        <ion-input
+        type="text"
+        maxLength="35"
+        placeholder="{{ 'addcard.placeholdercardholder' | translate }}"
+        class="new-input"
+        name="titular"
+        [(ngModel)]="titular"
+         ></ion-input>
+        </ion-col>
+      </ion-row>
+
+      <!-- <ion-datetime presentation="month-year" format="MM/YYYY" [max]="yearLimitIonDateTime" [min]="mindate"></ion-datetime> -->
+
+      <ion-label style="margin-left: 1.5em;" color="primary">{{ 'addcard.expirationdate' | translate }}</ion-label>
+      <ion-row>
+        <ion-col size="6" style="padding:1em">
+            <ion-select
+            okText="{{ 'createinjection.donetext' | translate }}" cancelText="{{ 'createinjection.canceltext' | translate }}"
+            style="width: 100%;" placeholder="{{ 'addcard.monthexpiration' | translate }}" class="new-input" [(ngModel)]="month">
+              <ion-select-option value="1">01</ion-select-option>
+              <ion-select-option value="2">02</ion-select-option>
+              <ion-select-option value="3">03</ion-select-option>
+              <ion-select-option value="4">04</ion-select-option>
+              <ion-select-option value="5">05</ion-select-option>
+              <ion-select-option value="6">06</ion-select-option>
+              <ion-select-option value="7">07</ion-select-option>
+              <ion-select-option value="8">08</ion-select-option>
+              <ion-select-option value="9">09</ion-select-option>
+              <ion-select-option value="10">10</ion-select-option>
+              <ion-select-option value="11">11</ion-select-option>
+              <ion-select-option value="12">12</ion-select-option>
+            </ion-select>
+        </ion-col>
+        <ion-col size="6" style="padding:1em .9em">
+            <ion-select style="width: 100%;" placeholder="{{ 'addcard.yearexpiration' | translate }}" class="new-input" [(ngModel)]="year">
+              <ng-container *ngFor="let year of cardYears">
+                <ion-select-option value="{{year}}">{{year}}</ion-select-option>
+            </ng-container>
+            </ion-select>
+        </ion-col>
+      </ion-row>
+
+      <ion-label style="margin-left: 1.5em;" color="primary">{{ 'addcard.cvv' | translate }}</ion-label>
+      <ion-row justify-content-center align-items-center  style="margin:1em;">
+        <ion-col size="12">
+          <ion-input class="new-input" required (keypress)="numberOnlyValidation($event)"
+          placeholder="{{ 'addcard.placeholdercvv' | translate }}" type="tel" maxLength="4" name="exp" [(ngModel)]="cvc"  ></ion-input>
+        </ion-col>
+      </ion-row>
+
+
+
+    </ion-grid>
+  </div>
+
+  <div *ngIf="type === 2" style="padding: 1em;">
+
+    <ion-card style="height:15em !important;border-radius: 1em;">
+      <ion-row>
+        <ion-col [size]="device==='tablet'?8:12" [offset]="device==='tablet'?2:0">
+          <img src="../../../assets/radi-card.png" alt="">
+        </ion-col>
+      </ion-row>
+    </ion-card>
+
+    <ion-input
+    class="new-input"
+    placeholder="{{ 'addcard.placeholdercode' | translate }}"
+    maxLength="10"
+    [(ngModel)]="code"
+    required
+   ></ion-input>
+   <p innerHtml="{{ 'addcard.conditions' | translate }}"></p>
+  </div>
+
+  </ion-content>
+
+  <ion-footer *ngIf="type === 1" >
+    <ion-row>
+      <ion-col>
+        <ion-button expand="full" fill="clear" color="danger" [disabled]="!sendData" (click)="exit()"> {{ 'addcard.close' | translate }}</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="full" color="success" (click)="agregarTarjeta()"
+        [disabled]="(numero == null || numero == '')   ||
+                    (titular == null || titular == '') ||
+                    (month == null || month == '')  ||
+                    (year == null || year == '')  ||
+                    (cvc == null || cvc == '') && !btnenabled">{{ 'addcard.addcard' | translate }}</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-footer>
+
+
+  <ion-footer *ngIf="type === 2">
+    <ion-row>
+      <ion-col>
+        <ion-button expand="full" fill="clear" color="danger" (click)="exit()">{{ 'addcard.close' | translate }}</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="full" color="success"
+        [disabled]="5 > code.length" (click)="canjear()">{{ 'addcard.redeemcard' | translate }}</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-footer>

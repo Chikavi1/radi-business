@@ -27,6 +27,90 @@ export class DataService {
     }
   }
 
+  getNotificationOneSignal(id):any{
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ZDUxN2E5NzktMDU2OS00MWRkLTg1MjItN2RmNTZkZDhmODY0'
+    });
+
+   let options = {
+      headers: headers,
+    }
+    return this.http.get('https://onesignal.com/api/v1/notifications/'+id+'?app_id=c3f61ff4-5f32-4cba-acf7-af8312f12513', options);
+  }
+
+  getNotifications(id):any{
+    return this.http.get(this.MODE + 'notifications-business/business/'+id, this.options);
+  }
+
+
+  getUsersFilter(data):any{
+    return this.http.post(this.MODE + 'notifications-business/filter', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  getNotification(id):any{
+    return this.http.get(this.MODE + 'notifications-business/id/'+id, this.options);
+  }
+
+  createNotification(data):any{
+    return this.http.post(this.MODE + 'notifications-business/create', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+
+  getSuscription(data):any{
+    return this.http.post(this.MODE + 'suscriptions-alerts/business', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  createSuscription(data):any{
+    return this.http.post(this.MODE + 'suscriptions-alerts/create', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+
+  getAd(id):any{
+    return this.http.get(this.MODE + 'ad/'+id, this.options);
+  }
+
+  getPrice():any{
+    return this.http.get(this.MODE + 'stripe/getAdPrice/', this.options);
+  }
+
+  getAds(id):any{
+    return this.http.get(this.MODE + 'ads-by-business/'+id, this.options);
+
+  }
+
+  createAd(data):any{
+    return this.http.post(this.MODE + 'ads/create', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  createCompany(data):any{
+    return this.http.post(this.MODE + 'discounts-companies', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  deleteCompany(data):any{
+    return this.http.post(this.MODE + 'discounts/delete', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  uploadCompanyImage(data):any{
+    return this.http.post(this.MODE + 'uploadCompanyImage', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  updateCustomer(data): any {
+    return this.http.post(this.MODE + 'stripe/updateCustomer', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  addCard(data): any {
+    return this.http.post(this.MODE + 'stripe/addCard', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  deleteCard(data): any {
+    return this.http.post(this.MODE + 'stripe/deleteCard', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  getCustomerCards(customer):any{
+    return this.http.get(this.MODE + 'stripe/getCards/'+customer, this.options);
+  }
+
   updatePhotoCarnet(data):any{
     return this.http.post(this.MODE + 'uploadPetsBooklet', JSON.parse(JSON.stringify(data)), this.options);
   }

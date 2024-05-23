@@ -1,0 +1,219 @@
+<ion-content >
+  <div style="padding: 1em;">
+    <div *ngIf="step == 1">
+      <h1>Crear Alerta</h1>
+      <p>Canal</p>
+      <ion-chip (click)="setPeople(1)" [ngClass]="{'selected' : people == 1 }" *ngIf="userId">
+        Individual
+      </ion-chip>
+
+      <ion-chip (click)="setPeople(2)" [ngClass]="{'selected' : people == 2 }">
+        Grupal
+      </ion-chip>
+
+      <ion-card style="padding: 1em;" *ngIf="people == 1">
+        <h2>Individual</h2>
+        <div *ngIf="!userId">
+          <p>Debes de seleccionar un usuario</p>
+          <!-- <ion-button expand="block" color="dark" (click)="selectUser()">Seleccionar usuario</ion-button> -->
+        </div>
+        <div *ngIf="userId">
+          <p>{{userSelectName}}</p>
+        </div>
+      </ion-card>
+
+
+      <ion-card style="padding: 1em;" *ngIf="people == 2">
+        <h2>Filtro</h2>
+        <p>Categoria</p>
+
+        <ion-chip (click)="setUserCategory(1)" [ngClass]="{'selected' : userCategory == 1 }">
+          Seguidores
+        </ion-chip>
+        <ion-chip (click)="setUserCategory(2)" [ngClass]="{'selected' : userCategory == 2 }">
+          Clientes
+        </ion-chip>
+
+        <p>Género del usuario</p>
+        <ion-chip (click)="setUserGender(0)" [ngClass]="{'selected' : userGender == 0 }">
+          General
+        </ion-chip>
+        <ion-chip (click)="setUserGender(1)" [ngClass]="{'selected' : userGender == 1 }">
+          Masculino
+        </ion-chip>
+        <ion-chip (click)="setUserGender(2)" [ngClass]="{'selected' : userGender == 2 }">
+          Femenino
+        </ion-chip>
+
+        <p>Edad del usuario</p>
+        <ion-chip (click)="setUserAge(0)" [ngClass]="{'selected' : userAge == 0 }">
+          General
+        </ion-chip>
+        <ion-chip (click)="setUserAge(1)" [ngClass]="{'selected' : userAge == 1 }">
+        de 18 a 25 años
+        </ion-chip>
+        <ion-chip (click)="setUserAge(2)" [ngClass]="{'selected' : userAge == 2 }">
+          de 25 a 35 años
+        </ion-chip>
+        <ion-chip (click)="setUserAge(3)" [ngClass]="{'selected' : userAge == 3 }">
+          de 35 a 45 años
+        </ion-chip>
+        <ion-chip (click)="setUserAge(4)" [ngClass]="{'selected' : userAge == 4 }">
+          de 45 en adelante
+        </ion-chip>
+
+        <div *ngIf="userCategory == 2">
+
+        <p>Género de la mascota</p>
+        <ion-chip (click)="setPetGender(0)" [ngClass]="{'selected' : petGender == 0 }">
+          General
+        </ion-chip>
+        <ion-chip (click)="setPetGender(1)" [ngClass]="{'selected' : petGender == 1 }">
+          Macho
+        </ion-chip>
+        <ion-chip (click)="setPetGender(2)" [ngClass]="{'selected' : petGender == 2 }">
+          Hembra
+        </ion-chip>
+
+        <p>Edad de la mascota</p>
+        <ion-chip (click)="setPetAge(0)" [ngClass]="{'selected' : petAge == 0 }">
+          General
+        </ion-chip>
+        <ion-chip (click)="setPetAge(1)" [ngClass]="{'selected' : petAge == 1 }">
+          Menos de un año
+        </ion-chip>
+        <ion-chip (click)="setPetAge(2)" [ngClass]="{'selected' : petAge == 2 }">
+          de 1 a 5
+        </ion-chip>
+        <ion-chip (click)="setPetAge(3)" [ngClass]="{'selected' : petAge == 3 }">
+          de 5 a 10
+        </ion-chip>
+        <ion-chip (click)="setPetAge(4)" [ngClass]="{'selected' : petAge == 4 }">
+          de 10 en adelante
+        </ion-chip>
+
+        <p>Especie de la mascota</p>
+        <ion-chip (click)="setPetSpecie(0)" [ngClass]="{'selected' : petSpecie == 0 }">
+          General
+        </ion-chip>
+        <ion-chip (click)="setPetSpecie(1)" [ngClass]="{'selected' : petSpecie == 1 }">
+          Perro
+        </ion-chip>
+        <ion-chip (click)="setPetSpecie(2)" [ngClass]="{'selected' : petSpecie == 2 }">
+          Gato
+        </ion-chip>
+
+      </div>
+
+      </ion-card>
+
+
+    <p>Tipo de alerta</p>
+
+
+    <ion-chip (click)="setType(1)" [ngClass]="{'selected' : type == 1 }">
+      Recordatorio
+    </ion-chip>
+
+    <ion-chip (click)="setType(2)" [ngClass]="{'selected' : type == 2 }">
+      Evento
+    </ion-chip>
+
+    <ion-chip (click)="setType(3)" [ngClass]="{'selected' : type == 3 }">
+      Promoción
+    </ion-chip>
+
+    <!-- <ion-chip (click)="setType(4)" [ngClass]="{'selected' : type == 4 }">
+      Feedback
+    </ion-chip> -->
+
+
+  </div>
+
+
+
+    <div *ngIf="step == 2">
+
+
+      <div *ngIf="type == 1">
+        <h2>Recordatorio</h2>
+        <ion-input class="new-input"  style="margin-top: 2em;" placeholder="Título de la notificación" [(ngModel)]="title"></ion-input>
+        <ion-input class="new-input" style="margin-top: 1em;" placeholder="Texto de la notificación"  [(ngModel)]="text"></ion-input>
+      </div>
+
+      <div *ngIf="type == 2">
+        <h2>Evento</h2>
+        <p>Selecciona un evento</p>
+        <ion-card style="padding: .5em;" *ngFor="let item of items"  [ngClass]="{'selected': selectedId === item.id}" (click)="select(item.id,item.name)">
+          <p>{{item.name}}</p>
+        </ion-card>
+      </div>
+
+      <div *ngIf="type == 3">
+        <h2>Promoción</h2>
+        <p>Selecciona una Promoción / descuento</p>
+      </div>
+
+      <div *ngIf="type == 4">
+        <h2>Feedback</h2>
+        <p>Selecciona una de las encuestas de Feedback</p>
+
+      </div>
+
+
+      <h2 style="margin-top: 3em;">Visualización</h2>
+      <p>Asi se mirará la notificación que recibiran</p>
+
+      <ion-card style="padding: .5em;">
+        <ion-row>
+          <ion-col size="2">
+            <img style="margin-top: 1em;" src="../../assets/img/logo-white.png" alt="image">
+          </ion-col>
+          <ion-col  size="9">
+            <small>Radi Pets</small>
+            <p *ngIf="title" style="font-weight: bold;">{{title}}</p>
+            <p *ngIf="!title"  style="font-weight: bold;">Título de la notificación</p>
+            <p *ngIf="text">{{text}}</p>
+            <p *ngIf="!text">Texto de la notificación</p>
+          </ion-col>
+        </ion-row>
+
+      </ion-card>
+
+    </div>
+
+    <div *ngIf="step == 3" style="text-align: center;">
+      <ng-lottie  [options]="sendnoti">
+      </ng-lottie>
+      <h2>Notificación Enviada</h2>
+      <p>Se ha mandando exitosamente la notificación a tus clientes</p>
+      <ion-button expand="block" color="success" shape="round" (click)="exit(true)">Entendido</ion-button>
+    </div>
+
+  </div>
+  </ion-content>
+
+  <ion-footer>
+    <ion-row>
+      <ion-col >
+        <ion-button *ngIf="step == 1" expand="block" color="danger" (click)="exit()" >
+          Cancelar
+        </ion-button>
+        <ion-button *ngIf="step == 2" expand="block" color="danger" (click)="back()">
+          Atras
+        </ion-button>
+      </ion-col>
+      <ion-col  >
+        <ion-button *ngIf="step == 1" expand="block" color="success" (click)="next()">
+          Siguiente
+        </ion-button>
+        <ion-button *ngIf="step == 2" expand="block" color="success" (click)="send()" [disabled]="!text || !title">
+          Enviar notificación
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-footer>
+
+
+
+

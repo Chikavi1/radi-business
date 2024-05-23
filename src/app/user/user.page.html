@@ -18,6 +18,9 @@
       <ion-segment-button value="payments">
         Cobros
       </ion-segment-button>
+      <ion-segment-button value="alerts">
+        Notificaciones
+      </ion-segment-button>
       <ion-segment-button value="extras">
         Extras
       </ion-segment-button>
@@ -78,6 +81,7 @@
 
 
 </div>
+
 <div *ngIf="menu == 'visits'">
   <ion-card style="text-align: center;">
     <h3>Visitas</h3>
@@ -182,6 +186,28 @@
     <div  *ngIf="payments.length == 0">
       <h2 style="text-align: center;margin-top: 4em;">No tiene cobros</h2>
     </div>
+  </div>
+</div>
+
+<div *ngIf="menu == 'alerts'">
+  <h2>Notificaciones</h2>
+  <div *ngIf="!isSuscribe">
+    <h2>El usuario no esta suscrito a recibir notificaciones de tu negocio</h2>
+    <p>
+      Puedes invitarlo a suscribirse desde su aplicación o ofrecerte a registrarlo de forma gratuita. Recuerda que suscribir usuarios sin su consentimiento puede resultar en la suspensión de tu cuenta. </p>
+      <p><ion-checkbox labelPlacement="end" [(ngModel)]="checkboxSuscribe">El cliente me da su autorización para suscribirlo</ion-checkbox></p>
+    <ion-button expand="block" color="dark" [disabled]="!checkboxSuscribe" shape="round" (click)="createSubscrptionAlert()">Suscribir</ion-button>
+
+  </div>
+  <div *ngIf="isSuscribe">
+    <div *ngIf="suscribeStatus">
+      <h2>El usuario esta suscrito a recibir notificaciones</h2>
+      <ion-button expand="block" color="dark" shape="round" (click)="sendNotification()">Enviar notificación</ion-button>
+    </div>
+    <div  *ngIf="!suscribeStatus">
+      <h2>  El usuario tiene desahabilitado las suscripciones</h2>
+    </div>
+
   </div>
 </div>
 

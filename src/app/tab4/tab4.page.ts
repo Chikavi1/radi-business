@@ -25,6 +25,7 @@ export class Tab4Page {
   getData(){
     this.api.discounts(localStorage.getItem('id_company')).subscribe(data => {
       this.discounts = data;
+      console.log(this.discounts);
     });
   }
 

@@ -9,17 +9,17 @@
 
 <ion-content>
   <image-cropper
-    style="width: 100%;"
-      [imageBase64]="imageSend"
-      alignImage="center"
-      [autoCrop]="false"
-      [resizeToWidth] = "1920"
-      [resizeToHeight] = "1080"
-      [maintainAspectRatio]="true"
-      [aspectRatio]="4/4"
-      format="png"
-      outputType="base64">
-    </image-cropper>
+    style="width: 100%; height: 100%;"
+    [imageBase64]="imageSend"
+    alignImage="center"
+    [autoCrop]="false"
+    [resizeToWidth]="1080"
+    [resizeToHeight]="1920"
+    [maintainAspectRatio]="true"
+    [aspectRatio]="9/16"
+    format="png"
+    outputType="base64">
+</image-cropper>
 </ion-content>
 <ion-footer>
   <ion-button fill="clear" color="success" expand="block" (click)="crop()">

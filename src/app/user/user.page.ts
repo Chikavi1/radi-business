@@ -5,6 +5,8 @@ import * as moment from 'moment';
 import { HistoryPage } from '../history/history.page';
 import { PetPage } from '../pet/pet.page';
 import { Browser } from '@capacitor/browser';
+import { AlertPage } from '../alert/alert.page';
+import { CreateAlertPage } from '../create-alert/create-alert.page';
 
 
 declare var require: any;
@@ -39,10 +41,12 @@ export class UserPage implements OnInit {
       this.getExtraData();
     }
 
-
-
     if(event.detail.value === 'protect'){
       this.getAdrresses();
+    }
+
+    if(event.detail.value === 'alerts'){
+      this.getSubscrptionAlert();
     }
 
     if(event.detail.value === 'payments'){
@@ -211,6 +215,71 @@ getVisits(){
       }
     });
   }
+}
+
+
+sendNotification(){
+  this.presentModaNotification(CreateAlertPage,this.user.id,this.user.name);
+}
+
+async presentModaNotification(component,userId,userSelectName) {
+  const modal = await this.modalctrl.create({
+    component: component,
+    breakpoints: [1],
+    componentProps:{
+      userId: userId,
+      userSelectName: userSelectName,
+      people: 1
+    },
+    initialBreakpoint: 1,
+    backdropDismiss:true,
+    cssClass: 'small-modal'
+  });
+
+  modal.onDidDismiss().then((data) => {
+  if(data['data']){
+
+  }
+
+  });
+  return await modal.present();
+}
+
+checkboxSuscribe = false;
+isSuscribe;
+suscribeStatus;
+
+getSubscrptionAlert(){
+  let data = {
+    id_user: this.user.id,
+    id_business: localStorage.getItem('id_company')
+  }
+
+  this.api.getSuscription(data).subscribe(data=>{
+    if(data.length == 0){
+      this.isSuscribe = false;
+    }else{
+      this.isSuscribe = true;
+      this.suscribeStatus = data[0].status;
+    }
+  });
+}
+
+createSubscrptionAlert(){
+  let data = {
+    id_user: this.user.id,
+    id_business: localStorage.getItem('id_company'),
+    hash: hashids.encode(this.user.id),
+  }
+
+  this.api.createSuscription(data).subscribe(data=>{
+    console.log(data);
+    if(data.status == 200){
+      this.isSuscribe = 1;
+      this.suscribeStatus = 1;
+      this.presentToast('Usuario suscrito a tus notificaciones','success');
+    }
+  });
 }
 
 getPets(){

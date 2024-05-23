@@ -37,7 +37,12 @@ export class Tab2Page {
     });
   }
 
-
+  doRefresh(event){
+    this.getInfo();
+    setTimeout(() => {
+      event.target.complete();
+    },2000);
+  }
 
 
   async History(id){

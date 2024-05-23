@@ -34,6 +34,13 @@ export class Tab3Page {
     }
    }
 
+   doRefresh(event) {
+    this.getInfo();
+    setTimeout(() => {
+      event.target.complete();
+    },2000);
+  }
+
    getInfo(){
     this.api.getUsersByCompany(localStorage.getItem('id_company')).subscribe(data => {
       console.log(data);

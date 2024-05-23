@@ -7,12 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { PetsPageRoutingModule } from './pets-routing.module';
 
 import { PetsPage } from './pets.page';
+import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    ExploreContainerComponentModule,
     PetsPageRoutingModule
   ],
   declarations: [PetsPage]

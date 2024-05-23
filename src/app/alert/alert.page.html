@@ -1,0 +1,54 @@
+<ion-content>
+  <div style="padding: 1em;">
+    <h2>{{data.title}}</h2>
+    <p>Enviado el {{data.createdAt  | localizedDate:'fullDate'}} </p>
+
+    <p *ngIf="data.channel == 1">Envio individual</p>
+    <p *ngIf="data.channel == 2">Envio Grupal</p>
+
+    <h5 *ngIf="data.type == 1">Tipo Recordatorio</h5>
+    <h5 *ngIf="data.type == 2">Tipo Evento</h5>
+    <h5 *ngIf="data.type == 3">Tipo Promoción</h5>
+
+    <ion-card style="padding: 1em;">
+      <h2>Estadisticas en General</h2>
+
+      <p>Enviados: {{sent}}</p>
+      <p>Abiertos: {{converted}}</p>
+      <p>En Espera: {{remaining}}</p>
+    </ion-card>
+
+    <ion-card style="padding: 1em;">
+      <h2>Estadisticas Android</h2>
+      <div *ngIf="isAndroid">
+        <p>Enviados:  {{android.successful}}</p>
+        <p>Abiertos:  {{android.converted}}</p>
+        <p>Con error: {{android.errored}}</p>
+      </div>
+      <div  *ngIf="!isAndroid">
+        <p>No se envio a dispositivos Android</p>
+      </div>
+
+    </ion-card>
+
+    <ion-card style="padding: 1em;">
+      <h2>Estadisticas Ios</h2>
+      <div *ngIf="isIos">
+        <p>Enviados:  {{ios.successful}}</p>
+        <p>Abiertos:  {{ios.converted}}</p>
+        <p>Con error: {{ios.errored}}</p>
+      </div>
+      <div *ngIf="!isIos">
+        <p>No se envio a dispositivos Ios</p>
+      </div>
+    </ion-card>
+
+  </div>
+
+
+
+</ion-content>
+
+<ion-footer>
+    <ion-button color="danger" (click)="close()" expand="block">Cerrar</ion-button>
+</ion-footer>

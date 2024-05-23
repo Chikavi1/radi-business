@@ -1,12 +1,20 @@
 <ion-content>
+  <app-explore-container></app-explore-container>
+
   <ion-row>
     <ion-col [size]="device=='tablet'?10:12" [offset]="device=='tablet'?1:0">
 
 
   <div *ngIf="step == 1">
+
+    <h1 style="padding: 1em .5em;">Recompensas</h1>
+
+
     <div *ngIf="rewards.length == 0">
       <h2 style="padding: 1em;text-align: center;margin-top: 4em;">No tienes recompensas creadas</h2>
     </div>
+
+
     <ion-button style="padding:1em;" expand="block"   color="dark"(click)="createModal()">Crear Recompensa</ion-button>
 
 

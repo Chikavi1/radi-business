@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController, NavController, ToastController } from '@ionic/angular';
+import { LoadingController, ModalController, NavController, ToastController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
 import jwt_decode from "jwt-decode";
+import { RegisterPage } from '../pages/register/register.page';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ export class LoginPage implements OnInit {
   constructor(private api:DataService,
     private loadingController:LoadingController,
     private toastController: ToastController,
+    private modalCtrl:ModalController,
     private navCtrl:NavController) {
      this.device = localStorage.getItem('device');
     }
@@ -50,16 +52,30 @@ export class LoginPage implements OnInit {
       localStorage.setItem('id_company',decoded.id);
       localStorage.setItem('name',decoded.name);
       localStorage.setItem('image',decoded.image);
-      // localStorage.setItem('type',decoded.type);
       localStorage.setItem('email',decoded.email);
       localStorage.setItem('account',decoded.account);
+      localStorage.setItem('customer',decoded.customer);
       localStorage.setItem('granted',decoded.granted);
       this.navCtrl.navigateRoot('/')
     },err => {
       console.log(err);
+      this.password = '';
       this.presentToast('Credenciales incorrectas','danger');
 
     });
+  }
+
+ async register(){
+    const modal = await this.modalCtrl.create({
+      component: RegisterPage,
+      breakpoints: [1],
+      initialBreakpoint: 1,
+    });
+    modal.onDidDismiss().then((data) => {
+      if(data['data']){
+      }
+    });
+    return await modal.present();
   }
 
   async presentToast(message,color) {

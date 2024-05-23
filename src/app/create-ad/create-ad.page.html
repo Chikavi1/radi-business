@@ -1,39 +1,132 @@
 <ion-content  >
-  <h1 style="text-align: center;font-weight: bold;">Crear anuncio</h1>
-  <div style="padding: 1em;">
-    <h3>Contenido</h3>
-    <p>*Nombre del anuncio</p>
-    <ion-input [(ngModel)]="title" placeholder="Nombre del anuncio" class="new-input"></ion-input>
-    <p>Media</p>
-    <p>La imagen necesita ser en formato historia (1220px x 720px)</p>
-    <ion-button>Cargar Imagen</ion-button>
-    <p>* URL</p>
-    <ion-input  [(ngModel)]="cta" placeholder="URL" class="new-input"></ion-input>
+  <div *ngIf="step == 1">
+    <h1 style="text-align: center;font-weight: bold;">Crear anuncio</h1>
+    <div style="padding: 1em;">
+      <ion-card style="padding: 1em;">
+        <h3>Contenido</h3>
+        <p>Nombre del anuncio *</p>
+        <ion-input [(ngModel)]="title" placeholder="Nombre del anuncio" class="new-input"></ion-input>
+        <p>Media *</p>
+        <ion-card>
+          <ion-row >
+            <ion-col size="5">
+              <img [src]="photo" alt="photo" (click)="getPicture()">
+            </ion-col>
+            <ion-col size="7">
+              <p>La imagen necesita ser en formato historia (1080 x 1920px)</p>
+              <ion-button style="margin-top: 2em;" color="dark" expand="block" (click)="getPicture()">Cargar Imagen</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+        <p>URL *</p>
+        <ion-input (ionChange)="checkUrl($event)"  [(ngModel)]="cta" placeholder="URL" class="new-input"></ion-input>
+        <p style="color: red;" *ngIf="!cta_valid">Url no valido</p>
+        <p  style="color: green;"  *ngIf="cta_valid">URL valido</p>
+      </ion-card>
 
-    <h3>Ubicación <span><ion-icon name="information-circle-outline"></ion-icon></span> </h3>
-    <div style="width: 100%;height: 13em;">
-      map
+      <ion-card>
+        <h3 style="padding: 1em;">Ubicación <span><ion-icon name="information-circle-outline"></ion-icon></span> </h3>
+        <div  id="mapId" #leafletmap style="width: 100%;height: 25em;">
+        </div>
+      </ion-card>
+
+      <ion-card style="padding: 1em;">
+        <h3>Calendario</h3>
+        <p>Fecha de inicio</p>
+        <ion-datetime-button datetime="datetime" ></ion-datetime-button>
+            <ion-modal [keepContentsMounted]="true">
+              <ng-template>
+                <ion-datetime  [min]="today" id="datetime" (ionChange)="segmentChange($event)" presentation="date" [(ngModel)]="start_date"></ion-datetime>
+              </ng-template>
+            </ion-modal>
+
+            <p>Cantidad de dias de publicidad</p>
+
+            <ion-row>
+              <ion-col size="10">
+                <h1>{{count}}</h1>
+
+              </ion-col>
+              <ion-col (click)="minus()"  size="1">
+                <h1><ion-icon name="remove-circle-outline"></ion-icon></h1>
+              </ion-col>
+              <ion-col (click)="plus()"   size="1">
+                <h1><ion-icon name="add-circle-outline"></ion-icon></h1>
+              </ion-col>
+            </ion-row>
+           </ion-card>
+
+
+      <ion-card style="padding: 1em;">
+
+            <ion-row>
+              <ion-col size="8">
+                <h3>Método de Pago</h3>
+              </ion-col>
+              <ion-col size="4" (click)="goToMethods()">
+                <p style="text-align: right;">Editar</p>
+              </ion-col>
+            </ion-row>
+
+            <div *ngIf="card">
+              <div style="margin-left:1em;">
+                <p class="capital">{{ card.card.brand }} **** {{ card.card.last4 }}</p>
+              </div>
+            </div>
+            <div  *ngIf="!card">
+              <p>Por el momento, no tienes una tarjeta enlazada</p>
+              <ion-button color="dark" expand="block" (click)="goToMethods()">Agregar metodo de pago</ion-button>
+            </div>
+
+
+      </ion-card>
+
+
+      <ion-card style="padding: 1em;">
+        <h3>Resumen</h3>
+        <p>Tu anuncio estara en circulación durante {{count}} dias en la app de <b>Radi Running</b> en la parte de finalizar paseo</p>
+        <ion-row>
+          <ion-col size="5">
+            <h4  style="text-align: left;">Fecha de inicio</h4>
+          </ion-col>
+          <ion-col size="7">
+            <p style="text-align: right;" class="capital">{{start_date | localizedDate:'fullDate'}}</p>
+          </ion-col>
+
+          <ion-col size="5">
+            <h4  style="text-align: left;">Fecha de finalización</h4>
+          </ion-col>
+          <ion-col size="7">
+            <p style="text-align: right;"  class="capital">{{finish_date | localizedDate:'fullDate' }}</p>
+          </ion-col>
+
+
+          <ion-col size="5">
+            <h2  style="text-align: left;">Total</h2>
+          </ion-col>
+          <ion-col>
+            <h2 style="text-align: right;">${{total}} MXN</h2>
+          </ion-col>
+        </ion-row>
+      </ion-card>
     </div>
-    <p>Anuncio a nivel nacional</p>
-    <h3>Calendario</h3>
-    <h3>Método de Pago</h3>
-    <p>**** 1233 </p>
-    <ion-button>Agregar metodo de pago</ion-button>
-    <h3>Resumen</h3>
-    <p>Tu anuncio estara en circulación durante 6 dias</p>
-    <ion-row>
-      <ion-col size="5">
-        <h2  style="text-align: left;">Total</h2>
-      </ion-col>
-      <ion-col>
-        <h2 style="text-align: right;">$120 MXN</h2>
-      </ion-col>
-    </ion-row>
   </div>
+
+    <div *ngIf="step == 2" style="padding: 1em;">
+      <div style="padding:0em 8em;margin-top: 1.4em;">
+        <ng-lottie  [options]="success">
+        </ng-lottie>
+      </div>
+      <h2>Exitoso</h2>
+      <p *ngIf="start_date != today">Tu anuncio estará pronto en circulación</p>
+      <p *ngIf="start_date == today">Tu anuncio ya esta en circulación</p>
+      <ion-button expand="block" (click)="close(true)"  color="success" shape="round">Entendido</ion-button>
+    </div>
+
 
 </ion-content>
 
-<ion-footer>
+<ion-footer *ngIf="step == 1">
   <ion-row>
     <ion-col>
       <ion-button expand="block" color="danger" (click)="close()">
@@ -41,7 +134,7 @@
       </ion-button>
     </ion-col>
     <ion-col>
-      <ion-button [disabled]="title == ''" expand="block" color="primary" (click)="create()">
+      <ion-button [disabled]="title.length <= 3 || cta.length <= 6|| !card " expand="block" color="primary" (click)="create()">
         Promocionar
       </ion-button>
     </ion-col>

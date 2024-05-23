@@ -3,12 +3,41 @@
   <app-explore-container></app-explore-container>
   <ion-row>
     <ion-col [size]="device=='tablet'?8:12" [offset]="device=='tablet'?2:0">
-      <h2>Anuncios</h2>
+      <div  *ngIf="ads.length != 0">
+        <h2 style="padding: 1em;">Anuncios</h2>
+        <ion-button  (click)="createAd()" style="padding:0em 1em;" expand="full" color="dark" shape="round">
+          Crear anuncio
+        </ion-button>
+        <div *ngFor="let item of ads">
+          <ion-card  (click)="openAd(item.id)">
+            <ion-row>
+              <ion-col size="5">
+                <img src="{{item.image}}" alt="">
+              </ion-col>
+              <ion-col size="7">
+                <h5 class="capital">{{item.title}}</h5>
+                <p>Link:</p>
+                <p>{{item.cta}}</p>
+                <p>Deja de circular: </p>
+                <p>{{item.finish_date | date:'d/MM/y'}}</p>
+                <p>Estado:</p>
+                <p>{{ item.statusText }}</p>
+              </ion-col>
+            </ion-row>
+          </ion-card>
+        </div>
+      </div>
 
-      <p>Crea tu primer anuncio</p>
-      <ion-button  (click)="createAd()" style="padding:0em 1em;" expand="full" color="dark" shape="round">
-        Crear anuncio
-      </ion-button>
+      <div *ngIf="ads.length == 0">
+        <img src="https://images.pexels.com/photos/7210754/pexels-photo-7210754.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="">
+        <div style="padding: 1em;">
+          <h3>Consigue clientes con Radi Ads</h3>
+          <p>Conecta con personas verdaderamente interesadas en el bienestar de sus mascotas. Gracias a la comunidad de Radi Pets, tu negocio llegará directamente a tus clientes potenciales.</p>
+        </div>
+        <ion-button  (click)="createAd()" style="padding:0em 1em;" expand="full" color="dark" shape="round">
+          Crear anuncio
+        </ion-button>
+      </div>
     </ion-col>
   </ion-row>
 

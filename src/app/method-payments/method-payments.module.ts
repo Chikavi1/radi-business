@@ -7,11 +7,13 @@ import { IonicModule } from '@ionic/angular';
 import { MethodPaymentsPageRoutingModule } from './method-payments-routing.module';
 
 import { MethodPaymentsPage } from './method-payments.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    TranslateModule,
     IonicModule,
     MethodPaymentsPageRoutingModule
   ],

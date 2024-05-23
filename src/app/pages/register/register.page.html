@@ -1,0 +1,79 @@
+<ion-content>
+
+  <ion-card style="padding: 1em;">
+    <h2>Información del negocio</h2>
+    <p>Nombre de tu negocio* </p>
+    <ion-input class="new-input"
+     style="margin-top: .5em;"
+     type="text"
+     placeholder="Ingresa nombre de tu negocio"
+     [(ngModel)]="name">
+    </ion-input>
+
+    <p>Descripción de tu negocio</p>
+    <ion-textarea
+     maxlength="599"
+     rows="8"
+     cols="20"
+     [(ngModel)]="description"
+     class="new-input"
+     placeholder="Ingresa la descripción del evento" type="text">
+    </ion-textarea>
+
+    <p>Dirección de tu negocio</p>
+    <ion-input class="new-input" style="margin-top: .5em;" type="text" placeholder="Ingresa contraseña de tu cliente" [(ngModel)]="address"  ></ion-input>
+
+    <p>Categoria* </p>
+
+    <ion-select
+    okText="{{ 'createinjection.donetext' | translate }}" cancelText="{{ 'createinjection.canceltext' | translate }}"
+    style="width: 100%;" class="new-input" [(ngModel)]="category">
+      <ion-select-option value="2">Parque</ion-select-option>
+      <ion-select-option value="3">Estetica</ion-select-option>
+      <ion-select-option value="4">Veterinaria</ion-select-option>
+      <ion-select-option value="5">Lugar Pet Friendly</ion-select-option>
+      <ion-select-option value="6">Guarderia</ion-select-option>
+      <ion-select-option value="7">Escuela Canina</ion-select-option>
+      <ion-select-option value="8">Alimentos para mascotas</ion-select-option>
+      <ion-select-option value="9">Accesorios para mascotas</ion-select-option>
+
+    </ion-select>
+
+  </ion-card>
+
+  <ion-card style="padding: 1em;">
+    <h2>Redes sociales</h2>
+    <p>Facebook</p>
+    <ion-input class="new-input" style="margin-top: .5em;" type="text" placeholder="Ingresa el link del perfil de tu Facebook" [(ngModel)]="fb_url"></ion-input>
+
+    <p>Instagram</p>
+    <ion-input class="new-input" style="margin-top: .5em;" type="text" placeholder="Ingresa el link del perfil de tu Instagram" [(ngModel)]="ig_url"></ion-input>
+
+    <p>Pagina web</p>
+    <ion-input class="new-input" style="margin-top: .5em;" type="text" placeholder="Ingresa el link de tu web" [(ngModel)]="web_url"></ion-input>
+
+  </ion-card>
+
+
+  <ion-card  style="padding: 1em;">
+    <h2>Ingreso</h2>
+    <p>Correo *</p>
+    <ion-input class="new-input" style="margin-top: .5em;" type="email" placeholder="Ingresa contraseña de tu cliente" [(ngModel)]="email"  ></ion-input>
+
+    <p>Contraseña *</p>
+    <ion-input class="new-input" style="margin-top: .5em;" type="password" placeholder="Ingresa contraseña de tu cliente" [(ngModel)]="password"  ></ion-input>
+
+  </ion-card>
+
+</ion-content>
+
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button (click)="close()" expand="block" color="danger">Cancelar</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button (click)="create()" expand="block" [disabled]="!name || !email || !password" color="success">Crear Perfil</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>
