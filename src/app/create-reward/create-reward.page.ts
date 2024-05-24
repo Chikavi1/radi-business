@@ -38,11 +38,15 @@ export class CreateRewardPage implements OnInit {
       finish_date: this.finish_date,
     }
 
+    console.log(data);
+
     this.api.createRewards(data).subscribe(data => {
+      console.log(data);
+
       if(data.status == 200){
         this.loadingController.dismiss();
-        this.modalCtrl.dismiss();
         this.presentToast('Recompensa creada, puede tardar unos segundo en verse reflejado','success');
+        this.modalCtrl.dismiss(true);
       }
     })
   }
@@ -75,7 +79,7 @@ export class CreateRewardPage implements OnInit {
             this.api.updateRewards(data).subscribe(data => {
               console.log(data);
               this.presentToast('Se ha eliminado correctamente.','dark');
-              this.modalCtrl.dismiss(1);
+              this.modalCtrl.dismiss(true);
             });
 
           }
@@ -90,7 +94,7 @@ export class CreateRewardPage implements OnInit {
     this.presentLoading();
 
     let data = {
-      id: localStorage.getItem('id_company'),
+      id: this.id,
       description: this.description,
       count:       this.count,
       finish_date: this.finish_date,
@@ -99,7 +103,7 @@ export class CreateRewardPage implements OnInit {
     this.api.updateRewards(data).subscribe(data => {
       if(data.status == 200){
         this.loadingController.dismiss();
-        this.modalCtrl.dismiss();
+        this.modalCtrl.dismiss(true);
         this.presentToast('Recompensa actualizada, puede tardar unos segundo en verse reflejado','success');
       }
     })

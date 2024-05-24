@@ -95,7 +95,7 @@ export class AddClientPage implements OnInit {
      if(data.status){
       this.presentToast('Usuario creado','success');
       localStorage.setItem('update_clients','true')
-      this.modalCtrl.dismiss();
+      this.modalCtrl.dismiss(true);
      }
     },err =>{
       this.buttondisabled = false;

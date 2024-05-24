@@ -3,11 +3,11 @@ import { ModalController } from '@ionic/angular';
 import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
 
 @Component({
-  selector: 'app-photo-modal',
-  templateUrl: './photo-modal.page.html',
-  styleUrls: ['./photo-modal.page.scss'],
+  selector: 'app-photomodalstory',
+  templateUrl: './photomodalstory.page.html',
+  styleUrls: ['./photomodalstory.page.scss'],
 })
-export class PhotoModalPage implements OnInit {
+export class PhotomodalstoryPage implements OnInit {
   @ViewChild(ImageCropperComponent,{ static: false }) angularCropper: ImageCropperComponent;
   imageSend;
   backimage;

@@ -217,6 +217,14 @@ const routes: Routes = [
   {
     path: 'alerts',
     loadChildren: () => import('./alerts/alerts.module').then( m => m.AlertsPageModule)
+  },
+  {
+    path: 'select-user',
+    loadChildren: () => import('./pages/select-user/select-user.module').then( m => m.SelectUserPageModule)
+  },
+  {
+    path: 'photomodalstory',
+    loadChildren: () => import('./photomodalstory/photomodalstory.module').then( m => m.PhotomodalstoryPageModule)
   }
 ];
 @NgModule({

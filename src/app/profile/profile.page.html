@@ -38,6 +38,14 @@
 
     <p>Dirección</p>
     <p class="capital">{{company.address}}</p>
+    <p>Visible</p>
+    <p *ngIf="company.visible">Sí</p>
+    <p *ngIf="!company.Visible">No</p>
+    <p>Modo de venta</p>
+    <p *ngIf="company.sales_mode == 1">Físico</p>
+    <p *ngIf="company.sales_mode == 2">Página web</p>
+    <p *ngIf="company.sales_mode == 3">Eventos</p>
+
 
     <ion-card style="padding: 1em;">
       <h2>Comparte el perfil de tu negocio</h2>
@@ -84,7 +92,9 @@
         Crear Recompensas
       </p>
 
-      <p>*Esta información solo lo puedes ver tu</p>
+      <p>Esta información es privada y solo tú tienes acceso a ella. Si necesitas que habilitemos alguna funcionalidad adicional, por favor, envíanos un mensaje a través de nuestras redes sociales.
+      </p>
+      <b style="margin-top: 1em;" (click)="openBlank('https://www.instagram.com/radipets')">Instagram</b> o en <b (click)="openBlank('https://www.facebook.com/radipetsmx')">Facebook</b>
 
     </ion-card>
 

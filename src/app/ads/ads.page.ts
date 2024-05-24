@@ -51,6 +51,7 @@ export class AdsPage implements OnInit {
     });
     modal.onDidDismiss().then((data) => {
       if(data['data']){
+        this.getAds();
       }
     });
     return await modal.present();

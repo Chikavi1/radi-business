@@ -26,8 +26,8 @@ export class QrcodeappPage implements OnInit {
   async share(){
     await Share.share({
       title: 'Descarga App',
-      text: 'Descargar app Radi Pets',
-      url: 'https://radi.pet/download/',
+      text: 'Descargar app Radi Running',
+      url: 'https://www.radi.pet/running/',
       dialogTitle: 'Descarga App',
     });
   }

@@ -3,7 +3,7 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import * as Leaflet from 'leaflet';
 import { ModalWarningPage } from '../modal-warning/modal-warning.page';
 import { PhotoModalPage } from '../photo-modal/photo-modal.page';
-import { ModalController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import * as moment from 'moment';
 import { Geolocation } from '@capacitor/geolocation';
 
@@ -34,12 +34,16 @@ export class CreateEventPage implements OnInit {
   next(){
     this.step += 1;
   }
-
-  constructor(private modalCtrl:ModalController,private api:DataService) {
+  today;
+  constructor(private modalCtrl:ModalController,
+    private loadingController:LoadingController,
+    private alertController:AlertController,
+    private api:DataService) {
     this.image = "../../assets/img/default.png";
     this.start_date = moment().format();
     this.end_date = moment(this.start_date).add(1, 'hours').format();
-
+    this.today  = moment().format('YYYY-MM-DD');
+    this.address = localStorage.getItem('address');
    }
 
   ngOnInit() {
@@ -66,9 +70,28 @@ longitude;
 
 address:string = '';
 
+async presentLoading(){
+  const loading = await this.loadingController.create({
+    message: 'Creando evento, un momento...',
+    duration: 1200
+  });
+  loading.present();
+}
+
+buttondisabled = false;
+
+  async send(){
+
+    const fechasValidas = await this.validateDates();
+    if (!fechasValidas) {
+      await this.presentAlert('Error', 'La fecha de finalización no puede ser anterior a la fecha de inicio.');
+      return;
+    }
+
+    this.buttondisabled = true;
+    this.presentLoading();
 
 
-  send(){
     let data = {
     id_business:    localStorage.getItem('id_company'),
     name:           this.name,
@@ -93,6 +116,31 @@ address:string = '';
     });
   }
   map;
+
+  async validateDates(): Promise<boolean> {
+    const startDate = new Date(this.start_date);
+    const endDate = new Date(this.end_date);
+    const today = new Date();
+
+    if (startDate > endDate) {
+      this.end_date = null; // Limpiar la fecha de finalización
+      return false; // Retorna false si la fecha de finalización es anterior a la fecha de inicio
+    } else if (endDate < today) {
+      this.end_date = null; // Limpiar la fecha de finalización
+      return false; // Retorna false si la fecha de finalización es anterior a la fecha actual
+    } else {
+      return true; // Retorna true si las fechas son válidas
+    }
+  }
+
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
 
   takePhoto(){
     Camera.checkPermissions().then((res) => {

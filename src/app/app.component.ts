@@ -22,13 +22,15 @@ export class AppComponent {
       if(localStorage.getItem('id_company')){
 
         this.api.checkStatus({id:localStorage.getItem('id_company')}).subscribe((data:any) => {
-          if(data[0].status == 0){
+          console.log(data);
+
+          if(data.status == 0){
             this.blockModal(0)
           }
-          if(data[0].status == 2){
+          if(data.status == 2){
             this.blockModal(2)
           }
-          localStorage.setItem('granted',data[0].granted);
+          localStorage.setItem('granted',data.granted);
         });
 
         this.router.navigateByUrl('/');

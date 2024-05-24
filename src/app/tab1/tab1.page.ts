@@ -180,74 +180,162 @@ export class Tab1Page {
     return camera === 'granted' || camera === 'limited';
   }
 
- async  presentActionSheet(){
-  let options = [
-    {
+//  async  presentActionSheet(){
+//   let options = [
+//     {
+//         text: 'Crear Cliente',
+//         icon: 'person-add',
+//         handler: () => {
+//           this.openAdds(AddClientPage)
+//         }
+//     },
+//     {
+//       text: 'Crear Evento',
+//       icon: 'calendar',
+//       handler: () => {
+//         this.openAdds(CreateEventPage);
+//       }
+//     },
+//     {
+//       text: 'Crear Promoción',
+//       icon: 'pricetag',
+//       handler: () => {
+//        this.openAdds(CreatePromotionPage);
+//       }
+//     },
+//     {
+//       text: 'Generar cobro',
+//       icon: 'card',
+//       handler: () => {
+//        this.openPayments();
+//       }
+//     },
+//     {
+//       text: 'Crear Recompensa',
+//       icon: 'trophy',
+//       handler: () => {
+//         this.openAdds(CreateRewardPage);
+
+//       }
+//     },
+//     {
+//       text: 'Crear Alerta',
+//       icon: 'notifications',
+//       handler: () => {
+//         this.openAdds(CreateAlertPage);
+
+//       }
+//     },
+//     {
+//       text: 'Crear Anuncio',
+//       icon: 'megaphone',
+//       handler: () => {
+//         this.openAdds(CreateAdPage);
+
+//       }
+//     },
+//     {
+//       text: 'Cancelar',
+//       icon: 'close',
+//       role: 'cancel',
+//       handler: () => {
+//       }
+//     }
+//   ]
+
+//     const actionSheet = await this.actionSheetController.create({
+//       header: '¿Qué deseas agregar?',
+//       mode:'md',
+//       buttons: options
+//     });
+//     await actionSheet.present();
+
+//     const { role } = await actionSheet.onDidDismiss();
+//   }
+
+
+
+  async presentActionSheet() {
+    const grantedPermissions = JSON.parse(localStorage.getItem('granted') || '[]');
+    const options = [];
+
+      options.push({
         text: 'Crear Cliente',
         icon: 'person-add',
         handler: () => {
-          this.openAdds(AddClientPage)
+          this.openAdds(AddClientPage);
         }
-    },
-    {
-      text: 'Crear Evento',
-      icon: 'calendar',
-      handler: () => {
-        this.openAdds(CreateEventPage);
-      }
-    },
-    {
-      text: 'Crear Promoción',
-      icon: 'pricetag',
-      handler: () => {
-       this.openAdds(CreatePromotionPage);
-      }
-    },
-    {
-      text: 'Generar cobro',
-      icon: 'card',
-      handler: () => {
-       this.openPayments();
-      }
-    },
-    {
-      text: 'Crear Recompensa',
-      icon: 'trophy',
-      handler: () => {
-        this.openAdds(CreateRewardPage);
+      });
 
+      if (grantedPermissions.includes('events')) {
+        options.push({
+          text: 'Crear Evento',
+          icon: 'calendar',
+          handler: () => {
+            this.openAdds(CreateEventPage);
+          }
+        });
       }
-    },
-    {
-      text: 'Crear Alerta',
-      icon: 'notifications',
-      handler: () => {
-        this.openAdds(CreateAlertPage);
 
-      }
-    },
-    {
-      text: 'Crear Anuncio',
-      icon: 'megaphone',
-      handler: () => {
-        this.openAdds(CreateAdPage);
+      options.push({
+              text: 'Crear Promoción',
+              icon: 'pricetag',
+              handler: () => {
+               this.openAdds(CreatePromotionPage);
+              }
+      });
 
+      if (grantedPermissions.includes('payments')) {
+        options.push({
+          text: 'Generar cobro',
+          icon: 'card',
+          handler: () => {
+            this.openPayments();
+          }
+        });
       }
-    },
-    {
+
+      options.push({
+        text: 'Crear Recompensa',
+        icon: 'trophy',
+        handler: () => {
+          this.openAdds(CreateRewardPage);
+        }
+      });
+
+
+      options.push(  {
+        text: 'Crear Alerta',
+        icon: 'notifications',
+        handler: () => {
+          this.openAdds(CreateAlertPage);
+
+        }
+      });
+
+
+      options.push( {
+        text: 'Crear Anuncio',
+        icon: 'megaphone',
+        handler: () => {
+          this.openAdds(CreateAdPage);
+
+        }
+      });
+
+    options.push({
       text: 'Cancelar',
       icon: 'close',
       role: 'cancel',
-      handler: () => {
-      }
-    }
-  ]
+      handler: () => {}
+    });
 
     const actionSheet = await this.actionSheetController.create({
       header: '¿Qué deseas agregar?',
-      mode:'md',
+      mode: 'md',
       buttons: options
     });
+
     await actionSheet.present();
 
     const { role } = await actionSheet.onDidDismiss();

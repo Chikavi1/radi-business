@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavController, ToastController } from '@ionic/angular';
+import { LoadingController, ModalController, NavController, ToastController } from '@ionic/angular';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -25,6 +25,7 @@ export class RegisterPage implements OnInit {
 
   constructor(private modalCtrl:ModalController,
     private navCtrl:NavController,
+    private loadingCtrl:LoadingController,
     private toastController:ToastController,
     private api:DataService
   ) { }
@@ -36,7 +37,18 @@ export class RegisterPage implements OnInit {
     this.modalCtrl.dismiss();
   }
   disabledButton = false;
+
+  async showLoading() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Creando cuenta negocio ...',
+      duration: 3000,
+    });
+  }
+
+  sales_mode = 1;
   create(){
+    this.showLoading();
+
     this.disabledButton = true;
 
     let data = {
@@ -44,6 +56,7 @@ export class RegisterPage implements OnInit {
       description:this.description,
       category: this.category,
       address: this.address,
+      sales_mode: this.sales_mode,
 
       web_url: this.web_url,
       fb_url: this.fb_url,
@@ -56,6 +69,7 @@ export class RegisterPage implements OnInit {
     this.api.createCompany(data).subscribe(data => {
       console.log(data);
       if(data){
+        this.loadingCtrl.dismiss();
         localStorage.setItem('id_company',data.id);
         localStorage.setItem('name',data.name);
         localStorage.setItem('image',data.image);
@@ -63,6 +77,8 @@ export class RegisterPage implements OnInit {
         localStorage.setItem('account',data.account);
         localStorage.setItem('customer',data.customer);
         localStorage.setItem('granted',data.granted);
+        localStorage.setItem('address',data.address);
+
         this.navCtrl.navigateRoot('/');
       }
 

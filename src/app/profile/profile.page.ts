@@ -56,6 +56,10 @@ export class ProfilePage implements OnInit {
         this.grantedCreateClients = granted.includes('createusers');
       }
 
+      if(!localStorage.getItem('address')){
+        localStorage.setItem('address',this.company.address);
+      }
+
       this.description = this.company.description;
       this.fb_url = this.company.fb_url;
       this.ig_url = this.company.ig_url;

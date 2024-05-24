@@ -348,8 +348,21 @@ export class DataService {
 
 
   discounts(id_company){
-  return this.http.get(this.MODE+'discounts-by-company/'+id_company);
+    return this.http.get(this.MODE+'discounts-by-company/'+id_company);
   }
+
+  discountsAlerts(id_company){
+    return this.http.get(this.MODE+'alerts/discounts/'+id_company);
+  }
+
+  discountsEvents(id_company){
+    return this.http.get(this.MODE+'alerts/events/'+id_company);
+  }
+
+  getUsersFilterAlert(id_company){
+    return this.http.get(this.MODE+'alerts/users/'+id_company);
+  }
+
 
   discount(id){
   return this.http.get(this.MODE+'discount/'+id);

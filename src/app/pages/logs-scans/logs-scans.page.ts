@@ -41,6 +41,7 @@ async openAdds(page){
   });
   modal.onDidDismiss().then((data) => {
    if(data['data']){
+    this.getRewards();
     }
   });
   return await modal.present();
@@ -67,6 +68,8 @@ async editModal(page,data){
   });
   modal.onDidDismiss().then((data) => {
    if(data['data']){
+    console.log('se actualiza coño')
+    this.getRewards();
     }
   });
   return await modal.present();
@@ -77,6 +80,13 @@ limit = 10;
 device;
 logo;
 
+getRewards(){
+  this.api.getRewards(localStorage.getItem('id_company')).subscribe(data => {
+    console.log(data);
+    this.rewards = data;
+  });
+}
+
   constructor(private api:DataService,
     private toastController:ToastController,
     private navCtrl:NavController,
@@ -84,11 +94,8 @@ logo;
     private modalCtrl:ModalController) {
     this.device = localStorage.getItem('device');
     this.logo = localStorage.getItem('image');
+    this.getRewards();
 
-    this.api.getRewards(localStorage.getItem('id_company')).subscribe(data => {
-      console.log(data);
-      this.rewards = data;
-    });
   }
   step = 1;
 

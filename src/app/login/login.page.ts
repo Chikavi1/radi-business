@@ -56,6 +56,8 @@ export class LoginPage implements OnInit {
       localStorage.setItem('account',decoded.account);
       localStorage.setItem('customer',decoded.customer);
       localStorage.setItem('granted',decoded.granted);
+      localStorage.setItem('address',decoded.address);
+
       this.navCtrl.navigateRoot('/')
     },err => {
       console.log(err);

@@ -168,6 +168,7 @@ async getPicture(src){
       if(data.status == 200){
         this.loadingController.dismiss();
         this.presentToast('Se ha subido exitosamente el carnet, espera unos segundos para que se actualice','success');
+        this.modalCtrl.dismiss(true)
       }
     });
   }

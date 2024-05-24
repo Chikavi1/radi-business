@@ -201,7 +201,11 @@ export class PetPage implements OnInit {
       componentProps: data
     });
 
-
+    modal.onDidDismiss().then((data) => {
+      if(data['data']){
+        this.getPetInfo();
+      }
+    });
 
     return await modal.present();
   }

@@ -24,7 +24,7 @@
        <ion-datetime-button datetime="datetime" ></ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
-            <ion-datetime id="datetime" [(ngModel)]="start_date"></ion-datetime>
+            <ion-datetime id="datetime"  [min]="today" [(ngModel)]="start_date" ></ion-datetime>
           </ng-template>
         </ion-modal>
 
@@ -33,7 +33,7 @@
         <ion-datetime-button datetime="datetime2" ></ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
-            <ion-datetime id="datetime2" [(ngModel)]="end_date"></ion-datetime>
+            <ion-datetime id="datetime2"  [min]="today" [(ngModel)]="end_date"></ion-datetime>
           </ng-template>
         </ion-modal>
 
@@ -67,7 +67,7 @@
       <ion-button *ngIf="step == 1" [disabled]="10 > address.length " color="tertiary" expand="full" (click)="next()">
         Siguiente
       </ion-button>
-      <ion-button *ngIf="step == 2"  [disabled]="!uploadPhoto || !name || !description || !considerations || !start_date || !end_date"  color="success" expand="full" (click)="send()">
+      <ion-button *ngIf="step == 2"  [disabled]="!uploadPhoto || !name || !description || !considerations || !start_date || !end_date || buttondisabled"  color="success" expand="full" (click)="send()">
         Enviar
       </ion-button>
     </ion-col>

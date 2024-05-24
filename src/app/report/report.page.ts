@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service';
-import { ModalController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-report',
@@ -9,7 +9,9 @@ import { ModalController } from '@ionic/angular';
 })
 export class ReportPage implements OnInit {
 
-  constructor(private api:DataService,private modalCtrl:ModalController) { }
+  constructor(private api:DataService,
+    private loadingController:LoadingController,
+    private modalCtrl:ModalController) { }
 
   description;
   ngOnInit() {
@@ -20,7 +22,20 @@ export class ReportPage implements OnInit {
   user_id
   id;
 
+  async presentLoading(){
+    const loading = await this.loadingController.create({
+      message: 'Agregando reporte, un momento...',
+      duration: 1200
+    });
+    loading.present();
+  }
+
+
+  buttondisabled = false;
   send(){
+    this.buttondisabled = true;
+
+    this.presentLoading();
     let data = {
       id_visit: this.id,
       id_pet: this.pet_id,

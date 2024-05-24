@@ -3,7 +3,7 @@
     <div *ngIf="step == 1">
       <h1>Crear Alerta</h1>
       <p>Canal</p>
-      <ion-chip (click)="setPeople(1)" [ngClass]="{'selected' : people == 1 }" *ngIf="userId">
+      <ion-chip (click)="setPeople(1)" [ngClass]="{'selected' : people == 1 }"  >
         Individual
       </ion-chip>
 
@@ -15,10 +15,10 @@
         <h2>Individual</h2>
         <div *ngIf="!userId">
           <p>Debes de seleccionar un usuario</p>
-          <!-- <ion-button expand="block" color="dark" (click)="selectUser()">Seleccionar usuario</ion-button> -->
+          <ion-button expand="block" color="dark" (click)="userSelectModal()">Seleccionar usuario</ion-button>
         </div>
         <div *ngIf="userId">
-          <p>{{userSelectName}}</p>
+          <h3 class="capital">{{userSelectName}}</h3>
         </div>
       </ion-card>
 
@@ -115,7 +115,7 @@
       Recordatorio
     </ion-chip>
 
-    <ion-chip (click)="setType(2)" [ngClass]="{'selected' : type == 2 }">
+    <ion-chip *ngIf="eventsAvailable" (click)="setType(2)" [ngClass]="{'selected' : type == 2 }">
       Evento
     </ion-chip>
 
@@ -141,25 +141,42 @@
         <ion-input class="new-input" style="margin-top: 1em;" placeholder="Texto de la notificación"  [(ngModel)]="text"></ion-input>
       </div>
 
+
       <div *ngIf="type == 2">
         <h2>Evento</h2>
-        <p>Selecciona un evento</p>
-        <ion-card style="padding: .5em;" *ngFor="let item of items"  [ngClass]="{'selected': selectedId === item.id}" (click)="select(item.id,item.name)">
-          <p>{{item.name}}</p>
-        </ion-card>
+        <p>Selecciona uno de los eventos (Últimos 5) </p>
       </div>
 
       <div *ngIf="type == 3">
         <h2>Promoción</h2>
-        <p>Selecciona una Promoción / descuento</p>
+        <p>Selecciona una Promoción / descuento (Últimos 5)</p>
       </div>
 
       <div *ngIf="type == 4">
         <h2>Feedback</h2>
-        <p>Selecciona una de las encuestas de Feedback</p>
+        <p>Selecciona una de las encuestas de Feedback (Últimos 5)</p>
 
       </div>
+      <div *ngIf="type != 1">
+        <div *ngIf="items.length != 0">
+          <ion-card style="padding: .5em;" *ngFor="let item of items"  [ngClass]="{'selected': selectedId === item.id}" (click)="select(item)">
+            <p class="capital">{{item.title}}</p>
+          </ion-card>
+        </div>
+        <div *ngIf="items.length == 0" style="padding: 1em;text-align: center;" >
+          <div  *ngIf="type == 2">
+            <h2>No tienes eventos</h2>
+            <ion-button expand="block" color="dark" (click)="add(2)">Agregar evento</ion-button>
+          </div>
+          <div  *ngIf="type == 3">
+            <h2>No tienes promociones</h2>
+            <ion-button  expand="block" color="dark" (click)="add(3)">Agregar promoción</ion-button>
+          </div>
 
+        </div>
+
+
+      </div>
 
       <h2 style="margin-top: 3em;">Visualización</h2>
       <p>Asi se mirará la notificación que recibiran</p>
@@ -204,7 +221,7 @@
         </ion-button>
       </ion-col>
       <ion-col  >
-        <ion-button *ngIf="step == 1" expand="block" color="success" (click)="next()">
+        <ion-button *ngIf="step == 1" expand="block" color="success" [disabled]="(people == 1 && !userId)" (click)="next()">
           Siguiente
         </ion-button>
         <ion-button *ngIf="step == 2" expand="block" color="success" (click)="send()" [disabled]="!text || !title">

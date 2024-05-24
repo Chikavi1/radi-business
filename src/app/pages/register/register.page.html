@@ -39,6 +39,15 @@
 
     </ion-select>
 
+    <p>Modo de venta</p>
+    <ion-select
+    okText="{{ 'createinjection.donetext' | translate }}" cancelText="{{ 'createinjection.canceltext' | translate }}"
+    style="width: 100%;" class="new-input" [(ngModel)]="sales_mode">
+      <ion-select-option value="1">Físico</ion-select-option>
+      <ion-select-option value="2">Página web</ion-select-option>
+      <ion-select-option value="3">Eventos</ion-select-option>
+    </ion-select>
+
   </ion-card>
 
   <ion-card style="padding: 1em;">
@@ -73,7 +82,7 @@
       <ion-button (click)="close()" expand="block" color="danger">Cancelar</ion-button>
     </ion-col>
     <ion-col>
-      <ion-button (click)="create()" expand="block" [disabled]="!name || !email || !password" color="success">Crear Perfil</ion-button>
+      <ion-button (click)="create()" expand="block" [disabled]="!name || !email || !password || disabledButton" color="success">Crear Cuenta</ion-button>
     </ion-col>
   </ion-row>
 </ion-footer>

@@ -1,13 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
-import { PhotoModalPage } from '../photo-modal/photo-modal.page';
 import * as Leaflet from 'leaflet';
 declare var L: any;
 import { Geolocation } from '@capacitor/geolocation';
 import * as moment from 'moment';
 import { MethodPaymentsPage } from '../method-payments/method-payments.page';
 import { DataService } from '../services/data.service';
+import { PhotomodalstoryPage } from '../photomodalstory/photomodalstory.page';
 
 
 @Component({
@@ -205,9 +205,9 @@ export class CreateAdPage implements OnInit {
 
   async modalImage(image){
     const modal = await this.modalCtrl.create({
-      component: PhotoModalPage,
+      component: PhotomodalstoryPage,
       componentProps:{
-        imageSend: image,
+        imageSend: image
       }
     });
     modal.onDidDismiss().then((data) => {
@@ -228,9 +228,15 @@ export class CreateAdPage implements OnInit {
   map;
 
   leafletMap(){
-    let initlat = 20.65822858189279;
-    let initlng = -103.3518831503091
-    this.map = Leaflet.map(this.mapElement.nativeElement,{ zoomControl: false}).setView([initlat,initlng], 10);
+    this.latitude  =  20.65822858189279;
+    this.longitude = -103.3518831503091
+
+    Geolocation.getCurrentPosition({enableHighAccuracy:true}).then((resp) => {
+      this.latitude  =  resp.coords.latitude;
+      this.longitude = resp.coords.longitude;
+});
+
+    this.map = Leaflet.map(this.mapElement.nativeElement,{ zoomControl: false}).setView([this.latitude,this.longitude], 10);
 
     var homeICon = L.icon(
       {
@@ -250,14 +256,9 @@ export class CreateAdPage implements OnInit {
         }).addTo(this.map);
 
 
-
-        Geolocation.getCurrentPosition({enableHighAccuracy:true}).then((resp) => {
-          this.latitude  =  resp.coords.latitude;
-          this.longitude = resp.coords.longitude;
-
-          this.map.panTo(new L.LatLng(resp.coords.latitude,resp.coords.longitude));
-          const marker = Leaflet.marker([resp.coords.latitude, resp.coords.longitude], {draggable: true, icon: homeICon}).addTo(this.map);
-          const circle = Leaflet.circle([resp.coords.latitude, resp.coords.longitude], {
+        this.map.panTo(new L.LatLng(this.latitude,this.longitude));
+          const marker = Leaflet.marker([this.latitude, this.longitude], {draggable: true, icon: homeICon}).addTo(this.map);
+          const circle = Leaflet.circle([this.latitude, this.longitude], {
             color: 'green',
             radius: 10000,
             fillColor: 'green',
@@ -272,16 +273,6 @@ export class CreateAdPage implements OnInit {
           marker.on('dragend', e => this.procesar(e));
 
 
-        //   Leaflet.marker([resp.coords.latitude,resp.coords.longitude],{draggable: true,icon: homeICon}).on('dragend', e => this.procesar(e) ).addTo(this.map);
-
-        // Leaflet.circle({lat: resp.coords.latitude, lng: resp.coords.longitude}, {
-        //   color: 'green',
-        //   radius: 4000,
-        //   fillColor: 'green',
-        //   opacity: 0.5
-        // }).addTo(this.map)
-
-    });
     }
     card;
 

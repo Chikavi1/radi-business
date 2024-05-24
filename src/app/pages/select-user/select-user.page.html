@@ -1,0 +1,18 @@
+<ion-content  >
+  <div style="padding:1em">
+    <h2>Seleccionar usuario</h2>
+    <div *ngFor="let item of users">
+      <ion-item lines="none" (click)="close(item.name,item.id)">
+        <ion-checkbox   mode="ios"  color="primary"  slot="start"></ion-checkbox>
+        <ion-label >
+          <p class="capital" style="font-weight: bold;">{{item.name}}</p>
+        </ion-label>
+      </ion-item>
+    </div>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-button expand="block" color="danger" (click)="exit()">
+    Cerrar
+  </ion-button>
+</ion-footer>

@@ -99,6 +99,7 @@ export class CreatePromotionPage implements OnInit {
       component: PhotoModalPage,
       componentProps:{
         imageSend: image,
+        aspect: "4/4"
       }
     });
     modal.onDidDismiss().then((data) => {

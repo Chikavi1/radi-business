@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
+import * as moment from 'moment';
+import { SelectUserPage } from '../pages/select-user/select-user.page';
+import { EventPage } from '../event/event.page';
+import { CreateEventPage } from '../create-event/create-event.page';
+import { CreatePromotionPage } from '../create-promotion/create-promotion.page';
 
 declare var require: any;
 const Hashids = require('hashids/cjs');
@@ -24,11 +29,19 @@ export class CreateAlertPage implements OnInit {
   sendnoti;
 
   userCategory = 1;
+  eventsAvailable = false;
 
   constructor(private modalCtrl: ModalController,
     private toastController:ToastController,
     private loadingController: LoadingController,
     private api: DataService){
+      moment.locale('es');
+
+      const grantedPermissions = JSON.parse(localStorage.getItem('granted') || '[]');
+      if (grantedPermissions.includes('events')) {
+        this.eventsAvailable = true;
+      }
+
     this.sendnoti  = {
       path: '../../../assets/lotties/send-notification.json',
       autoplay: true,
@@ -37,38 +50,77 @@ export class CreateAlertPage implements OnInit {
   }
   selectedId;
 
-  select(id,title){
-    this.selectedId = id;
-    this.generateImage(title)
+  async userSelectModal(){
+    const modal = await this.modalCtrl.create({
+      component: SelectUserPage,
+      breakpoints: [1],
+      initialBreakpoint: 1,
+    });
+    modal.onDidDismiss().then((data) => {
+      if(data['data']){
+        console.log(data);
+        this.userId = data.data.id;
+        this.userSelectName = data.data.name;
+      }
+    });
+    return await modal.present();
   }
 
-  generateImage(title){
-    let name = localStorage.getItem('name');
-    let date = "25 de mayo a las 8:00 PM";
+  select(item){
 
+    this.selectedId = item.id;
     if(this.type == 2){
-      this.title = "Evento de "+ name+" ";
-      this.text  = title+": el "+date+ ""
+      this.generateTextNotiEvent(item.title,item.date)
     }else if(this.type == 3){
-      this.title = "Descuento por parte de "+name;
-    }else if(this.type == 4){
-      this.title = "Ayudanos a mejorar en "+name,
-      this.text = "Tu opinión cuenta para mejorar el parque";
+      this.generateTextoNotiDiscount(item.title,item.text)
     }
+  }
+
+  capitalizeFirstLetter(string) {
+    if (!string) return ''; // Manejar el caso de una cadena vacía o indefinida
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
+
+  generateTextNotiEvent(title,date){
+    let name = localStorage.getItem('name');
+    let fechaMoment = moment(moment(date), "DD/MM/YYYY HH:mm");
+    let fechaFormateada = fechaMoment.format('dddd D [de] MMMM [del] YYYY [a las] h:mm A');
+
+    this.title = "Evento de "+ name+" ";
+    this.text  = this.capitalizeFirstLetter(title)+": "+this.capitalizeFirstLetter(fechaFormateada)
+  }
+
+  generateTextoNotiDiscount(title,text){
+    let name = localStorage.getItem('name');
+    this.title = name+": "+title;
+    this.text = this.capitalizeFirstLetter(text);
   }
 
   items:any = [];
 
   getEvents(){
-    this.api.getEventsByBusiness(localStorage.getItem('id_company')).subscribe(data => {
+    console.log('obtengo eventos')
+    this.items = [];
+    this.api.discountsEvents(localStorage.getItem('id_company')).subscribe((data:any) => {
       console.log(data);
-      this.items = data;
+      data.forEach(item => {
+        this.items.push({ "title": item.name,"id": item.id,"date": item.start_date });
+      });
     });
+
+    console.log(this.items);
   }
 
   getDiscounts(){
-    this.api.discounts(localStorage.getItem('id_company')).subscribe(data => {
-      this.items = data;
+    console.log('obtengo descuentos')
+
+    this.items = [];
+    this.api.discountsAlerts(localStorage.getItem('id_company')).subscribe((data:any) => {
+      console.log(data);
+      data.forEach(item => {
+        this.items.push({ "title": item.title,id: item.id,"text":item.description  });
+      });
     });
   }
 
@@ -96,9 +148,12 @@ export class CreateAlertPage implements OnInit {
   userId;
 
   selectUser(){
-  this.userId = 1;
-  this.userSelectName = "erik gzl"
+
+
+
   }
+
+
 
   setUserCategory(c){
     this.userCategory = c;
@@ -150,6 +205,12 @@ export class CreateAlertPage implements OnInit {
 
   next(){
 
+    if(this.type == 2){
+      this.getEvents()
+    }else if(this.type == 3){
+      this.getDiscounts()
+    }
+
     if(this.people == 1){
       this.generateHash();
     }
@@ -159,14 +220,8 @@ export class CreateAlertPage implements OnInit {
       this.getUsersFilter();
     }
 
+    this.selectedId = 0;
     this.step = 2;
-    if(this.type == 2){
-      this.getEvents()
-    }else if(this.type == 3){
-      this.getDiscounts()
-    }
-
-    console.log(this.external_user_id);
 
   }
 
@@ -195,22 +250,19 @@ export class CreateAlertPage implements OnInit {
       text: this.text,
       external_user_id: this.external_user_id
     }
-
     console.log(data);
+    this.api.createNotification(data).subscribe(data => {
+      this.loadingController.dismiss();
+      if(data.status== 200){
         this.step = 3;
-
-    // this.api.createNotification(data).subscribe(data => {
-    //   this.loadingController.dismiss();
-    //   if(data.status== 200){
-    //     this.step = 3;
-    //   }else{
-    //     this.presentToast('Hubo un error, intenta despues','danger');
-    //   }
-    //   console.log(data);
-    // },err => {
-    //   this.presentToast('Hubo un error, intenta despues','danger');
-    //   console.log(err);
-    // });
+      }else{
+        this.presentToast('Hubo un error, intenta despues','danger');
+      }
+      console.log(data);
+    },err => {
+      this.presentToast('Hubo un error, intenta despues','danger');
+      console.log(err);
+    });
   }
 
   async presentToast(message,color) {
@@ -228,5 +280,30 @@ export class CreateAlertPage implements OnInit {
       duration: 1200
     });
     loading.present();
+  }
+
+
+  async add(type){
+    let typeComponent;
+    if(type == 2){
+      typeComponent = CreateEventPage
+    }else if(type==3){
+      typeComponent = CreatePromotionPage
+    }
+    const modal = await this.modalCtrl.create({
+      component: typeComponent,
+      breakpoints: [1],
+      initialBreakpoint: 1,
+    });
+    modal.onDidDismiss().then((data) => {
+      if(data['data']){
+        if(type == 2){
+          this.getEvents();
+        }else if(type==3){
+          this.getDiscounts();
+        }
+      }
+    });
+    return await modal.present();
   }
 }
