@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-add-client',
@@ -16,6 +17,7 @@ export class AddClientPage implements OnInit {
   gender;
   currency='mxn'
   coupon;
+  today;
 
   constructor(private modalCtrl: ModalController,
     private toastController: ToastController,
@@ -23,6 +25,7 @@ export class AddClientPage implements OnInit {
     private api:DataService
 
   ) {
+    this.today  = moment().format('YYYY-MM-DD');
     this.coupon = localStorage.getItem('name');
    }
 

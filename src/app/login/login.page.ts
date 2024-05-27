@@ -21,6 +21,7 @@ export class LoginPage implements OnInit {
     private modalCtrl:ModalController,
     private navCtrl:NavController) {
      this.device = localStorage.getItem('device');
+     this.email = localStorage.getItem('email')?localStorage.getItem('email'):''
     }
 
   ngOnInit() {
@@ -29,7 +30,7 @@ export class LoginPage implements OnInit {
   async presentLoading(){
     const loading = await this.loadingController.create({
       message: 'Verificando identidad',
-      duration: 1200
+      duration: 3500
     });
     loading.present();
   }

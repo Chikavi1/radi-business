@@ -38,7 +38,12 @@ export class MenuPage implements OnInit {
     localStorage.removeItem('name');
     localStorage.removeItem('image');
     localStorage.removeItem('type');
-    localStorage.removeItem('email');
+    // localStorage.removeItem('email');
+    localStorage.removeItem('customer');
+    localStorage.removeItem('account');
+    localStorage.removeItem('granted');
+    localStorage.removeItem('address');
+
     localStorage.removeItem('name_organization');
     localStorage.removeItem('id_organization');
 

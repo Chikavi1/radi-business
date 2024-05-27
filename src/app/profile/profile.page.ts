@@ -79,7 +79,7 @@ export class ProfilePage implements OnInit {
     await Share.share({
       title: 'Compartir tu perfil',
       text: 'Mira mi negocio en Radi Pets',
-      url: 'https://radi.pet/discount-business/'+hash,
+      url: 'https://radi.pet/pawtner/'+hash,
       dialogTitle: 'Compartir perfil',
     });
   }
@@ -259,7 +259,7 @@ export class ProfilePage implements OnInit {
         {
           name: 'code',
           type: 'text',
-          placeholder: 'Ingrsa palabra'
+          placeholder: 'Ingresa palabra'
         }
       ],
       buttons: [

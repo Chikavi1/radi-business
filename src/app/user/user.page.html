@@ -39,9 +39,11 @@
   <small>Fecha de nacimiento</small>
   <h2 *ngIf="user.birthday" class="bold">{{user.birthday | date:'dd/MM/yyyy'}} ({{age}} años)</h2>
   <h2 *ngIf="!user.birthday" class="bold">Información no proporcionada</h2>
+  <div *ngIf="interest">
+    <small>Intereses</small>
+    <p class="bold">{{interest}}</p>
+  </div>
 
-  <small>Intereses</small>
-  <p class="bold">{{interest}}</p>
   <small>Usuario en Radi Pets</small>
   <h2 class="bold">Usuario desde {{user.createdAt  | date:'dd/MM/yyyy'}}</h2>
 

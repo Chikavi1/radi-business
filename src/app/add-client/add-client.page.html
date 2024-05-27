@@ -5,8 +5,8 @@
       <h1>Cliente</h1>
       <p>Nombre</p>
       <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="name"  ></ion-input>
-      <p>Correo</p>
-      <ion-input class="new-input" placeholder="Ingresa correo" [(ngModel)]="email"  ></ion-input>
+      <p>Correo electrónico</p>
+      <ion-input class="new-input" placeholder="Ingresa el correo de tu cliente" [(ngModel)]="email"  ></ion-input>
       <p>Contraseña</p>
       <ion-chip (click)="setinserpassword(1)" [ngClass]="{'selected' : inserpassword == 1}">
         Manual
@@ -23,7 +23,7 @@
       </div>
 
       <p>Celular</p>
-      <ion-input class="new-input" type="phone" placeholder="Ingresa número de celular" [(ngModel)]="cellphone"  ></ion-input>
+      <ion-input class="new-input" type="tel" placeholder="Ingresa número de celular" [(ngModel)]="cellphone"  ></ion-input>
       <p>Género</p>
       <ion-chip (click)="setGender(1)" [ngClass]="{'selected' : gender == 1 }">
         Hombre
@@ -35,7 +35,7 @@
       <ion-datetime-button datetime="datetime" ></ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
-            <ion-datetime id="datetime" presentation="date" [(ngModel)]="birthday"></ion-datetime>
+            <ion-datetime [max]="today" id="datetime" presentation="date" [(ngModel)]="birthday"></ion-datetime>
           </ng-template>
         </ion-modal>
 
@@ -76,7 +76,7 @@
     <ion-datetime-button datetime="datetime2" ></ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
-            <ion-datetime id="datetime2" presentation="date"  [(ngModel)]="pet_birthday"></ion-datetime>
+            <ion-datetime [max]="today" id="datetime2" presentation="date"  [(ngModel)]="pet_birthday"></ion-datetime>
           </ng-template>
         </ion-modal>
   </div>
@@ -89,7 +89,7 @@
     </ion-col>
     <ion-col>
       <ion-button expand="block"
-      [disabled]="!name || !email || !pet_name || !pet_gender || !pet_specie || !pet_size" (click)="send()">Agregar cliente</ion-button>
+      [disabled]="!name || !email || !pet_name || !pet_gender || !pet_specie || !pet_size || buttondisabled" (click)="send()">Agregar cliente</ion-button>
     </ion-col>
   </ion-row>
 </ion-footer>

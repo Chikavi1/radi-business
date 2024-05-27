@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service';
-import { ModalController, ToastController } from '@ionic/angular';
+import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-change-password',
@@ -33,6 +33,7 @@ export class ChangePasswordPage  {
 
   constructor(
     private api: DataService,
+    private loadingController:LoadingController,
     private modalCtrl:ModalController,
     public toastController: ToastController,
     ) {
@@ -53,9 +54,19 @@ export class ChangePasswordPage  {
     }
 
 
+    disabledButton = false;
 
+    async presentLoading(){
+      const loading = await this.loadingController.create({
+        message: 'Actualizando contraseña ...',
+        duration: 1200
+      });
+      loading.present();
+    }
 
   update(){
+    this.disabledButton = true;
+    this.presentLoading();
 
     console.log(this.new_password, this.password)
 
@@ -67,10 +78,14 @@ export class ChangePasswordPage  {
         id:           localStorage.getItem('id_company'),
         password:     this.password,
         new_password: this.new_password
-      }).subscribe( (data) =>{
-          // this.registrationForm.reset();
+      }).subscribe( (data:any) =>{
+        console.log(data)
+
+        if(data.status == 200){
+          this.loadingController.dismiss();
           this.presentToast('Se ha actualizado correctamente','success');
           this.beforePage();
+        }
       },err=>{
         console.log(err);
         this.presentToast('Hubo un error intente luego','warning');

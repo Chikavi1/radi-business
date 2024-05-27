@@ -9,6 +9,8 @@
           <ion-card style="padding: 1em;" *ngFor="let alert of alerts" (click)="openAlert(alert)">
             <h2>{{alert.title}}</h2>
             <p>Enviado el {{alert.createdAt  | localizedDate:'fullDate'}} </p>
+            <ion-chip *ngIf="alert.channel==1">Individual</ion-chip>
+            <ion-chip *ngIf="alert.channel==2">Grupal</ion-chip>
           </ion-card>
       </div>
 </ion-content>

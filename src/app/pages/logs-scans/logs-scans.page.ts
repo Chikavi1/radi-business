@@ -47,7 +47,9 @@ async openAdds(page){
   return await modal.present();
 }
 description;
-finish
+finish;
+
+loading = true;
 
 edit(item){
 this.editModal(CreateRewardPage,item);
@@ -132,6 +134,7 @@ getRewards(){
 
 
   async scan(c,id){
+
     if(this.platform.is('android')){
       await BarcodeScanner.requestPermissions();
       const data = await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
@@ -212,6 +215,11 @@ getRewards(){
         this.count = data.count;
         this.user_id = data.user_id;
         this.successful = true;
+
+        setTimeout(()=>{
+          this.loading = false;
+        },1200);
+
       },err => {
         this.successful = false;
       });

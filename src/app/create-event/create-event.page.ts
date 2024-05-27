@@ -107,6 +107,8 @@ buttondisabled = false;
     address:        this.address
     };
 
+    console.log(data);
+
     this.api.createEvent(data).subscribe(data => {
       console.log(data);
       if(data.status){
@@ -228,9 +230,9 @@ buttondisabled = false;
   }
 
    leafletMap(){
-    let initlat = 20.65822858189279;
-    let initlng = -103.3518831503091
-    this.map = Leaflet.map(this.mapElement.nativeElement,{ zoomControl: false}).setView([initlat,initlng], 15);
+    this.latitude  = 20.65822858189279;
+    this.longitude = -103.3518831503091
+    this.map = Leaflet.map(this.mapElement.nativeElement,{ zoomControl: false}).setView([this.latitude,this.longitude], 15);
     var homeICon = L.icon(
       {
         iconUrl:  '../../../assets/img/logo.png',
@@ -249,6 +251,8 @@ buttondisabled = false;
 
 
         Geolocation.getCurrentPosition({enableHighAccuracy:true}).then((resp) => {
+          this.latitude = resp.coords.latitude;
+          this.longitude = resp.coords.longitude
           this.map.panTo(new L.LatLng(resp.coords.latitude,resp.coords.longitude));
           Leaflet.marker([resp.coords.latitude,resp.coords.longitude],{draggable: true,icon: homeICon}).on('dragend', e => this.procesar(e) ).addTo(this.map);
     });

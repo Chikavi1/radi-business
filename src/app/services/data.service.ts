@@ -25,6 +25,8 @@ export class DataService {
     }else{
       this.MODE = this.PRODUCTION_URL;
     }
+
+    console.log(this.MODE);
   }
 
   getNotificationOneSignal(id):any{

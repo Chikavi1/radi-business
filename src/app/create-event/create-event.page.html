@@ -39,7 +39,7 @@
 
     <p style="margin-top:1em;">Costo</p>
     <ion-input class="new-input" (keypress)="numberOnlyValidation($event)"
-    placeholder="Ingresa monto" type="number" [(ngModel)]="price" value="0" ></ion-input>
+    placeholder="Ingresa monto" type="tel" [(ngModel)]="price" value="0" ></ion-input>
     <p>* si no tiene costo puedes dejarlo en "0".</p>
     <p style="margin-top:1em;">URL</p>
     <ion-input class="new-input"
@@ -68,7 +68,7 @@
         Siguiente
       </ion-button>
       <ion-button *ngIf="step == 2"  [disabled]="!uploadPhoto || !name || !description || !considerations || !start_date || !end_date || buttondisabled"  color="success" expand="full" (click)="send()">
-        Enviar
+        Crear
       </ion-button>
     </ion-col>
   </ion-row>

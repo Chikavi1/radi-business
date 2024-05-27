@@ -41,11 +41,13 @@ export class RegisterPage implements OnInit {
   async showLoading() {
     const loading = await this.loadingCtrl.create({
       message: 'Creando cuenta negocio ...',
-      duration: 3000,
+      duration: 4500,
     });
   }
 
-  sales_mode = 1;
+  sales_mode = "1";
+
+
   create(){
     this.showLoading();
 

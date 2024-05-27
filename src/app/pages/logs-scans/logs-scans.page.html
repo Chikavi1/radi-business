@@ -45,35 +45,58 @@
   </div>
 
   <div *ngIf="step == 2">
-
-    <div *ngIf="successful">
+    <div *ngIf="loading">
       <div style="text-align: center !important;">
-
-        <img [src]="logo" style="border-radius: 50%;width: 25em;height: 25em;padding: 5em;" alt="">
-        <h2 style="text-align: center;margin-top: 2em;">Colección</h2>
-      </div>
-
-      <ion-card>
-        <ion-progress-bar value="{{ (count*limit)/100 }}" color="success"></ion-progress-bar>
         <ion-row>
-          <ion-col size="1">
-            {{count}}
-          </ion-col>
-          <ion-col offset="10" size="1">
-            {{limit}}
+          <ion-col size="4" offset="4">
+            <ion-skeleton-text [animated]="true" style="width: 10em;height: 10em;border-radius: 50%"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width: 25%"></ion-skeleton-text>
           </ion-col>
         </ion-row>
-        <p style="text-align: center;">Faltan {{limit - count }} para la recompensa</p>
-        <ion-button [disabled]="limit > count || isreset" expand="block" color="dark" style="padding: 1em;" (click)="updateReward()">Entregar recompensa</ion-button>
+
+      </div>
+      <ion-card>
+        <ion-row>
+          <ion-col size="1">
+            <ion-skeleton-text [animated]="true" style="width: 100%;"></ion-skeleton-text>
+
+          </ion-col>
+          <ion-col offset="10" size="1">
+            <ion-skeleton-text [animated]="true" style="width: 100%;"></ion-skeleton-text>
+          </ion-col>
+        </ion-row>
+        <div style="padding: 1em;">
+          <ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" style="width: 100%;height: 1.3em;"></ion-skeleton-text>
+        </div>
       </ion-card>
     </div>
-    <div *ngIf="!successful" style="padding: 1em;margin-top:4em;">
-      <h2 class="text-center">La placa no es válida, no se encontró ningún resultado</h2>
-      <ion-button (click)="back()" expand="block" color="dark">Intenta con otra placa</ion-button>
+    <div *ngIf="!loading">
+      <div *ngIf="successful">
+        <div style="text-align: center !important;">
+          <img [src]="logo" style="border-radius: 50%;width: 20em;height: 20em;padding: 6em;" alt="">
+          <h2 style="text-align: center;margin-top: 2em;">Colección</h2>
+        </div>
+
+        <ion-card>
+          <ion-progress-bar value="{{ (count*limit)/100 }}" color="success"></ion-progress-bar>
+          <ion-row>
+            <ion-col size="1">
+              {{count}}
+            </ion-col>
+            <ion-col offset="10" size="1">
+              {{limit}}
+            </ion-col>
+          </ion-row>
+          <p style="text-align: center;">Faltan {{limit - count }} para la recompensa</p>
+          <ion-button [disabled]="limit > count || isreset" expand="block" color="dark" style="padding: 1em;" (click)="updateReward()">Entregar recompensa</ion-button>
+        </ion-card>
+      </div>
+      <div *ngIf="!successful" style="padding: 1em;margin-top:4em;">
+        <h2 class="text-center">La placa no es válida, no se encontró ningún resultado</h2>
+        <ion-button (click)="back()" expand="block" color="dark">Intenta con otra placa</ion-button>
+      </div>
     </div>
-
-
-
   </div>
 
 </ion-col>
