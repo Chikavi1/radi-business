@@ -1,0 +1,201 @@
+<ion-content [fullscreen]="true">
+  <div style="padding: 1em;" *ngIf="step == 1">
+    <div style="padding: 1em;">
+      <h2 style="text-align: center;"><ion-chip color="success">Precio de los planes</ion-chip></h2>
+      <p  style="text-align: center;">Planes Flexibles para Todos</p>
+      <p>Disfruta de planes simples y transparentes, diseñados para adaptarse a tu crecimiento. Comienza con nuestra versión gratuita y, cuando estés listo, actualiza a un plan superior que se ajuste a tus necesidades.</p>
+    </div>
+
+    <ion-segment scrollable="true"  value="default" [(ngModel)]="plans_type">
+      <ion-segment-button value="free">
+        <ion-label>Free</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="individual">
+        <ion-label>Individual</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="business">
+        <ion-label>Negocios</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="company">
+        <ion-label>Empresas</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-card style="padding: 1em;" *ngIf="plans_type == 'free'">
+
+      <h2 style="text-align: center;"><ion-chip color="success">
+        <ion-icon name="school-outline"></ion-icon>  &nbsp; &nbsp; Plan free
+        </ion-chip>
+      </h2>
+
+      <div style="text-align: center;">
+        <h1>$0 MXN</h1>
+      </div>
+      <p>Lo mejor para iniciar a experimentar con la aplicación.</p>
+
+      <p>Beneficio 1</p>
+      <p>Beneficio 2</p>
+      <p>Beneficio 3</p>
+      <p>Beneficio 4</p>
+      <p>Beneficio 5</p>
+      <p>Beneficio 6</p>
+      <p>Beneficio 7</p>
+      <p>Beneficio 8</p>
+
+    </ion-card>
+
+    <ion-card  style="padding: 1em;" *ngIf="plans_type == 'individual'">
+
+      <h2 style="text-align: center;"><ion-chip color="success">
+        <ion-icon name="person-circle-outline"></ion-icon>&nbsp; &nbsp; Plan individual
+        </ion-chip>
+      </h2>
+      <div style="text-align: center;">
+        <h1>$149 MXN</h1>
+      </div>
+
+      <p>Perfecto para profesionales independientes y negocios en sus etapas iniciales.</p>
+
+      <p>Beneficio 1</p>
+      <p>Beneficio 2</p>
+      <p>Beneficio 3</p>
+      <p>Beneficio 4</p>
+      <p>Beneficio 5</p>
+      <p>Beneficio 6</p>
+      <p>Beneficio 7</p>
+      <p>Beneficio 8</p>
+
+      <ion-button (click)="selectPlan(1)" expand="block" shape="round" color="success">Comenzar</ion-button>
+
+    </ion-card>
+
+    <ion-card  style="padding: 1em;" *ngIf="plans_type == 'business'">
+
+      <h2 style="text-align: center;"><ion-chip color="success">
+        <ion-icon name="storefront-outline"></ion-icon>&nbsp; &nbsp; Plan negocios
+      </ion-chip>
+      </h2>
+      <div style="text-align: center;">
+        <h1>$249 MXN</h1>
+      </div>
+      <p>Para negocios establecidas con años de experiencia y una amplia base de clientes</p>
+
+      <p>Beneficio 1</p>
+      <p>Beneficio 2</p>
+      <p>Beneficio 3</p>
+      <p>Beneficio 4</p>
+      <p>Beneficio 5</p>
+      <p>Beneficio 6</p>
+      <p>Beneficio 7</p>
+      <p>Beneficio 8</p>
+      <ion-button (click)="selectPlan(2)" expand="block" shape="round" color="success">Comenzar</ion-button>
+
+    </ion-card>
+
+    <ion-card  style="padding: 1em;" *ngIf="plans_type == 'company'">
+
+      <h2 style="text-align: center;"><ion-chip color="success">
+        <ion-icon name="rocket-outline"></ion-icon>&nbsp; &nbsp; Plan Empresas
+      </ion-chip>
+      </h2>
+      <div style="text-align: center;">
+        <h1>Desde $449 MXN</h1>
+      </div>
+      <p>Empresas u organizaciones empresariales de gran tamaño con una alta demanda de clientes e información.</p>
+
+      <p>Beneficio 1</p>
+      <p>Beneficio 2</p>
+      <p>Beneficio 3</p>
+      <p>Beneficio 4</p>
+      <p>Beneficio 5</p>
+      <p>Beneficio 6</p>
+      <p>Beneficio 7</p>
+      <p>Beneficio 8</p>
+      <ion-button (click)="selectPlan(3)" expand="block" shape="round" color="success">Comenzar</ion-button>
+
+    </ion-card>
+
+  </div>
+
+  <div *ngIf="step == 2" style="padding: 1em;">
+    <h2 style="margin-top: 4em;">Plan seleccionado</h2>
+    <ion-card style="padding: 1em;">
+      <p>Plan empresarial</p>
+      <p>349 MXN</p>
+    </ion-card>
+
+
+
+    <ion-row style="margin-top: 3em;">
+      <ion-col size="11">
+        <h5> {{ 'adspot.cardsave' | translate }} </h5>
+          <div *ngIf="card">
+            <div style="margin-left:1em;">
+              <p class="capital">{{ card.brand }} **** {{ card.last4 }}</p>
+            </div>
+          </div>
+      </ion-col>
+      <ion-col size="1">
+        <h5 (click)="goToPayments()">
+          <ion-icon name="add-outline"></ion-icon>
+        </h5>
+      </ion-col>
+    </ion-row>
+
+
+
+    <div style="padding: 2em;text-align: center;"  *ngIf="!card">
+      <h2> {{ 'adspot.nocards' | translate }} </h2>
+      <ion-button fill="clear" expand="block" (click)="goToPayments()"> {{ 'adspot.addcard' | translate }} </ion-button>
+    </div>
+
+    <ion-label style="color:rgb(49, 149, 232)" (click)="openCode()">{{ 'suscriptions.addcode' | translate }}</ion-label>
+    <div *ngIf="showCodeInput">
+      <ion-row>
+        <ion-col size="8">
+          <ion-input [(ngModel)]="code" placeholder="{{ 'suscriptions.addcode' | translate }}" />
+
+        </ion-col>
+        <ion-col size="4">
+          <ion-button (click)="validateCode()" [disabled]="btnValidate">
+            {{ 'suscriptions.validate' | translate }}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <p *ngIf="codeValid == 'true'" style="color:green;">{{ 'suscriptions.validcode' | translate }}</p>
+
+      <p *ngIf="codeValid == 'false'" style="color:red;">{{ 'suscriptions.invalidcode' | translate }} </p>
+    </div>
+
+    <ion-row>
+      <ion-col  size="6">
+        <h2>{{ 'suscriptions.total' | translate }}</h2>
+      </ion-col>
+      <ion-col size="6" style="text-align: right;">
+        <h2>{{total}} {{currency}}</h2>
+      </ion-col>
+    </ion-row>
+
+
+  </div>
+
+</ion-content>
+<ion-footer >
+  <ion-button  *ngIf="step === 1" expand="block" color="danger" (click)="close()">
+    Cerrar
+  </ion-button>
+
+  <ion-row *ngIf="step === 2">
+    <ion-col>
+      <ion-button expand="block" color="danger" (click)="back()">
+        Regresar
+      </ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button expand="block" color="success" (click)="close()">
+         Activar Plan
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

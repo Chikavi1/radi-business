@@ -11,34 +11,26 @@
       <ion-col size="4"  >
         <img src="../../assets/img/logo.png" alt="">
       </ion-col>
-      <!-- <ion-col size="4">
-        <img src="../../assets/img/logo.png" alt="">
-      </ion-col> -->
     </ion-row>
-    <h1>Radi Org</h1>
-    <p>Ingresa tu correo y contraseña para poder editar la información de sus mascotas.</p>
-    <div style="padding: 1em;">
-      <p>Correo</p>
-      <ion-input class="new-input" placeholder="Correo eléctronico" [(ngModel)]="email"></ion-input>
-      <p>Contraseña</p>
-      <ion-input class="new-input" placeholder="Contraseña"  type="password" [(ngModel)]="password"></ion-input>
-      <ion-button style="margin-top:1em;" shape="round" (click)="login()" expand="full" color="tertiary">Ingresar</ion-button>
-    </div>
+    <h1>Necesitas permisos</h1>
+    <p>Para iniciar a esta sección necesitas permisos por parte de nuestro equipo, por favor comunicate para tener acceso a esta sección</p>
   </div>
 
   <div *ngIf="id_org">
-
-        <h1>{{name_organization}}</h1>
-        <ion-button (click)="scanResult('visits')">Escanear placa</ion-button>
-
-        <h3>Listado de Mascotas</h3>
-
+    <h3>Listado de Mascotas</h3>
+        <ion-button (click)="scanResult('visits')" expand="block" color="dark" shape="round">Escanear placa</ion-button>
         <div *ngIf="pets.length != 0">
           <ion-item *ngFor="let item of pets" class="capital" lines="none" style="padding-bottom:1em;background-color: transparent;" button detail="true" detail-icon="caret-forward-outline">
             <ion-label (click)="seePet(item.id,item.code)">
               <h5 class="capital">{{item.name}}</h5>
-              <p  style="color: #e46d23;" *ngIf="!item.code">No enlazada</p>
-              <p style="color:#41cb7d" *ngIf="item.code">Enlazada</p>
+              <p  style="color: #e46d23;" *ngIf="!item.code">Sin placa enlazada</p>
+              <p style="color:#41cb7d" *ngIf="item.code">Con placa Enlazada</p>
+
+              <p *ngIf="item.status == 2">En adopción</p>
+              <p *ngIf="item.status == 0">Fallecido</p>
+              <p *ngIf="item.status == 3">Desaparecido</p>
+              <p *ngIf="item.status == 1">Normal</p>
+
             </ion-label>
           </ion-item>
         </div>

@@ -225,6 +225,30 @@ const routes: Routes = [
   {
     path: 'photomodalstory',
     loadChildren: () => import('./photomodalstory/photomodalstory.module').then( m => m.PhotomodalstoryPageModule)
+  },
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then( m => m.AdminPageModule)
+  },
+  {
+    path: 'admin-users',
+    loadChildren: () => import('./admin-users/admin-users.module').then( m => m.AdminUsersPageModule)
+  },
+  {
+    path: 'admin-pets',
+    loadChildren: () => import('./admin-pets/admin-pets.module').then( m => m.AdminPetsPageModule)
+  },
+  {
+    path: 'admin-pawrtners',
+    loadChildren: () => import('./admin-pawrtners/admin-pawrtners.module').then( m => m.AdminPawrtnersPageModule)
+  },
+  {
+    path: 'list-vaccines',
+    loadChildren: () => import('./list-vaccines/list-vaccines.module').then( m => m.ListVaccinesPageModule)
+  },
+  {
+    path: 'plan',
+    loadChildren: () => import('./plan/plan.module').then( m => m.PlanPageModule)
   }
 ];
 @NgModule({

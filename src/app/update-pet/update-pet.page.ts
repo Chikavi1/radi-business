@@ -3,6 +3,8 @@ import { ActionSheetController, LoadingController, ModalController, ToastControl
 import * as moment from 'moment';
 import { DataService } from '../services/data.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { VaccinePage } from '../vaccine/vaccine.page';
+import { ListVaccinesPage } from '../list-vaccines/list-vaccines.page';
 
 
 
@@ -110,6 +112,7 @@ async getPicture(src){
     this.modalImage(image.base64String);
 }
 
+pets_support;
 
   constructor(private modalCtrl:ModalController,
     private toastController:ToastController,
@@ -117,7 +120,26 @@ async getPicture(src){
     private actionSheetController:ActionSheetController,
     private api:DataService) {
     this.today =  moment().format('yyyy-MM-DD');
+    let granted = localStorage.getItem('granted');
+    if(granted){
+      this.pets_support = granted.includes('pets_support')
+    }
+
+
   }
+  old_chronic_disease;
+  old_birthday;
+  old_size;
+  old_gender;
+  old_specie;
+  old_weight;
+  old_sterelized;
+  old_sterelized_date;
+  old_muzzle;
+  accept_payments;
+  old_accept_payments;
+  status;
+  old_status;
 
   ngOnInit(){
     this.photo = 'https://ionicframework.com/docs/img/demos/card-media.png';
@@ -133,8 +155,50 @@ async getPicture(src){
       this.sterelized = pet.sterelized;
       this.sterelized_date = pet.sterelized_date;
       this.muzzle = pet.muzzle;
+      this.accept_payments = pet.accept_payments;
+      this.status = pet.status;
+
+
+      this.old_chronic_disease = pet.chronic_disease;
+      this.old_birthday = pet.birthday;
+      this.old_size = pet.size;
+      this.old_gender = pet.gender;
+      this.old_specie = pet.specie;
+      this.old_weight = pet.weight;
+      this.old_sterelized = pet.sterelized;
+      this.old_sterelized_date = pet.sterelized_date;
+      this.old_muzzle = pet.muzzle;
+      this.old_accept_payments = pet.accept_payments;
+      this.old_status = pet.status;
     });
   }
+
+  programVaccines(type){
+    this.modalVaccines(ListVaccinesPage,{menu:type,id_pet: this.id})
+  }
+
+  setPayments(p){
+    this.accept_payments = p;
+  }
+
+  async modalVaccines(component,data) {
+    const modal = await this.modalCtrl.create({
+      breakpoints: [1.0],
+      initialBreakpoint:1.0,
+      backdropDismiss:true,
+      cssClass: 'small-modal',
+      component: component,
+      componentProps: data
+    });
+    modal.onDidDismiss().then( (data) => {
+      if(data.data){
+        this.isChange = true;
+      }
+    });
+
+    return await modal.present();
+  }
+
 
   async presentLoading(){
     const loading = await this.loadingController.create({
@@ -174,8 +238,42 @@ async getPicture(src){
   }
 
   close(){
-    this.modalCtrl.dismiss()
+    if(this.isChange){
+      this.modalCtrl.dismiss(true)
+    }else{
+      this.modalCtrl.dismiss()
+    }
   }
+
+  createVaccine(type){
+    console.log(hashids.decode(this.id)[0],type,this.specie)
+      this.presentModalInjection(VaccinePage,{
+        id_pet:  hashids.decode(this.id)[0],
+        type,
+        specie: this.specie
+      })
+  }
+  isChange = false
+
+  async presentModalInjection(component,data) {
+    const modal = await this.modalCtrl.create({
+      breakpoints: [1.0],
+      initialBreakpoint:1.0,
+      backdropDismiss:true,
+      cssClass: 'small-modal',
+      component: component,
+      componentProps: data
+    });
+    modal.onDidDismiss().then( (data) => {
+      if(data.data){
+        this.isChange = true;
+      }
+    });
+
+    return await modal.present();
+  }
+
+
 
 
   setSize(s){
@@ -193,6 +291,9 @@ async getPicture(src){
   setMuzzle(m){
     this.muzzle = m;
   }
+  setStatus(s){
+    this.status = s;
+  }
 
   update(){
 
@@ -207,7 +308,8 @@ async getPicture(src){
       sterelized: this.sterelized,
       sterelized_date: this.sterelized_date,
       muzzle: this.muzzle,
-
+      status: this.status,
+      accept_payments: this.accept_payments
     }
 
     this.api.updatePet(data).subscribe(result => {

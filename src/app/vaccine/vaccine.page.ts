@@ -37,9 +37,15 @@ export class VaccinePage implements OnInit {
     console.log(this.id_pet);
 
     if(this.type == 'deworming'){
-      this.name = 'deworming'
+      this.name = 'desparasitación'
     }
   }
+
+  setName(n){
+    this.name = n;
+  }
+
+
 
   add(){
     let data = {
@@ -53,7 +59,7 @@ export class VaccinePage implements OnInit {
 
     this.api.createVaccine(data).subscribe((data:any) => {
       if(data.status == 200){
-        this.presentToast('Se ha guardado la vacuna exitosamente.','success');
+        this.presentToast('Se ha guardado exitosamente.','success');
       }
       this.back(1);
     });

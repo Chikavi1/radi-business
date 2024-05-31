@@ -277,8 +277,8 @@ export class ResultPetsOrgPage implements OnInit {
 
   async presentModalSmall(component,data) {
     const modal = await this.modalctrl.create({
-      breakpoints: [0.59,1.0],
-      initialBreakpoint:0.59,
+      breakpoints: [1.0],
+      initialBreakpoint: 1,
       backdropDismiss:true,
       cssClass: 'small-modal',
       component: component,

@@ -35,6 +35,8 @@
   </div>
 
   <div *ngIf="verified">
+    <div  *ngIf="menu == 'index'">
+
     <ion-row style="margin-top:4em;">
         <ion-col size="6" offset="3">
           <img *ngIf="info.version == 1" src="../../../assets/tag-radi.png" alt="">
@@ -110,11 +112,137 @@
         </ion-col>
       </ion-row>
 
+      <div style="padding: 1em;">
+        <ion-button  (click)="setMenu('wallet')" expand="block" color="dark" ><ion-icon name="wallet-outline"></ion-icon>  &nbsp; Generar tarjeta Digital</ion-button>
+      </div>
+    </div>
+
+      <div  *ngIf="menu == 'wallet'">
+        <div *ngIf="walletstep == 1">
+          <img src="../../../assets/img/wallet.png" alt="wallet">
+          <div style="padding: 1em;">
+            <h2>Solicita tu tarjeta Digital</h2>
+            <p>Para ver tu tarjeta digital, recibirás un archivo por correo electrónico. Al hacer clic en él, podrás agregarlo a tu Apple Wallet. Si usas Android, puedes descargar la app 'WalletPasses'. Próximamente, también estará disponible de forma nativa en la app de Google Wallet.</p>
+            <p>Antes de generar tu tarjeta digital, verifica que tus datos sean correctos.</p>
+            <ion-button  (click)="seWalletStep(2)" expand="block" color="dark" >Verificar datos de la tarjeta</ion-button>
+          </div>
+        </div>
+
+        <div style="padding:1em;" *ngIf="walletstep == 2">
+          <ion-row>
+            <ion-col size="11">
+              <h1>Datos del carnet</h1>
+            </ion-col>
+            <ion-col size="1" (click)="updateInfo()">
+              <h1><ion-icon name="pencil-outline"></ion-icon></h1>
+            </ion-col>
+          </ion-row>
+          <p>Valida la infromación antes de enviar la solicitud</p>
+
+          <ion-row>
+            <ion-col size="6">
+              <p>Nombre del dueño</p>
+            </ion-col>
+            <ion-col size="6" style="text-align: right;">
+              <p  class="capital">{{user_name}}</p>
+            </ion-col>
+
+
+            <ion-col size="6">
+              <p>Nombre de la mascota</p>
+            </ion-col>
+            <ion-col size="6" style="text-align: right;">
+              <p class="capital">{{pet_name}}</p>
+            </ion-col>
+
+            <ion-col size="6">
+              <p>Fecha de nacimiento</p>
+            </ion-col>
+            <ion-col size="6" style="text-align: right;">
+              <p class="capital">{{pet_birthday  | localizedDate:'fullDate'}}</p>
+            </ion-col>
+
+            <ion-col size="6">
+              <p>Especie de la mascota</p>
+            </ion-col>
+            <ion-col size="6" style="text-align: right;">
+              <p *ngIf="pet_specie == 1">Gato</p>
+              <p *ngIf="pet_specie == 2">Perro</p>
+            </ion-col>
+
+            <ion-col size="6">
+              <p>Género de la mascota</p>
+            </ion-col>
+            <ion-col size="6" style="text-align: right;">
+              <p *ngIf="pet_gender == 1">Macho</p>
+              <p *ngIf="pet_gender == 2">Hembra</p>
+            </ion-col>
+
+            <ion-col size="6">
+              <p>Raza de la mascota</p>
+            </ion-col>
+            <ion-col size="6" style="text-align: right;">
+              <p>{{pet_breed}}</p>
+            </ion-col>
+
+            <ion-col size="3">
+              <p>Vacunas</p>
+            </ion-col>
+            <ion-col size="9" style="text-align: right;">
+              <p *ngIf="!vaccines">N/A</p>
+              <p  *ngIf="vaccines" [innerHtml]="vaccines"></p>
+            </ion-col>
+
+            <ion-col size="3">
+              <p>Desparasitaciones</p>
+            </ion-col>
+            <ion-col size="9" style="text-align: right;">
+              <p *ngIf="!dewormings">N/A</p>
+              <p  *ngIf="dewormings" [innerHtml]="dewormings"></p>
+            </ion-col>
+
+            <ion-col size="6">
+              <p>Esterilizado</p>
+            </ion-col>
+            <ion-col size="6" style="text-align: right;">
+              <p *ngIf="pet_sterelized">Si</p>
+              <p *ngIf="!pet_sterelized">No</p>
+            </ion-col>
+
+            <ion-col size="6">
+              <p>Nombre del veterinario</p>
+            </ion-col>
+            <ion-col size="6" style="text-align: right;">
+              <p *ngIf="vet_name">{{vet_name}}</p>
+              <p *ngIf="!vet_name">N/A</p>
+            </ion-col>
+
+            <ion-col size="6">
+              <p>Cedula profesional</p>
+            </ion-col>
+            <ion-col size="6" style="text-align: right;">
+              <p *ngIf="!vet_id">N/A</p>
+              <p  *ngIf="vet_id">{{vet_id}}</p>
+            </ion-col>
+        </ion-row>
+
+
+        <ion-card style="padding: 1em;" *ngIf="!vet_id">
+          <p>Tu tarjeta aún no ha sido validada por un veterinario, pero puedes generar el carnet digital para generar visitas, realizar pagos y utilizarlo como tarjeta de lealtad.
+            Invita a tu veterinario a registrarse en la app de negocios de Radi Pets, es gratis y solo necesita proporcionar su cédula profesional para validar tu tarjeta.</p>
+        </ion-card>
+
+        <p><ion-checkbox labelPlacement="end" [(ngModel)]="checkboxSuscribe">Valido que la información es correcta</ion-checkbox></p>
+          <ion-button expand="block" color="success" [disabled]="!checkboxSuscribe || disabledButton" (click)="createWallet()">
+            Enviar tarjeta al correo del cliente
+          </ion-button>
+        </div>
+      </div>
     </div>
 
 </ion-content>
 <ion-footer>
-  <ion-button color="dark" expand="block" (click)="close()">
+  <ion-button color="danger" expand="block" (click)="close()">
     {{ 'idpets.close' | translate }}
   </ion-button>
 </ion-footer>

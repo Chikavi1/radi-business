@@ -16,31 +16,61 @@
     <!-- <ion-datetime  [ngClass]="{'ml-2' : device == 'tablet' }"  ></ion-datetime> -->
   </ion-item>
 
-  <ion-item lines="none" *ngIf="type == 'vaccine'">
-    <ion-label>Nombre de la vacuna</ion-label>
-    <ion-select interface="popover" [(ngModel)]="name">
+  <div style="padding: 1em;">
+    <p>Nombre</p>
+    <ion-input class="new-input" placeholder="Ingresa el producto aplicado" [(ngModel)]="name"></ion-input>
+  <div *ngIf="type == 'vaccine'">
+    <small>Sugerencias</small>
+    <div *ngIf="specie == 2"  class="chips-container">
+      <ion-chip (click)="setName('Rabia')">
+        Rabia
+      </ion-chip>
+      <ion-chip (click)="setName('Vacuna Quíntuple')">
+        Vacuna Quíntuple
+      </ion-chip>
+      <ion-chip (click)="setName('Vacuna Séxtuple')">
+        Vacuna Séxtuple
+      </ion-chip>
+      <ion-chip (click)="setName('Bordotella')">
+        Bordotella
+      </ion-chip>
+      <ion-chip (click)="setName('Coronavirus Canino')">
+        Coronavirus Canino
+      </ion-chip>
+      <ion-chip (click)="setName('Lyme')">
+        Lyme
+      </ion-chip>
+      <ion-chip (click)="setName('Parainfluenza')">
+        Parainfluenza
+      </ion-chip>
+    </div>
 
-      <ion-select-option value="Rabia">Rabia</ion-select-option>
+    <div *ngIf="specie == 1"  class="chips-container">
+      <ion-chip (click)="setName('Vacuna Trivalente')">
+        Vacuna Trivalente
+      </ion-chip>
+      <ion-chip (click)="setName('Rabia')">
+        Rabia
+      </ion-chip>
+      <ion-chip (click)="setName('Giardia')">
+        Giardia
+      </ion-chip>
+      <ion-chip (click)="setName('Leucemia Feli')">
+        Leucemia Felina
+      </ion-chip>
+      <ion-chip (click)="setName('Clamidiosis Felina')">
+        Clamidiosis Felina
+      </ion-chip>
+      <ion-chip (click)="setName('Peritonitis Infecciosa Felina')">
+        Peritonitis Infecciosa Felina
+      </ion-chip>
+      <ion-chip (click)="setName('Bordetella Bronchiseptica')">
+        Bordetella Bronchiseptica
+      </ion-chip>
 
-      <div *ngIf="specie == 2">
-       <ion-select-option value="Parvovirus">Parvovirus</ion-select-option>
-       <ion-select-option value="Hepatitis">Hepatitis</ion-select-option>
-       <ion-select-option value="Bordotella">Bordotella </ion-select-option>
-       <ion-select-option value="leptospirosis">leptospirosis </ion-select-option>
-      </div>
-
-      <div *ngIf="specie == 1">
-        <ion-select-option value="Panleucopenia">Panleucopenia </ion-select-option>
-        <ion-select-option value="Leucemia">Leucemia </ion-select-option>
-      </div>
-
-
-      <ion-select-option value="other">otro </ion-select-option>
-    </ion-select>
-  </ion-item>
-  <div *ngIf="name === 'other' " class="p-1">
-    <ion-input autocomplete="off" [(ngModel)]="other_name" placeholder="Ingresa vacuna" class="new-input"></ion-input>
+    </div>
   </div>
+</div>
 
 </ion-content>
 <ion-footer>

@@ -26,6 +26,8 @@ export class UserPage implements OnInit {
   counter;
   age;
 
+  loading = false;
+
 
   segmentChange(event){
     // console.log(e);
@@ -101,6 +103,9 @@ export class UserPage implements OnInit {
           if(data.length != 0){
             this.paymentsShows = true;
           }
+
+
+
         });
 
       }
@@ -356,6 +361,10 @@ async History(id){
         this.age = moment().diff(this.user.birthday, 'years',false);
         console.log(this.age);
       }
+
+      setTimeout( () => {
+        this.loading = true
+      },1800);
 
     });
 

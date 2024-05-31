@@ -11,6 +11,10 @@
       <!-- <ion-label>Tab 2</ion-label> -->
     </ion-tab-button>
 
+    <ion-tab-button tab="adoptions" *ngIf="grantedOrg">
+      <ion-icon aria-hidden="true" name="paw"></ion-icon>
+    </ion-tab-button>
+
 
     <ion-tab-button tab="ads" *ngIf="grantedBusiness">
       <ion-icon aria-hidden="true" name="megaphone"></ion-icon>
@@ -23,9 +27,7 @@
 
 
 
-    <ion-tab-button tab="adoptions" *ngIf="grantedOrg">
-      <ion-icon aria-hidden="true" name="paw"></ion-icon>
-    </ion-tab-button>
+
 
     <!-- <ion-tab-button tab="tab4">
       <ion-icon aria-hidden="true" name="pricetags"></ion-icon>

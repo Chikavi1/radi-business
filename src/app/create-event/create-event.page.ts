@@ -73,7 +73,7 @@ address:string = '';
 async presentLoading(){
   const loading = await this.loadingController.create({
     message: 'Creando evento, un momento...',
-    duration: 1200
+    duration: 3200
   });
   loading.present();
 }
@@ -112,6 +112,7 @@ buttondisabled = false;
     this.api.createEvent(data).subscribe(data => {
       console.log(data);
       if(data.status){
+        this.loadingController.dismiss();
         this.modalCtrl.dismiss(1);
       }
 
@@ -232,7 +233,8 @@ buttondisabled = false;
    leafletMap(){
     this.latitude  = 20.65822858189279;
     this.longitude = -103.3518831503091
-    this.map = Leaflet.map(this.mapElement.nativeElement,{ zoomControl: false}).setView([this.latitude,this.longitude], 15);
+
+    this.map = Leaflet.map('mapId',{ zoomControl: false}).setView([this.latitude,this.longitude], 15);
     var homeICon = L.icon(
       {
         iconUrl:  '../../../assets/img/logo.png',
@@ -255,7 +257,8 @@ buttondisabled = false;
           this.longitude = resp.coords.longitude
           this.map.panTo(new L.LatLng(resp.coords.latitude,resp.coords.longitude));
           Leaflet.marker([resp.coords.latitude,resp.coords.longitude],{draggable: true,icon: homeICon}).on('dragend', e => this.procesar(e) ).addTo(this.map);
-    });
+      });
+
     }
 
   procesar(e){

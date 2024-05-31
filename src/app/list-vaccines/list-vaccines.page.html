@@ -1,0 +1,58 @@
+<ion-content>
+<div style="padding:1em">
+  <h2>Programa de vacunas y desparasitación</h2>
+
+  <ion-segment mode="md"
+   style="margin-top: 3em;"
+    [(ngModel)]="menu" [scrollable]="true">
+    <ion-segment-button value="vaccine">
+     Vacunas
+    </ion-segment-button>
+    <ion-segment-button value="deworming">
+     Desparasitaciones
+    </ion-segment-button>
+  </ion-segment>
+
+  <div *ngIf="menu == 'vaccine'">
+    <div *ngIf="vaccines.length != 0">
+      <ion-item *ngFor="let item of vaccines">
+        <ion-label>
+          {{item.name}}
+        </ion-label>
+        <p>
+          {{item.createdAt | date:'dd/MM/YYYY'}}
+        </p>
+      </ion-item>
+    </div>
+    <div  *ngIf="vaccines.length == 0">
+      <h2 style="margin-top: 3em;text-align: center;">No tiene vacunas</h2>
+    </div>
+  </div>
+
+  <div *ngIf="menu == 'deworming'">
+    <div *ngIf="dewormings.length != 0">
+      <ion-item *ngFor="let item of dewormings">
+        <ion-label>
+          {{item.name}}
+        </ion-label>
+        <p>
+          {{item.createdAt | date:'dd/MM/YYYY'}}
+        </p>
+      </ion-item>
+    </div>
+
+    <div *ngIf="dewormings.length == 0">
+      <h2 style="margin-top: 3em;text-align: center;">No tiene desparasitaciones</h2>
+    </div>
+  </div>
+
+</div>
+
+
+
+</ion-content>
+<ion-footer>
+  <ion-button expand="block" color="danger" (click)="close()">
+    Cerrar
+  </ion-button>
+</ion-footer>

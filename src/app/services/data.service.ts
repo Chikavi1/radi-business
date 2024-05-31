@@ -29,6 +29,20 @@ export class DataService {
     console.log(this.MODE);
   }
 
+  getOrgByPawtner(data){
+    return this.http.post(this.MODE + 'getIdBypawtner', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  getInfodigitalCard(data):any{
+    return this.http.post(this.MODE + 'digitalCard', JSON.parse(JSON.stringify(data)), this.options);
+   }
+
+   createWallet(data):any{
+    return this.http.post(this.MODE + 'wallet/apple', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+
+
   getNotificationOneSignal(id):any{
     let headers = new HttpHeaders({
       'Content-Type': 'application/json',

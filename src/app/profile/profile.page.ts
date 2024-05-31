@@ -34,6 +34,9 @@ export class ProfilePage implements OnInit {
   grantedEditProfile;
   grantedCreateClients;
 
+  vet_name;
+  vet_id;
+
   constructor(private api:DataService,
     private navCtrl: NavController,
     private alertController:AlertController,
@@ -41,6 +44,8 @@ export class ProfilePage implements OnInit {
     private loadingController:LoadingController,
     private modalctrl:ModalController,private toastController:ToastController) {
 
+      this.vet_name = localStorage.getItem('vet_name')
+      this.vet_id = localStorage.getItem('vet_id')
 
     this.api.getCompany(localStorage.getItem('id_company')).subscribe(data => {
       console.log(data)
@@ -82,6 +87,14 @@ export class ProfilePage implements OnInit {
       url: 'https://radi.pet/pawtner/'+hash,
       dialogTitle: 'Compartir perfil',
     });
+  }
+
+
+  saveVetData(){
+    localStorage.setItem('vet_id',this.vet_id);
+    localStorage.setItem('vet_name',this.vet_name);
+
+    this.presentToast('Se ha guardado exitosamente','success');
   }
 
 

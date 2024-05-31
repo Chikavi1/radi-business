@@ -31,20 +31,29 @@
     <p *ngIf="company.type == 9">Accesorios para mascotas</p>
 
 
-    <p class="capital">
+    <p class="capital" style="margin-top: 2em;">
      {{company.description}}
     </p>
 
 
-    <p>Dirección</p>
+    <p style="margin-top: 1em;">Dirección</p>
     <p class="capital">{{company.address}}</p>
-    <p>Visible</p>
+    <p style="margin-top: 1em;">Visible</p>
     <p *ngIf="company.visible">Sí</p>
     <p *ngIf="!company.visible">No</p>
-    <p>Modo de venta</p>
+    <p style="margin-top: 1em;">Modo de venta</p>
     <p *ngIf="company.sales_mode == 1">Físico</p>
     <p *ngIf="company.sales_mode == 2">Página web</p>
     <p *ngIf="company.sales_mode == 3">Eventos</p>
+
+    <ion-card style="padding: 1em;">
+      <h2>Veterinaria</h2>
+      <p>Nombre del veterinario(a)</p>
+      <p>{{vet_name?vet_name:'N/A'}}</p>
+      <p>Cédula profesional</p>
+      <p>{{vet_id?vet_id:'N/A'}}</p>
+      <p>Esta información se guarda localmente por seguridad.</p>
+    </ion-card>
 
 
     <ion-card style="padding: 1em;">
@@ -121,19 +130,19 @@
     <p>Color del texto</p>
     <input [(ngModel)]="company.fn_color" type="color" />
 
+    <ion-card style="padding: 1em;">
+      <h2 style="text-align: center;">Información importante</h2>
+      <p>Nombre del profesional</p>
+      <ion-input class="new-input"  placeholder="Ingresa nombre completo" type="url" [(ngModel)]="vet_name"  ></ion-input>
+      <p>Cédula profesional</p>
+      <ion-input class="new-input"  placeholder="Ingresa cédula profesional" type="url" [(ngModel)]="vet_id"  ></ion-input>
+      <ion-button style="margin-top: 1em;" expand="block" color="dark" (click)="saveVetData()">Guardar</ion-button>
+
+    </ion-card>
+
     <p>Si deseas cambiar el nombre, foto o información de la dirección, estaremos encantados de ayudarte. ¡Contáctanos a través de nuestras redes sociales para solicitar el cambio y nuestro equipo se asegurará de hacerlo sin problemas! </p>
   </div>
-<!--
-  <h3>Ubicación</h3>
-  <div *ngIf="company.latitude">
-    <div id="mapId" #leafletmap style="width: 100%;height: 17.5em;border-radius: 2em !important;">
-    </div>
-    <ion-button (click)="openBlank('https://www.google.com.mx/maps/search/'+company.latitude+','+company.longitude+'/')" style="margin-top: 1em;" expand="block" color="success">Abrir en Maps</ion-button>
-  </div>
-  <div *ngIf="!company.latitude">
-    <p>Es tienda online</p>
-    <ion-button (click)="openBlank(company.web_url)" style="margin-top: 1em;" expand="block" color="success">Ir a su página</ion-button>
-  </div> -->
+
 
 </div>
 </ion-content>

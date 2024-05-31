@@ -55,7 +55,7 @@
       Gato
     </ion-chip>
 
-    <p>Peso</p>
+    <p>Peso en KG</p>
     <ion-input class="new-input" (keypress)="numberOnlyValidation($event)" [(ngModel)]="weight" placeholder="Ingresa el peso en KG"></ion-input>
 
 
@@ -67,35 +67,83 @@
       No
     </ion-chip>
 
+    <div *ngIf="sterelized">
+      <p>Fecha de esterilización</p>
+      <ion-datetime-button datetime="datetime2" ></ion-datetime-button>
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime   presentation="date"  [max]="today" id="datetime2" cancelText="Cancelar" doneText="Aceptar" [(ngModel)]="sterelized_date"></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </div>
+
+
+
+    <p>Requiere bozal</p>
+    <ion-chip (click)="setMuzzle(1)" [ngClass]="{'noselected' : muzzle == 1 }">
+      Si
+    </ion-chip>
+    <ion-chip (click)="setMuzzle(0)" [ngClass]="{'selected' : muzzle == 0 }">
+      No
+    </ion-chip>
+
+    <div *ngIf="pets_support">
+      <p>Recibir Apoyo</p>
+      <ion-chip (click)="setPayments(1)" [ngClass]="{'selected' : accept_payments == 1 }">
+        Si
+      </ion-chip>
+      <ion-chip (click)="setPayments(0)" [ngClass]="{'selected' : accept_payments == 0 }">
+        No
+      </ion-chip>
+
+      <ion-card style="padding: 1em;" *ngIf="accept_payments">
+        <p>Recuerda que debes tener activado una cuenta bancaria para poder recibir apoyos</p>
+      </ion-card>
+    </div>
+
+    <p>Estatus de la mascota</p>
+    <ion-chip (click)="setStatus(1)" [ngClass]="{'selected' : status == 1 }">
+      Normal
+    </ion-chip>
+    <ion-chip (click)="setStatus(2)" [ngClass]="{'selected' : status == 2 }">
+      En adopción
+    </ion-chip>
+    <ion-chip (click)="setStatus(0)" [ngClass]="{'selected' : status == 0 }">
+      Fallecido
+    </ion-chip>
+
+
     </div>
 
     <div *ngIf="menu == 'clinic'">
       <p>Enfermedades cronicas</p>
       <ion-textarea [(ngModel)]="chronic_disease" class="new-input" placeholder="Ingresa las enfermedades cronicas"></ion-textarea>
 
-      <div *ngIf="sterelized">
-        <p>Fecha de esterilización</p>
-        <ion-datetime-button datetime="datetime2" ></ion-datetime-button>
-        <ion-modal [keepContentsMounted]="true">
-          <ng-template>
-            <ion-datetime   presentation="date"  [max]="today" id="datetime2" cancelText="Cancelar" doneText="Aceptar" [(ngModel)]="sterelized_date"></ion-datetime>
-          </ng-template>
-        </ion-modal>
-      </div>
-
-      <p>Requiere bozal</p>
-      <ion-chip (click)="setMuzzle(1)" [ngClass]="{'noselected' : muzzle == 1 }">
-        Si
-      </ion-chip>
-      <ion-chip (click)="setMuzzle(0)" [ngClass]="{'selected' : muzzle == 0 }">
-        No
-      </ion-chip>
-
       <p>Foto de carnet digital</p>
       <ion-card (click)="editPhoto()">
         <img alt="Silhouette of mountains" [src]="photo" />
         <ion-card-subtitle style="text-align: center;">Haz clic para subir una foto del carnet de {{ name }}</ion-card-subtitle>
       </ion-card>
+
+      <ion-card  style="padding: 1em;">
+        <h2  style="text-align: center;">Vacunas</h2>
+        <ion-item lines="none" style="padding-bottom: .5em;"  button detail="true" detail-icon="caret-forward-outline">
+          <ion-label class="capital" (click)="programVaccines('vaccine')">
+            Ver programa de vacunas
+          </ion-label>
+        </ion-item>
+        <ion-button color="dark" expand="block" (click)="createVaccine('vaccine')">Agregar</ion-button>
+      </ion-card>
+      <ion-card style="padding: 1em;">
+        <h2 style="text-align: center;">Desparasitaciones</h2>
+        <ion-item lines="none" style="padding-bottom: .5em;"  button detail="true" detail-icon="caret-forward-outline">
+          <ion-label class="capital"  (click)="programVaccines('deworming')">
+            Ver programa de desparasitación
+          </ion-label>
+        </ion-item>
+        <ion-button  color="dark" expand="block" (click)="createVaccine('deworming')">Agregar</ion-button>
+      </ion-card>
+
     </div>
 
   </div>
@@ -112,7 +160,21 @@
       </ion-button>
     </ion-col>
     <ion-col size="6">
-      <ion-button expand="full" (click)="update()">
+      <ion-button
+      [disabled]="
+      old_chronic_disease == chronic_disease &&
+      old_birthday == birthday &&
+      old_size == size &&
+      old_gender == gender &&
+      old_specie == specie &&
+      old_weight == weight &&
+      old_sterelized == sterelized &&
+      old_sterelized_date == sterelized_date &&
+      old_muzzle == muzzle &&
+      old_accept_payments == accept_payments &&
+      old_status == status
+      "
+      expand="full" (click)="update()">
         Actualizar
       </ion-button>
     </ion-col>

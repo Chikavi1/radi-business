@@ -4,11 +4,10 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { IdPetsPageRoutingModule } from './id-pets-routing.module';
+import { PlanPageRoutingModule } from './plan-routing.module';
 
-import { IdPetsPage } from './id-pets.page';
+import { PlanPage } from './plan.page';
 import { TranslateModule } from '@ngx-translate/core';
-import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
   imports: [
@@ -16,9 +15,8 @@ import { PipesModule } from '../pipes/pipes.module';
     FormsModule,
     IonicModule,
     TranslateModule,
-    PipesModule,
-    IdPetsPageRoutingModule
+    PlanPageRoutingModule
   ],
-  declarations: [IdPetsPage]
+  declarations: [PlanPage]
 })
-export class IdPetsPageModule {}
+export class PlanPageModule {}

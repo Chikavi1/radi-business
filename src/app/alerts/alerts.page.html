@@ -6,12 +6,32 @@
           <ion-button expand="block" style="padding:0em 1em;"(click)="addAlert()" color="dark">
             Crear alerta
           </ion-button>
-          <ion-card style="padding: 1em;" *ngFor="let alert of alerts" (click)="openAlert(alert)">
-            <h2>{{alert.title}}</h2>
-            <p>Enviado el {{alert.createdAt  | localizedDate:'fullDate'}} </p>
-            <ion-chip *ngIf="alert.channel==1">Individual</ion-chip>
-            <ion-chip *ngIf="alert.channel==2">Grupal</ion-chip>
-          </ion-card>
+
+          <div *ngIf="loading">
+            <ion-card style="padding: 1em;" *ngFor="let item  of [1,1,1,1,1]" >
+              <h2>
+                   <ion-skeleton-text [animated]="true" style="width: 65%;"></ion-skeleton-text>
+              </h2>
+              <p>
+                <ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text>
+
+              </p>
+              <ion-chip >
+                <ion-skeleton-text [animated]="true" style="width: 40%;"></ion-skeleton-text>
+              </ion-chip>
+            </ion-card>
+          </div>
+
+          <div *ngIf="!loading">
+            <ion-card style="padding: 1em;" *ngFor="let alert of alerts" (click)="openAlert(alert)">
+              <h2>{{alert.title}}</h2>
+              <p>Enviado el {{alert.createdAt  | localizedDate:'fullDate'}} </p>
+              <ion-chip *ngIf="alert.channel==1">Individual</ion-chip>
+              <ion-chip *ngIf="alert.channel==2">Grupal</ion-chip>
+            </ion-card>
+          </div>
+
+
       </div>
 </ion-content>
 <ion-footer>

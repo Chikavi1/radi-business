@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ModalController, Platform, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, Platform, ToastController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
 import { BarcodeFormat, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
+import { UpdatePetPage } from '../update-pet/update-pet.page';
 
 
 declare var require: any;
@@ -22,14 +23,43 @@ export class IdPetsPage implements OnInit {
   wrong;
 
   info:any = [];
+  walletstep = 1;
+
+  menu = 'index';
+
+  setMenu(o){
+    this.menu = o;
+  }
+
+
+  name;
+  user_name;
+  email;
+  pet_name;
+  pet_gender;
+  pet_birthday;
+  pet_breed;
+  pet_specie;
+  vaccines;
+  dewormings;
+  pet_sterelized;
+  vet_name;
+  vet_id;
 
   constructor(
     public modalCtrl: ModalController,
     public  dataService:  DataService,
+    private loadingController:LoadingController,
     private platform:Platform,
     private toastController: ToastController,
     private alertController:AlertController
     ){
+      this.vet_name = localStorage.getItem('vet_name');
+      this.vet_id = localStorage.getItem('vet_id');
+
+      console.log(this.vet_name,this.vet_id);
+
+
     }
 
     async delete(){
@@ -139,6 +169,109 @@ export class IdPetsPage implements OnInit {
 
   close(){
     this.modalCtrl.dismiss();
+  }
+
+  disabledButton = false;
+  async presentLoading(){
+    const loading = await this.loadingController.create({
+      message:  'Generando tarjeta digital',
+      duration: 3000
+    });
+    loading.present();
+  }
+
+
+
+  seWalletStep(w){
+    this.walletstep = w;
+
+
+    this.getData();
+
+
+  }
+
+  getData(){
+    let data = {
+      id: this.id
+    }
+    this.dataService.getInfodigitalCard(data).subscribe(data => {
+      console.log(data);
+      this.pet_name = data[0].pet_name;
+      this.user_name = data[0].user_name;
+      this.email = data[0].email;
+
+      this.pet_birthday = data[0].pet_birthday;
+      this.pet_gender = data[0].pet_gender;
+      this.pet_breed = data[0].pet_breed;
+      this.pet_specie = data[0].pet_specie;
+      this.vaccines = data[0].vaccines;
+      this.dewormings = data[0].dewormings;
+      this.pet_sterelized = data[0].pet_sterelized;
+
+    });
+  }
+
+  checkboxSuscribe = false;
+
+  createWallet(){
+
+    this.disabledButton = true;
+    this.presentLoading();
+
+    let data = {
+      "id":this.id,
+      "name": this.name,
+      "user_name":this.user_name,
+      "email": this.email,
+      "pet_name": this.pet_name,
+      "pet_gender": this.pet_gender,
+      "pet_birthday": this.pet_birthday,
+      "pet_breed": this.pet_breed,
+      "pet_specie": this.pet_specie ,
+      "vaccines":this.vaccines?this.vaccines:'N/A',
+      "dewormings":this.dewormings?this.dewormings:'N/A',
+      "pet_sterelized": this.pet_sterelized,
+      "vet_name": this.vet_name,
+      "vet_id": this.vet_id,
+    };
+
+    this.dataService.createWallet(data).subscribe(data => {
+      console.log(data);
+      if(data.status == 200){
+        this.loadingController.dismiss();
+        this.presentToast('Se envio la tarjeta digital a tu correo','success');
+        this.close();
+      }
+    },err=>{
+      console.log(err);
+      this.disabledButton = false;
+    });
+  }
+
+
+  updateInfo(){
+    console.log(this.id);
+    this.presentModal(UpdatePetPage,{id: this.id});
+  }
+
+  async presentModal(component,data) {
+    const modal = await this.modalCtrl.create({
+      breakpoints: [1],
+      initialBreakpoint:1,
+      backdropDismiss:true,
+      cssClass: 'small-modal',
+      component: component,
+      componentProps: data
+    });
+
+    modal.onDidDismiss().then((data) => {
+      if(data['data']){
+        this.getData();
+      }
+    });
+
+    return await modal.present();
   }
 
 

@@ -32,11 +32,28 @@ export class PetsOrgPage implements OnInit {
     private api:DataService,
     private toastController:ToastController){
 
+
       this.id_org = localStorage.getItem('id_organization');
-      this.name_organization = localStorage.getItem('name_organization');
       if(this.id_org){
+        // getpets
         this.loadPets()
+      }else{
+        // getInfo
+        this.getInfo();
       }
+    }
+
+    getInfo(){
+      let data = {
+        id: localStorage.getItem('id_company')
+      }
+      this.api.getOrgByPawtner(data).subscribe(data => {
+        console.log(data);
+        console.log(data[0].id)
+        if(data){
+          localStorage.setItem('id_organization',data[0].id);
+        }
+      });
     }
 
     loadPets(){

@@ -92,7 +92,7 @@ export class EventPage implements OnInit {
         iconSize:     [33, 33], // size of the icon
       });
 
-      this.map = Leaflet.map(this.mapElement.nativeElement,{ zoomControl: false}).setView([this.event.latitude,this.event.longitude], 15);
+      this.map = Leaflet.map('mapEvent',{ zoomControl: false}).setView([this.event.latitude,this.event.longitude], 15);
       Leaflet.tileLayer('https://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}&s=Ga', {
         zoom: 8,
         zoomControl: false,

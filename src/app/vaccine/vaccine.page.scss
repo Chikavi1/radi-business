@@ -5,3 +5,12 @@ ion-item{
 .ml-2{
   margin-left: 6em;
 }
+
+.chips-container {
+  overflow: auto;
+  white-space: nowrap;
+}
+
+ion-chip {
+  margin-right: 8px; /* Espaciado opcional entre los chips */
+}

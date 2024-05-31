@@ -1,0 +1,109 @@
+<ion-content>
+
+<div *ngIf="step == 1">
+  <h2>Buscar por</h2>
+  <ion-chip (click)="setSearch(1)" [ngClass]="{'selected' : typesearch == 1 }"  >
+    Id
+  </ion-chip>
+  <ion-chip (click)="setSearch(2)" [ngClass]="{'selected' : typesearch == 2 }">
+    Nombre
+  </ion-chip>
+  <ion-searchbar placeholder="Custom Placeholder"></ion-searchbar>
+  <ion-button shape="round">Buscar</ion-button>
+  <p (click)="select()" >Nombre</p>
+
+</div>
+
+
+<div *ngIf="step == 2" style="padding: 1em;">
+  <p>Nombre</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="name"  ></ion-input>
+
+  <p>description</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="description"  ></ion-input>
+
+  <p>size</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="size"  ></ion-input>
+
+  <p>breed</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="breed"  ></ion-input>
+
+  <p>gender</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="gender"  ></ion-input>
+
+  <p>status</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="status"  ></ion-input>
+
+  <p>id_user</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="id_user"  ></ion-input>
+
+  <p>verified</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="verified"  ></ion-input>
+
+  <p>specie</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="specie"  ></ion-input>
+
+  <p>code</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="code"  ></ion-input>
+
+  <p>photo</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="photo"  ></ion-input>
+
+  <p>latitude</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="latitude"  ></ion-input>
+
+  <p>longitude</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="longitude"  ></ion-input>
+
+  <p>score</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="score"  ></ion-input>
+
+  <p>id_organization</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="id_organization"  ></ion-input>
+
+  <p>weight</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="weight"  ></ion-input>
+
+  <p>tags</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="tags"  ></ion-input>
+
+  <p>sterelized</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="sterelized"  ></ion-input>
+
+  <p>sterelized_date</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="sterelized_date"  ></ion-input>
+
+  <p>muzzle</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="muzzle"  ></ion-input>
+
+  <p>chronic_disease</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="chronic_disease"  ></ion-input>
+
+  <p>color_necklace</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="color_necklace"  ></ion-input>
+
+  <p>birthday</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="birthday"  ></ion-input>
+
+  <p>id_report</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="id_report"  ></ion-input>
+
+  <p>date_death</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="date_death"  ></ion-input>
+
+  <p>memorial_id</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="memorial_id"  ></ion-input>
+
+  <p>photo_booklet</p>
+  <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="photo_booklet"  ></ion-input>
+  <ion-row>
+    <ion-col size="6">
+      <ion-button expand="block" color="danger" (click)="back()">atras</ion-button>
+    </ion-col>
+    <ion-col size="6">
+      <ion-button expand="block" (click)="update()">Actualizar</ion-button>
+    </ion-col>
+  </ion-row>
+</div>
+
+</ion-content>

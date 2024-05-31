@@ -1,0 +1,140 @@
+<ion-content>
+
+  <div *ngIf="step == 1">
+    <h2>Buscar por</h2>
+    <ion-chip (click)="setSearch(1)" [ngClass]="{'selected' : typesearch == 1 }"  >
+      Id
+    </ion-chip>
+    <ion-chip (click)="setSearch(2)" [ngClass]="{'selected' : typesearch == 2 }">
+      Nombre
+    </ion-chip>
+    <ion-searchbar placeholder="Custom Placeholder"></ion-searchbar>
+    <ion-button shape="round">Buscar</ion-button>
+
+    <div style="padding:1em">
+      <p (click)="select()" >Nombre</p>
+    </div>
+
+  </div>
+
+
+  <div *ngIf="step == 2" style="padding: 1em;">
+    <p>Nombre</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="name"  ></ion-input>
+
+    <p>email</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="email"  ></ion-input>
+
+    <p>password</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="password"  ></ion-input>
+
+    <p>cellphone</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="cellphone"  ></ion-input>
+
+    <p>expiration</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="expiration"  ></ion-input>
+
+    <p>identification</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="identification"  ></ion-input>
+
+    <p>points</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="points"  ></ion-input>
+
+    <p>status</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="status"  ></ion-input>
+
+    <p>customer</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="customer"  ></ion-input>
+
+    <p>token</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="token"  ></ion-input>
+
+    <p>photo</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="photo"  ></ion-input>
+
+    <p>latitude</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="latitude"  ></ion-input>
+
+    <p>longitude</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="longitude"  ></ion-input>
+
+    <p>code</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="code"  ></ion-input>
+
+    <p>birthday</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="birthday"  ></ion-input>
+
+    <p>gender</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="gender"  ></ion-input>
+
+    <p>verified</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="verified"  ></ion-input>
+
+    <p>notifications</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="notifications"  ></ion-input>
+
+    <p>country</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="country"  ></ion-input>
+
+    <p>currency</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="currency"  ></ion-input>
+
+    <p>description</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="description"  ></ion-input>
+
+    <p>subscription</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="subscription"  ></ion-input>
+
+    <p>interest</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="interest"  ></ion-input>
+
+    <p>donation_destination</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="donation_destination"  ></ion-input>
+
+    <p>public_configuration</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="public_configuration"  ></ion-input>
+
+    <p>city</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="city"  ></ion-input>
+
+    <p>visible</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="visible"  ></ion-input>
+
+    <p>social_media</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="social_media"  ></ion-input>
+
+    <p>coupon</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="coupon"  ></ion-input>
+
+    <p>granted</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="granted"  ></ion-input>
+
+    <p>pin</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="pin"  ></ion-input>
+
+    <p>streak</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="streak"  ></ion-input>
+
+    <p>streak_date</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="streak_date"  ></ion-input>
+
+    <p>running_points</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="running_points"  ></ion-input>
+
+    <p>social_verified</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="social_verified"  ></ion-input>
+
+    <p>payments_enabled</p>
+    <ion-input class="new-input" placeholder="Ingresa nombre de tu cliente" [(ngModel)]="payments_enabled"  ></ion-input>
+    <ion-row>
+      <ion-col size="6">
+        <ion-button expand="block" color="danger" (click)="back()">atras</ion-button>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button expand="block" (click)="update()">Actualizar</ion-button>
+      </ion-col>
+    </ion-row>
+  </div>
+
+
+  </ion-content>

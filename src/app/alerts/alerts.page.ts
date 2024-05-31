@@ -17,12 +17,18 @@ export class AlertsPage implements OnInit {
     private modalCtrl:ModalController){
       this.getAlerts();
    }
+   loading = true;
+
 
    getAlerts(){
     this.api.getNotifications(localStorage.getItem('id_company')).subscribe(data => {
       this.alerts = data;
-      console.log(data);
     });
+
+    setTimeout(()=>{
+      this.loading = false;
+    },1200);
+
    }
 
    addAlert(){

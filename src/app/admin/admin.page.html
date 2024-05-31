@@ -1,0 +1,29 @@
+<ion-content [fullscreen]="true">
+  <div style="padding: 1em;">
+
+    <h2>Admin</h2>
+
+
+    <ion-item lines="none" (click)="goTo('/admin-users')">
+      <ion-icon slot="end" name="people-outline"></ion-icon>
+      <ion-label>Usuarios</ion-label>
+    </ion-item>
+
+
+  <ion-item lines="none" (click)="goTo('/admin-pets')">
+    <ion-icon slot="end" name="paw-outline"></ion-icon>
+    <ion-label>Mascotas</ion-label>
+  </ion-item>
+
+  <ion-item lines="none" (click)="goTo('/admin-pawrtners')">
+    <ion-icon slot="end" name="storefront-outline"></ion-icon>
+    <ion-label>Negocios</ion-label>
+  </ion-item>
+
+</div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="block" >Regresar</ion-button>
+</ion-footer>
