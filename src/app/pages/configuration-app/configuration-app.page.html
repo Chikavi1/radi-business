@@ -1,0 +1,15 @@
+<ion-content >
+  <div style="padding: 1em;">
+
+    <h2>Configuración</h2>
+    <ion-checkbox  (ionChange)="toggleVisits($event)" [(ngModel)]="autoVisit" labelPlacement="end"> Generar visita automaticamente al escanear</ion-checkbox>
+    <br>
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="block" color="danger" (click)="close()">
+    Cerrar
+  </ion-button>
+</ion-footer>

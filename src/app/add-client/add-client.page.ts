@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
 import * as moment from 'moment';
+import { LogsActivityService } from '../services/logs-activity.service';
 
 @Component({
   selector: 'app-add-client',
@@ -21,18 +22,27 @@ export class AddClientPage implements OnInit {
 
   constructor(private modalCtrl: ModalController,
     private toastController: ToastController,
+    private LogsActivity:LogsActivityService,
     private loadingController: LoadingController,
-    private api:DataService
-
-  ) {
+    private api:DataService) {
     this.today  = moment().format('YYYY-MM-DD');
     this.coupon = localStorage.getItem('name');
    }
 
   ngOnInit() {
+    this.LogsActivity.startLogging('Clients-add');
+  }
+
+  ngOnDestroy() {
+    this.LogsActivity.stopLogging();
+  }
+
+  onEvent(type,name){
+    this.LogsActivity.logEvent(type,name);
   }
 
   back(){
+    this.onEvent('close','close');
     this.modalCtrl.dismiss();
   }
 
@@ -67,11 +77,11 @@ export class AddClientPage implements OnInit {
   }
 
   buttondisabled = false;
+
   send(){
+    this.onEvent('click','boton crear usuario');
     this.buttondisabled = true;
-
     this.presentLoading();
-
     let data = {
       name:      this.name,
       email:     this.email,
@@ -98,9 +108,11 @@ export class AddClientPage implements OnInit {
      if(data.status){
       this.presentToast('Usuario creado','success');
       localStorage.setItem('update_clients','true')
+      this.onEvent('request','Crear usuario');
       this.modalCtrl.dismiss(true);
      }
     },err =>{
+      this.onEvent('request','Error al crear usuario');
       this.buttondisabled = false;
     if(err.error.status == 401){
       this.presentToast('Usuario ya existe con ese correo','danger');

@@ -4,6 +4,7 @@ import { ModalController, NavController, Platform, ToastController } from '@ioni
 import * as moment from 'moment';
 import { CreateRewardPage } from 'src/app/create-reward/create-reward.page';
 import { DataService } from 'src/app/services/data.service';
+import { LogsActivityService } from 'src/app/services/logs-activity.service';
 
 
 declare var require: any;
@@ -21,14 +22,17 @@ export class LogsScansPage implements OnInit {
 rewards:any=[];
 
 createModal(){
+  this.onEvent('click','Crear Recompensa');
   this.openAdds(CreateRewardPage)
 }
 
 close(){
+  this.onEvent('close','close');
   this.navCtrl.back();
 }
 
 back(){
+  this.onEvent('click','Regreso index recompensa');
   this.step = 1;
   this.successful = null;
 }
@@ -46,12 +50,15 @@ async openAdds(page){
   });
   return await modal.present();
 }
+
 description;
 finish;
 
 loading = true;
 
 edit(item){
+  this.onEvent('click','Editar recompensa');
+
 this.editModal(CreateRewardPage,item);
 }
 
@@ -86,6 +93,9 @@ getRewards(){
   this.api.getRewards(localStorage.getItem('id_company')).subscribe(data => {
     console.log(data);
     this.rewards = data;
+    this.onEvent('request','obtuvo recompensas');
+    // ms de respuesta, status, mb de banda ancha
+
   });
 }
 
@@ -93,6 +103,7 @@ getRewards(){
     private toastController:ToastController,
     private navCtrl:NavController,
     private platform:Platform,
+    private LogsActivity: LogsActivityService,
     private modalCtrl:ModalController) {
     this.device = localStorage.getItem('device');
     this.logo = localStorage.getItem('image');
@@ -103,10 +114,6 @@ getRewards(){
 
   showUser(){
     this.step = 2;
-  }
-
-
-  ngOnInit() {
   }
 
   // scan(){
@@ -134,6 +141,7 @@ getRewards(){
 
 
   async scan(c,id){
+    this.onEvent('click','boton escaneo para obtener puntos');
 
     if(this.platform.is('android')){
       await BarcodeScanner.requestPermissions();
@@ -216,16 +224,35 @@ getRewards(){
         this.user_id = data.user_id;
         this.successful = true;
 
+        this.onEvent('request','se contabilizo puntos a la placa');
+
         setTimeout(()=>{
           this.loading = false;
         },1200);
 
       },err => {
         this.successful = false;
+        this.onEvent('error','hubo un error al contabilizar puntos a la placa');
+
       });
   }
 
   getPorcentaje(recaudado,limite): number {
     return  (recaudado % limite) / limite * 100;
   }
+
+
+   ngOnInit() {
+    this.LogsActivity.startLogging('Rewards');
+    }
+
+    ngOnDestroy() {
+      this.LogsActivity.stopLogging();
+    }
+
+    onEvent(type,name) {
+      this.LogsActivity.logEvent(type,name);
+    }
+
+
 }

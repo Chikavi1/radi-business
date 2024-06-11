@@ -5,6 +5,7 @@ import { Share } from '@capacitor/share';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ModalWarningPage } from '../modal-warning/modal-warning.page';
 import { PhotoModalPage } from '../photo-modal/photo-modal.page';
+import { LogsActivityService } from '../services/logs-activity.service';
 
 declare var require: any;
 const Hashids = require('hashids/cjs');
@@ -28,6 +29,7 @@ export class PromotionPage implements OnInit {
   image;
 
   editing(){
+    this.onEvent('click','boton de editar info');
     this.edit = !this.edit;
   }
 
@@ -35,7 +37,8 @@ export class PromotionPage implements OnInit {
     private modalCtrl:ModalController,
     private toastController:ToastController,
     private alertCtrl:AlertController,
-    private api:DataService){
+    private api:DataService,
+    private LogsActivity: LogsActivityService) {
 
    }
 
@@ -49,6 +52,7 @@ export class PromotionPage implements OnInit {
 
     this.api.updatediscount(data).subscribe((data:any) => {
       if(data.status == 200){
+        this.onEvent('request','se actualizo el descuento');
         this.presentToast('Se ha actualizado correctamente.','success')
         this.close(1);
       }
@@ -61,13 +65,18 @@ export class PromotionPage implements OnInit {
         status: 0
       }
       this.api.updatediscount(data).subscribe(data => {
+        this.onEvent('request','se elimino el descuento');
+
         this.presentToast('Se ha eliminado correctamente.','dark');
         this.close(1);
       });
    }
 
   ngOnInit() {
+    this.LogsActivity.startLogging('promotion');
+
     this.api.discount(this.id).subscribe(data => {
+      this.onEvent('request','se elimino el descuento');
       this.discount = data[0];
       console.log(this.discount);
       this.image = this.discount.image;
@@ -78,10 +87,12 @@ export class PromotionPage implements OnInit {
   }
 
   close(status){
+    this.onEvent('request','se elimino el descuento');
     this.modalCtrl.dismiss(status);
   }
 
   async share(){
+    this.onEvent('request','se elimino el descuento');
     await Share.share({
       title: 'Compartir descuento',
       text: 'Mira este descuento presentando la placa QR de tu mascota ',
@@ -176,6 +187,7 @@ export class PromotionPage implements OnInit {
           image: this.uploadPhoto
         }
         this.api.updatediscountImage(datar).subscribe(data => {
+          this.onEvent('request','se actualizo la imagen del descuento');
           this.presentToast('Se ha actualizado la imagen correctamente.','dark');
           this.close(1);
         });
@@ -210,5 +222,15 @@ export class PromotionPage implements OnInit {
     });
     return await modal.present();
   }
+
+
+  ngOnDestroy() {
+    this.LogsActivity.stopLogging();
+  }
+
+  onEvent(type,name) {
+    this.LogsActivity.logEvent(type,name);
+  }
+
 }
 

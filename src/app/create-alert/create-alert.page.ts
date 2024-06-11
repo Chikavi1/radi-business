@@ -6,6 +6,7 @@ import { SelectUserPage } from '../pages/select-user/select-user.page';
 import { EventPage } from '../event/event.page';
 import { CreateEventPage } from '../create-event/create-event.page';
 import { CreatePromotionPage } from '../create-promotion/create-promotion.page';
+import { LogsActivityService } from '../services/logs-activity.service';
 
 declare var require: any;
 const Hashids = require('hashids/cjs');
@@ -33,6 +34,7 @@ export class CreateAlertPage implements OnInit {
 
   constructor(private modalCtrl: ModalController,
     private toastController:ToastController,
+    private LogsActivity: LogsActivityService,
     private loadingController: LoadingController,
     private api: DataService){
       moment.locale('es');
@@ -48,9 +50,12 @@ export class CreateAlertPage implements OnInit {
       loop: false
     }
   }
+
   selectedId;
 
   async userSelectModal(){
+    this.onEvent('click','seleccionar cliente');
+
     const modal = await this.modalCtrl.create({
       component: SelectUserPage,
       breakpoints: [1],
@@ -67,6 +72,7 @@ export class CreateAlertPage implements OnInit {
   }
 
   select(item){
+    this.onEvent('click','seleccionar tipo');
 
     this.selectedId = item.id;
     if(this.type == 2){
@@ -107,6 +113,7 @@ export class CreateAlertPage implements OnInit {
       data.forEach(item => {
         this.items.push({ "title": item.name,"id": item.id,"date": item.start_date });
       });
+      this.onEvent('request','Obten ultimos 5 eventos');
     });
 
     console.log(this.items);
@@ -121,6 +128,8 @@ export class CreateAlertPage implements OnInit {
       data.forEach(item => {
         this.items.push({ "title": item.title,id: item.id,"text":item.description  });
       });
+      this.onEvent('request','Obten ultimos 5 descuentos');
+
     });
   }
 
@@ -146,13 +155,6 @@ export class CreateAlertPage implements OnInit {
 
   userSelectName;
   userId;
-
-  selectUser(){
-
-
-
-  }
-
 
 
   setUserCategory(c){
@@ -192,8 +194,6 @@ export class CreateAlertPage implements OnInit {
     this.people = p;
   }
 
-  ngOnInit() {
-  }
 
   exit(t?){
     this.modalCtrl.dismiss(t);
@@ -252,14 +252,17 @@ export class CreateAlertPage implements OnInit {
     }
     console.log(data);
     this.api.createNotification(data).subscribe(data => {
+      this.onEvent('request','Se creo alerta');
       this.loadingController.dismiss();
-      if(data.status== 200){
+      if(data.status == 200){
         this.step = 3;
       }else{
+        this.onEvent('error','error al crear alerta');
         this.presentToast('Hubo un error, intenta despues','danger');
       }
       console.log(data);
     },err => {
+      this.onEvent('error','error al crear alerta');
       this.presentToast('Hubo un error, intenta despues','danger');
       console.log(err);
     });
@@ -286,8 +289,10 @@ export class CreateAlertPage implements OnInit {
   async add(type){
     let typeComponent;
     if(type == 2){
+      this.onEvent('click','Crear evento');
       typeComponent = CreateEventPage
     }else if(type==3){
+      this.onEvent('click','Crear descuento');
       typeComponent = CreatePromotionPage
     }
     const modal = await this.modalCtrl.create({
@@ -306,4 +311,18 @@ export class CreateAlertPage implements OnInit {
     });
     return await modal.present();
   }
+
+    ngOnInit() {
+      this.LogsActivity.startLogging('create-alert');
+    }
+
+    ngOnDestroy() {
+      this.LogsActivity.stopLogging();
+    }
+
+    onEvent(type,name) {
+      this.LogsActivity.logEvent(type,name);
+    }
+
+
 }

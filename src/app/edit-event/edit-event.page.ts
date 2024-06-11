@@ -7,6 +7,7 @@ import * as Leaflet from 'leaflet';
 import { DataService } from '../services/data.service';
 import { AlertController, ModalController, ToastController } from '@ionic/angular';
 import * as moment from 'moment';
+import { LogsActivityService } from '../services/logs-activity.service';
 declare var L: any;
 
 
@@ -36,11 +37,15 @@ export class EditEventPage implements OnInit {
 
   constructor(private modalCtrl: ModalController,
     private alertCtrl: AlertController,
+    private LogsActivity:LogsActivityService,
     private toastController:ToastController,
     private api: DataService) { }
 
   data;
+
   ngOnInit() {
+    this.LogsActivity.startLogging('Edit-event');
+
     this.image = this.data.image;
     this.name = this.data.name;
     this.start_date = moment(this.data.start_date).utc().format();
@@ -53,7 +58,6 @@ export class EditEventPage implements OnInit {
     this.address = this.data.address;
     this.latitude = this.data.latitude;
     this.longitude = this.data.longitude;
-    console.log(this.data);
   }
 
 
@@ -130,6 +134,9 @@ export class EditEventPage implements OnInit {
         if(data.status == 200){
           this.modalCtrl.dismiss(1);
         }
+        this.onEvent('request','Actualiza evento | '+this.data.id);
+      },err=> {
+        this.onEvent('request','Error al actualiza evento | '+this.data.id);
       });
 
 
@@ -151,6 +158,8 @@ export class EditEventPage implements OnInit {
   }
 
   async getPicture(){
+    this.onEvent('click','Tomar foto');
+
     const image = await Camera.getPhoto({
       quality: 100,
       saveToGallery:false,
@@ -212,6 +221,7 @@ export class EditEventPage implements OnInit {
 
 
   close(){
+    this.onEvent('close','close');
     this.modalCtrl.dismiss();
   }
 
@@ -246,5 +256,15 @@ export class EditEventPage implements OnInit {
     this.latitude = e.target._latlng.lat;
     this.longitude = e.target._latlng.lng;
   }
+
+
+  ngOnDestroy() {
+    this.LogsActivity.stopLogging();
+  }
+
+  onEvent(type,name) {
+    this.LogsActivity.logEvent(type,name);
+  }
+
 
 }

@@ -5,6 +5,7 @@ import { UserPage } from '../user/user.page';
 import { DataService } from '../services/data.service';
 import { QrcodeappPage } from '../qrcodeapp/qrcodeapp.page';
 import { AddClientPage } from '../add-client/add-client.page';
+import { LogsActivityService } from '../services/logs-activity.service';
 
 @Component({
   selector: 'app-tab3',
@@ -18,6 +19,7 @@ export class Tab3Page {
   loading = false;
   constructor(private api:DataService,
     private navCtrl:NavController,
+    private LogsActivity:LogsActivityService,
     private modalCtrl:ModalController){
     this.device = localStorage.getItem('device');
     this.getInfo();
@@ -34,6 +36,15 @@ export class Tab3Page {
     }
    }
 
+   ngOnInit() {
+    this.LogsActivity.startLogging('Clients');
+    }
+
+
+    onEvent(type,name) {
+      this.LogsActivity.logEvent(type,name);
+    }
+
    doRefresh(event) {
     this.getInfo();
     setTimeout(() => {
@@ -45,10 +56,13 @@ export class Tab3Page {
     this.api.getUsersByCompany(localStorage.getItem('id_company')).subscribe(data => {
       console.log(data);
        this.clients = data;
+       this.LogsActivity.logEvent('request','Listado de clientes');
     });
    }
 
   async addClient(){
+    this.LogsActivity.logEvent('click','boton agregar clientes');
+
     const modal = await this.modalCtrl.create({
       component: AddClientPage,
       breakpoints: [1],
@@ -61,18 +75,23 @@ export class Tab3Page {
         }
       }
     });
+    this.removeLogging();
     return await modal.present();
 
 
   }
 
    back(){
+    this.LogsActivity.logEvent('close','close');
     this.navCtrl.back();
    }
 
 
 
   async User(id){
+
+    this.onEvent('click', 'Ver usuario | '+id);
+
     const modal = await this.modalCtrl.create({
       component: UserPage,
       breakpoints: [1],
@@ -87,7 +106,14 @@ export class Tab3Page {
         console.log(info);
       }
     });
+    this.removeLogging();
     return await modal.present();
   }
+
+  removeLogging() {
+    this.LogsActivity.stopLogging();
+  }
+
+
 
 }

@@ -249,6 +249,18 @@ const routes: Routes = [
   {
     path: 'plan',
     loadChildren: () => import('./plan/plan.module').then( m => m.PlanPageModule)
+  },
+  {
+    path: 'configuration-app',
+    loadChildren: () => import('./pages/configuration-app/configuration-app.module').then( m => m.ConfigurationAppPageModule)
+  },
+  {
+    path: 'membership',
+    loadChildren: () => import('./membership/membership.module').then( m => m.MembershipPageModule)
+  },
+  {
+    path: 'create-membership',
+    loadChildren: () => import('./create-membership/create-membership.module').then( m => m.CreateMembershipPageModule)
   }
 ];
 @NgModule({

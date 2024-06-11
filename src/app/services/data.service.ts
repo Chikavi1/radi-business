@@ -29,6 +29,32 @@ export class DataService {
     console.log(this.MODE);
   }
 
+  createMembership(data):any{
+    return this.http.post(this.MODE + 'memberships/create', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  planList(data):any{
+    return this.http.post(this.MODE + 'stripe/plansList', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+
+  validateCoupon(data):any{
+    return this.http.post(this.MODE + 'stripe/validCoupon',JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+   getMembership(data):any{
+      return this.http.post(this.MODE + 'pawrtners/memberships-by-pawrtners', JSON.parse(JSON.stringify(data)), this.options);
+   }
+
+   getMembershipByUser(data):any{
+    return this.http.post(this.MODE + 'pawrtner/membership/', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+   updateMembership(data):any{
+    return this.http.post(this.MODE + 'memberships/update', JSON.parse(JSON.stringify(data)), this.options);
+   }
+
+
   getOrgByPawtner(data){
     return this.http.post(this.MODE + 'getIdBypawtner', JSON.parse(JSON.stringify(data)), this.options);
   }
@@ -81,6 +107,26 @@ export class DataService {
     return this.http.post(this.MODE + 'suscriptions-alerts/create', JSON.parse(JSON.stringify(data)), this.options);
   }
 
+  createSuscriptionPlan(data):any{
+    return this.http.post(this.MODE + 'stripe/create-subscription', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+
+  updatedSuscriptionPlan(data):any{
+    return this.http.post(this.MODE + 'stripe/update-subscription', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  getSubscriptions(id):any{
+    return this.http.get(this.MODE + 'stripe/subscription/'+id);
+  }
+
+  cancelSubscription(data):any{
+    return this.http.post(this.MODE + 'stripe/delete-subscription', JSON.parse(JSON.stringify(data)), this.options);
+  }
+
+  reactiveSuscription(data):any{
+    return this.http.post(this.MODE + 'stripe/activate-subscription', JSON.parse(JSON.stringify(data)), this.options);
+  }
 
   getAd(id):any{
     return this.http.get(this.MODE + 'ad/'+id, this.options);

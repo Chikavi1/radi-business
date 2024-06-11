@@ -5,6 +5,7 @@ import { ModalController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
 import * as Leaflet from 'leaflet';
 import { EditEventPage } from '../edit-event/edit-event.page';
+import { LogsActivityService } from '../services/logs-activity.service';
 declare var L: any;
 
 
@@ -22,7 +23,9 @@ export class EventPage implements OnInit {
   @ViewChild('leafletmap')
   private mapElement: ElementRef;
 
-  constructor(private modalCtrl:ModalController,private api:DataService) { }
+  constructor(private modalCtrl:ModalController,
+    private LogsActivity:LogsActivityService,
+    private api:DataService) { }
   event;
   id;
   hash;
@@ -32,7 +35,9 @@ export class EventPage implements OnInit {
   }
 
   ngOnInit(){
+
     this.hash = this.id;
+    this.LogsActivity.startLogging('Event');
 
       this.id = hashids.decode(this.id)[0];
       console.log(this.id);
@@ -40,10 +45,15 @@ export class EventPage implements OnInit {
     this.api.getEvent(this.id).subscribe(data => {
       console.log(data);
       this.event = data[0];
+      this.onEvent('request','Obten evento | '+this.id);
+
+    },err=> {
+      this.onEvent('error','Error al obtener evento | '+this.id);
     });
   }
 
   async share(){
+    this.onEvent('click','Compartir evento | '+this.id);
 
      await Share.share({
        title: 'Mira este evento',
@@ -54,6 +64,8 @@ export class EventPage implements OnInit {
    }
 
    async editaEvent(){
+    this.onEvent('click','editar evento');
+
     const modal = await this.modalCtrl.create({
       component: EditEventPage,
       breakpoints: [1],
@@ -71,10 +83,14 @@ export class EventPage implements OnInit {
   }
 
    async openBlank(url){
+    this.onEvent('click','Abri navegador');
+
     await Browser.open({ url });
    }
 
    close(){
+    this.onEvent('close','close');
+
     this.modalCtrl.dismiss();
    }
 
@@ -104,4 +120,13 @@ export class EventPage implements OnInit {
         }).addTo(this.map);
       Leaflet.marker([this.event.latitude,this.event.longitude],{icon: homeICon}).addTo(this.map);
   }
+
+  ngOnDestroy() {
+    this.LogsActivity.stopLogging();
+  }
+
+  onEvent(type,name) {
+    this.LogsActivity.logEvent(type,name);
+  }
+
 }

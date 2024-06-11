@@ -6,6 +6,8 @@ import { ModalBlockPage } from './modal-block/modal-block.page';
 import { register } from 'swiper/element/bundle';
 import { ResultPage } from './result/result.page';
 import { TranslateService } from '@ngx-translate/core';
+import { LogsActivityService } from './services/logs-activity.service';
+
 
 register();
 @Component({
@@ -16,10 +18,13 @@ register();
 export class AppComponent {
   constructor(private router:Router,
     private translateService:TranslateService,
+    private LogsActivity: LogsActivityService,
     private modalCtrl:ModalController,private api:DataService,private platform:Platform){
       this.translate();
     this.checkDevice();
       if(localStorage.getItem('id_company')){
+
+      console.log(this.LogsActivity.getTotalDuration(),this.LogsActivity.getPageVisits(),this.LogsActivity.countEventsOfType('request'));
 
         this.api.checkStatus({id:localStorage.getItem('id_company')}).subscribe((data:any) => {
           console.log(data);
@@ -34,10 +39,10 @@ export class AppComponent {
         });
 
         this.router.navigateByUrl('/');
+
       }else{
         this.router.navigateByUrl('/login')
     }
-    // this.openResult('app','214904');
   }
 
   async checkDevice(){

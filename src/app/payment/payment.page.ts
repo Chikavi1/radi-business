@@ -4,6 +4,7 @@ import { DataService } from '../services/data.service';
 import { BarcodeFormat, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { PaymentsPage } from '../payments/payments.page';
+import { LogsActivityService } from '../services/logs-activity.service';
 
 
 @Component({
@@ -39,6 +40,7 @@ account;
 
  constructor(
    private api:DataService,
+   private LogsActivity: LogsActivityService,
     private toastController:ToastController,
     private platform:Platform,
     private loadingCtrl: LoadingController,
@@ -70,10 +72,16 @@ account;
     }
 
   ngOnInit(){
+    this.LogsActivity.startLogging('Payment');
+  }
 
+  removeLogging(){
+    this.LogsActivity.stopLogging();
   }
 
   seePayments(){
+    this.onEvent('click','ver pagos');
+
     this.payments();
   }
 
@@ -86,11 +94,14 @@ account;
     modal.onDidDismiss().then((data) => {
 
     });
+    this.removeLogging();
     return await modal.present();
   }
 
 
   handlerScanner(d){
+    this.onEvent('click','Escanear placa para hacer pagos');
+
     let hash;
       if(d.includes('https://radi.pet/pets/')){
         hash = d.split('pet/pets/');
@@ -100,6 +111,7 @@ account;
     this.api.checkUserPay({code: hash[1]}).subscribe(data => {
       console.log(data)
       if(data.status == 401){
+        this.onEvent('error','pagos placa inhabilitado');
         this.presentToast('No tiene habilitado los pagos con la placa','danger','top');
       }else{
         if(data[0].pin){
@@ -159,6 +171,8 @@ account;
   idUser;
 
   payment(){
+    this.onEvent('click','boton pagar');
+
     console.log(this.correctPin,this.pin);
 
     if(this.correctPin == this.pin){
@@ -177,6 +191,7 @@ account;
 
       this.api.paymentbusiness(data).subscribe(async(data) => {
         if(data.status == 'succeeded'){
+          this.onEvent('payment','pago | '+data.id);
             this.idc = data.id;
             this.loadingCtrl.dismiss();
             this.enabledButton = true;
@@ -197,6 +212,7 @@ account;
         }
 
         if(data.status == 204){
+          this.onEvent('error','No tiene tarjeta vinculada');
           this.presentToast('No tiene tarjeta vinculada','danger','top');
           this.pin = '';
           this.enabledButton = true;
@@ -206,6 +222,7 @@ account;
     }else{
       this.pin = '';
       this.enabledButton = true;
+      this.onEvent('error','pin invalido');
       this.presentToast('Pin Invalido','danger','top');
       this.intents += 1;
       console.log(this.intents);
@@ -220,6 +237,7 @@ account;
 
         this.api.updateGranted(data).subscribe((data:any) => {
           if(data.status == 200){
+            this.onEvent('error','Se deshabilitaron los pagos');
             this.presentToast('Por seguridad, se deshabilitaron los pagos con la placa','danger','top')
           }
         });
@@ -302,6 +320,7 @@ account;
 
 
   close(){
+    this.onEvent('close','close');
     this.modalCtrl.dismiss();
   }
 
@@ -319,6 +338,11 @@ account;
     }else{
       return;
     }
+  }
+
+
+  onEvent(type,name) {
+    this.LogsActivity.logEvent(type,name);
   }
 
 }

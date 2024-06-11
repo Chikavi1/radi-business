@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { MethodPaymentsPage } from '../method-payments/method-payments.page';
 import { DataService } from '../services/data.service';
 import { PhotomodalstoryPage } from '../photomodalstory/photomodalstory.page';
+import { LogsActivityService } from '../services/logs-activity.service';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class CreateAdPage implements OnInit {
 
   constructor(private modalCtrl:ModalController,
     private api:DataService,
+    private LogsActivity:LogsActivityService,
     private loadingController:LoadingController,
     private toastController: ToastController) {
     this.start_date = moment().format('YYYY-MM-DD');
@@ -42,8 +44,7 @@ export class CreateAdPage implements OnInit {
       autoplay: true,
       loop: false
     }
-    this.getInfoCards();
-    this.getPrice();
+
   }
 
   price = 10;
@@ -54,6 +55,7 @@ export class CreateAdPage implements OnInit {
       this.total = this.price*2;
       console.log(data.unit_amount,this.price,this.total);
 
+      this.onEvent('request','obtener precio del anuncio');
 
     });
   }
@@ -103,6 +105,10 @@ export class CreateAdPage implements OnInit {
   }
 
   ngOnInit() {
+    this.LogsActivity.startLogging('Ad-create');
+
+    this.getInfoCards();
+    this.getPrice();
   }
 
   segmentChange(e){
@@ -111,6 +117,8 @@ export class CreateAdPage implements OnInit {
 
   close(t?){
     this.modalCtrl.dismiss(t);
+    this.onEvent('close','close');
+
   }
 
   title = '';
@@ -153,13 +161,19 @@ export class CreateAdPage implements OnInit {
       if(data.status==200){
         this.loadingController.dismiss();
         this.step = 2;
+
+        this.onEvent('request','creo anuncio');
+
       }
+    },err => {
+      this.onEvent('error','Error al creo anuncio');
     });
 
 
   }
 
   goToMethods(){
+    this.onEvent('click','Ver metodos de pago');
     this.goToModal(MethodPaymentsPage,{});
   }
 
@@ -185,6 +199,8 @@ export class CreateAdPage implements OnInit {
 
 
   async getPicture(){
+    this.onEvent('click','Subir imagen');
+
     const image = await Camera.getPhoto({
       quality: 100,
       saveToGallery:true,
@@ -221,7 +237,6 @@ export class CreateAdPage implements OnInit {
   }
 
   ionViewDidEnter(){
-
     this.leafletMap();
   }
 
@@ -279,14 +294,25 @@ export class CreateAdPage implements OnInit {
     getInfoCards(){
       this.api.getCustomerCards(localStorage.getItem('customer')).subscribe(data => {
         console.log(data);
+        this.onEvent('request','obtener info tarjetas');
 
         this.card = data.data[0];
+      },err => {
+        this.onEvent('error','Error obtener info tarjetas');
       });
     }
 
     procesar(e){
       this.latitude = e.target._latlng.lat;
       this.longitude = e.target._latlng.lng;
+    }
+
+    ngOnDestroy() {
+      this.LogsActivity.stopLogging();
+    }
+
+    onEvent(type,name) {
+      this.LogsActivity.logEvent(type,name);
     }
   }
 

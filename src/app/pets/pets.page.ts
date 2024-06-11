@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { ModalController, NavController } from '@ionic/angular';
 import { PetPage } from '../pet/pet.page';
+import { LogsActivityService } from '../services/logs-activity.service';
 
 @Component({
   selector: 'app-pets',
@@ -15,6 +16,7 @@ export class PetsPage {
   loading = false;
   constructor(private api:DataService,
     private navCtrl:NavController,
+    private LogsActivity: LogsActivityService,
     private modalCtrl:ModalController){
     this.device = localStorage.getItem('device');
     this.getInfo();
@@ -22,6 +24,18 @@ export class PetsPage {
       this.loading = true;
     },1200);
   }
+
+  ngOnInit() {
+    this.LogsActivity.startLogging('Pets');
+    }
+
+    ngOnDestroy() {
+      this.LogsActivity.stopLogging();
+    }
+
+    onEvent(type,name) {
+      this.LogsActivity.logEvent(type,name);
+    }
 
   ionViewDidEnter(){
     if(localStorage.getItem('updateUsers')){
@@ -55,9 +69,12 @@ export class PetsPage {
   }
 
    back(){
+    this.onEvent('close','close');
+
     this.navCtrl.back();
    }
    showPet(id){
+    this.onEvent('click','Ver mascota | '+id);
     this.pet(id);
    }
 

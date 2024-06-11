@@ -118,6 +118,17 @@
   "place.close":"Cerrar",
   "photomodal.title":"Editar imagen",
   "photomodal.cancel":"Cancelar",
-  "photomodal.crop":"Recortar"
+  "photomodal.crop":"Recortar",
+
+  "adspot.cardsave":"Tarjetas Guardadas",
+  "adspot.nocards":"No hay tarjetas",
+  "adspot.addcard":"Agregar tarjeta",
+
+  "suscriptions.total":"Total",
+"suscriptions.change":"Cambiar",
+"suscriptions.addcode":"Agregar código",
+"suscriptions.validcode":"Código valido",
+"suscriptions.invalidcode":"Código no valido",
+"suscriptions.validate":"Validar"
 
 }

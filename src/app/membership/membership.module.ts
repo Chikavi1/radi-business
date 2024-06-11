@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ResultPageRoutingModule } from './result-routing.module';
+import { MembershipPageRoutingModule } from './membership-routing.module';
 
-import { ResultPage } from './result.page';
+import { MembershipPage } from './membership.page';
 import { PipesModule } from '../pipes/pipes.module';
 
 @NgModule({
@@ -15,8 +15,8 @@ import { PipesModule } from '../pipes/pipes.module';
     FormsModule,
     IonicModule,
     PipesModule,
-    ResultPageRoutingModule
+    MembershipPageRoutingModule
   ],
-  declarations: [ResultPage]
+  declarations: [MembershipPage]
 })
-export class ResultPageModule {}
+export class MembershipPageModule {}

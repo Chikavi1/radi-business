@@ -16,11 +16,17 @@
       <ion-icon slot="end" name="person-circle-outline"></ion-icon>
       Ver Perfil
     </ion-item>
+    <ion-item (click)="app()">
+      <ion-icon slot="end" name="cog-outline"></ion-icon>
+      Configuración de la app
+    </ion-item>
+
 
     <ion-item (click)="billing()" *ngIf="grantedPayments">
       <ion-icon slot="end" name="cash-outline"></ion-icon>
       Configuración de pagos
     </ion-item>
+
 
     <ion-item (click)="changePass()" >
       <ion-icon slot="end" name="lock-closed-outline"></ion-icon>

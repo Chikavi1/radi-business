@@ -14,8 +14,8 @@
         <ion-input class="new-input" placeholder="Correo eléctronico" [(ngModel)]="email"></ion-input>
         <p>Contraseña</p>
         <ion-input class="new-input" placeholder="Contraseña"  type="password" [(ngModel)]="password"></ion-input>
-        <ion-button  style="margin-top:1em;" fill="clear"  (click)="register()" expand="full" color="dark">Registrarme</ion-button>
         <ion-button [disabled]="!password || !email "  style="margin-top:1em;" shape="round" (click)="login()" expand="full" color="tertiary">Ingresar</ion-button>
+        <ion-button  style="margin-top:1em;" fill="clear"  (click)="register()" expand="full" color="dark">Registrarme</ion-button>
       </div>
 
     </ion-col>

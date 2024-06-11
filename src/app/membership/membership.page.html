@@ -1,0 +1,42 @@
+<ion-content [fullscreen]="true">
+  <div style="padding:1em;">
+    <ion-row>
+      <ion-col size="11">
+        <h1>Membresias</h1>
+      </ion-col>
+      <ion-col size="1" (click)="addMembership()">
+        <h1><ion-icon name="add-outline"></ion-icon></h1>
+      </ion-col>
+    </ion-row>
+
+    <div style="padding: 1em;" *ngIf="memberships.length == 0">
+      <h2 style="margin-top: 3em;">No hay Membresias</h2>
+      <p>Por el momento no, tienes Membresias activa</p>
+    </div>
+
+    <div *ngIf="memberships.length != 0">
+      <ion-card style="padding: 1em;" *ngFor="let item of memberships">
+        <ion-row>
+          <ion-col size="11">
+            <h2>{{ item.user_name }}</h2>
+          </ion-col>
+          <ion-col size="1" (click)="presentActionSheet(item)">
+            <h2><ion-icon name="ellipsis-vertical-outline"></ion-icon></h2>
+          </ion-col>
+        </ion-row>
+
+        <div *ngIf="item.status">
+          <p>La próxima fecha es: {{ item.nextDate | localizedDate:'fullDate' }}</p>
+          <p style="color: green;" >Activa</p>
+        </div>
+        <p *ngIf="!item.status" style="color: red;">Inactiva</p>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-button expand="block" color="danger" (click)="close()">
+    Cerrar
+  </ion-button>
+</ion-footer>

@@ -14,6 +14,7 @@ import { CreateRewardPage } from '../create-reward/create-reward.page';
 import { BarcodeFormat, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { CreateAdPage } from '../create-ad/create-ad.page';
 import { CreateAlertPage } from '../create-alert/create-alert.page';
+import { LogsActivityService } from '../services/logs-activity.service';
 
 @Component({
   selector: 'app-tab1',
@@ -29,7 +30,12 @@ export class Tab1Page {
   grantedPayments;
   grantedRoot;
 
+  logs: any[];
+
+  plan;
+
   constructor(private modalCtrl:ModalController,
+    private LogsActivity:LogsActivityService,
     // private nfc:NFC,
     private api: DataService,
     private actionSheetController: ActionSheetController,
@@ -37,6 +43,9 @@ export class Tab1Page {
     private platform:Platform,
     private toastController:ToastController){
       // this.openResult('app', 214904);
+
+
+      this.plan = localStorage.getItem('plan');
 
 
     this.name = localStorage.getItem('name');
@@ -49,6 +58,19 @@ export class Tab1Page {
       this.grantedPayments = granted.includes('payments')
       this.grantedRoot = granted.includes('root');
     }
+  }
+
+  ngOnInit() {
+    this.LogsActivity.startLogging('tab1');
+  }
+
+  ngOnDestroy() {
+    this.LogsActivity.stopLogging();
+  }
+
+  // Ejemplo de un método que registra un evento de click
+  onButtonClick() {
+    this.LogsActivity.logEvent('click', 'Escanear placa');
   }
 
   code;
@@ -105,6 +127,11 @@ export class Tab1Page {
       // }
     });
     return await modal.present();
+  }
+
+  ionViewWillEnter() {
+    // Este código se ejecuta cada vez que la vista está a punto de ser activada
+    console.log('Tab1 is about to be displayed');
   }
 
 

@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { ModalController } from '@ionic/angular';
 import * as Leaflet from 'leaflet';
+import { LogsActivityService } from '../services/logs-activity.service';
 declare var L: any;
 
 @Component({
@@ -13,17 +14,25 @@ export class AdPage implements OnInit {
   @ViewChild('leafletmap')
   private mapElement: ElementRef;
 
-  constructor(private api:DataService,private modalCtrl:ModalController) { }
+  constructor(private api:DataService,
+    private LogsActivity:LogsActivityService,
+    private modalCtrl:ModalController) { }
   id;
   ad:any = []
+
   ngOnInit() {
+    this.LogsActivity.startLogging('Ad');
     this.api.getAd(this.id).subscribe(data => {
       console.log(data);
       this.ad = data[0];
     });
+
+    this.onEvent('request','Obtener anuncio');
+
   }
 
   close(){
+    this.onEvent('close','close');
     this.modalCtrl.dismiss();
   }
 
@@ -67,10 +76,14 @@ export class AdPage implements OnInit {
             fillColor: 'green',
             opacity: 0.5
           }).addTo(this.map);
+    }
 
+    ngOnDestroy() {
+      this.LogsActivity.stopLogging();
+    }
 
-
-
+    onEvent(type,name) {
+      this.LogsActivity.logEvent(type,name);
     }
 
 }

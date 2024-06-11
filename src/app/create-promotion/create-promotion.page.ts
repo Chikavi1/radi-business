@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, ToastController } from '@ionic/angular';
+import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
 import { PhotoModalPage } from '../photo-modal/photo-modal.page';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ModalWarningPage } from '../modal-warning/modal-warning.page';
+import { LogsActivityService } from '../services/logs-activity.service';
 
 @Component({
   selector: 'app-create-promotion',
@@ -18,12 +19,16 @@ export class CreatePromotionPage implements OnInit {
 
   constructor(
     private modalCtrl:ModalController,
+    private LogsActivity:LogsActivityService,
+    private loadingController:LoadingController,
     private toastController:ToastController,
     private api:DataService) {
      this.image = "../../assets/img/default.png";
      }
 
   ngOnInit() {
+    this.LogsActivity.startLogging('create-promotion');
+
   }
 
   photo;
@@ -43,12 +48,16 @@ export class CreatePromotionPage implements OnInit {
     this.api.createPromotion(data).subscribe((result:any) => {
       if(result.status == 200){
         this.presentToast('Se ha creado correctamente.','success')
+        this.onEvent('request','crea promocion');
         this.modalCtrl.dismiss(data);
       }
+    },err=>{
+      this.onEvent('error','error al crear promocion');
     })
   }
 
   close(){
+    this.onEvent('close','close');
     this.modalCtrl.dismiss();
   }
 
@@ -78,6 +87,8 @@ export class CreatePromotionPage implements OnInit {
   }
 
   async getPicture(){
+    this.onEvent('click','tomar foto');
+
     const image = await Camera.getPhoto({
       quality: 100,
       saveToGallery:false,
@@ -137,4 +148,24 @@ export class CreatePromotionPage implements OnInit {
     });
     return await modal.present();
   }
+
+
+  async presentLoading(){
+    const loading = await this.loadingController.create({
+      message: 'Cargando información, un momento...',
+      duration: 1200
+    });
+    loading.present();
+  }
+
+
+
+  ngOnDestroy() {
+    this.LogsActivity.stopLogging();
+  }
+
+  onEvent(type,name) {
+    this.LogsActivity.logEvent(type,name);
+  }
+
 }

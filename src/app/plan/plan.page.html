@@ -1,184 +1,236 @@
 <ion-content [fullscreen]="true">
-  <div style="padding: 1em;" *ngIf="step == 1">
-    <div style="padding: 1em;">
-      <h2 style="text-align: center;"><ion-chip color="success">Precio de los planes</ion-chip></h2>
-      <p  style="text-align: center;">Planes Flexibles para Todos</p>
-      <p>Disfruta de planes simples y transparentes, diseñados para adaptarse a tu crecimiento. Comienza con nuestra versión gratuita y, cuando estés listo, actualiza a un plan superior que se ajuste a tus necesidades.</p>
-    </div>
 
-    <ion-segment scrollable="true"  value="default" [(ngModel)]="plans_type">
-      <ion-segment-button value="free">
-        <ion-label>Free</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="individual">
-        <ion-label>Individual</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="business">
-        <ion-label>Negocios</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="company">
-        <ion-label>Empresas</ion-label>
-      </ion-segment-button>
-    </ion-segment>
+  <div *ngIf="views == 'see'" style="padding: 1em;">
+    <h2>Suscripciones</h2>
+    <ion-card style="padding: 1em;" *ngFor="let suscription of suscriptions">
+      <h2 *ngIf="suscription.plan.product == PLAN_INDIVIDUAL">Plan Individual</h2>
+      <h2 *ngIf="suscription.plan.product == PLAN_BUSINESS">Plan Negocios</h2>
+      <h2 *ngIf="suscription.plan.product == PLAN_COMPANY">Plan Empresas</h2>
 
-    <ion-card style="padding: 1em;" *ngIf="plans_type == 'free'">
+      <h2>{{suscription.plan.amount / 100}} {{suscription.plan.currency}}</h2>
 
-      <h2 style="text-align: center;"><ion-chip color="success">
-        <ion-icon name="school-outline"></ion-icon>  &nbsp; &nbsp; Plan free
-        </ion-chip>
-      </h2>
-
-      <div style="text-align: center;">
-        <h1>$0 MXN</h1>
-      </div>
-      <p>Lo mejor para iniciar a experimentar con la aplicación.</p>
-
-      <p>Beneficio 1</p>
-      <p>Beneficio 2</p>
-      <p>Beneficio 3</p>
-      <p>Beneficio 4</p>
-      <p>Beneficio 5</p>
-      <p>Beneficio 6</p>
-      <p>Beneficio 7</p>
-      <p>Beneficio 8</p>
-
-    </ion-card>
-
-    <ion-card  style="padding: 1em;" *ngIf="plans_type == 'individual'">
-
-      <h2 style="text-align: center;"><ion-chip color="success">
-        <ion-icon name="person-circle-outline"></ion-icon>&nbsp; &nbsp; Plan individual
-        </ion-chip>
-      </h2>
-      <div style="text-align: center;">
-        <h1>$149 MXN</h1>
+      <div *ngIf="suscription.cancel_at_period_end == true">
+        <p >Finalizara tu suscripión el {{suscription.cancel_at * 1000 | date:'dd/MM/yyyy' }}</p>
+        <ion-button  expand="block" (click)="reactivateAlert(suscription.id)"  color="success" >Reactivar suscripción</ion-button>
       </div>
 
-      <p>Perfecto para profesionales independientes y negocios en sus etapas iniciales.</p>
-
-      <p>Beneficio 1</p>
-      <p>Beneficio 2</p>
-      <p>Beneficio 3</p>
-      <p>Beneficio 4</p>
-      <p>Beneficio 5</p>
-      <p>Beneficio 6</p>
-      <p>Beneficio 7</p>
-      <p>Beneficio 8</p>
-
-      <ion-button (click)="selectPlan(1)" expand="block" shape="round" color="success">Comenzar</ion-button>
-
-    </ion-card>
-
-    <ion-card  style="padding: 1em;" *ngIf="plans_type == 'business'">
-
-      <h2 style="text-align: center;"><ion-chip color="success">
-        <ion-icon name="storefront-outline"></ion-icon>&nbsp; &nbsp; Plan negocios
-      </ion-chip>
-      </h2>
-      <div style="text-align: center;">
-        <h1>$249 MXN</h1>
+      <div *ngIf="suscription.cancel_at_period_end == false">
+        <p>Se renovara el {{suscription.current_period_end * 1000 | date:'dd/MM/yyyy' }}</p>
+        <ion-row>
+          <ion-col size="6">
+            <ion-button expand="block" (click)="updagredPlan(suscription.id,suscription.plan.product)"  color="dark">
+              Cambiar
+            </ion-button>
+          </ion-col>
+          <ion-col  size="6">
+            <ion-button  expand="block" (click)="cancelAlert(suscription.id)"  color="danger" >Cancelar</ion-button>
+          </ion-col>
+        </ion-row>
       </div>
-      <p>Para negocios establecidas con años de experiencia y una amplia base de clientes</p>
-
-      <p>Beneficio 1</p>
-      <p>Beneficio 2</p>
-      <p>Beneficio 3</p>
-      <p>Beneficio 4</p>
-      <p>Beneficio 5</p>
-      <p>Beneficio 6</p>
-      <p>Beneficio 7</p>
-      <p>Beneficio 8</p>
-      <ion-button (click)="selectPlan(2)" expand="block" shape="round" color="success">Comenzar</ion-button>
-
     </ion-card>
-
-    <ion-card  style="padding: 1em;" *ngIf="plans_type == 'company'">
-
-      <h2 style="text-align: center;"><ion-chip color="success">
-        <ion-icon name="rocket-outline"></ion-icon>&nbsp; &nbsp; Plan Empresas
-      </ion-chip>
-      </h2>
-      <div style="text-align: center;">
-        <h1>Desde $449 MXN</h1>
-      </div>
-      <p>Empresas u organizaciones empresariales de gran tamaño con una alta demanda de clientes e información.</p>
-
-      <p>Beneficio 1</p>
-      <p>Beneficio 2</p>
-      <p>Beneficio 3</p>
-      <p>Beneficio 4</p>
-      <p>Beneficio 5</p>
-      <p>Beneficio 6</p>
-      <p>Beneficio 7</p>
-      <p>Beneficio 8</p>
-      <ion-button (click)="selectPlan(3)" expand="block" shape="round" color="success">Comenzar</ion-button>
-
-    </ion-card>
-
   </div>
 
-  <div *ngIf="step == 2" style="padding: 1em;">
-    <h2 style="margin-top: 4em;">Plan seleccionado</h2>
-    <ion-card style="padding: 1em;">
-      <p>Plan empresarial</p>
-      <p>349 MXN</p>
-    </ion-card>
+  <div *ngIf="views == 'create'">
 
+    <div style="padding: 1em;" *ngIf="step == 1">
+      <div style="padding: 1em;">
+        <h2 style="text-align: center;"><ion-chip color="success">Precio de los planes</ion-chip></h2>
+        <p  style="text-align: center;">Planes Flexibles para Todos</p>
+        <p>Disfruta de planes simples y transparentes, diseñados para adaptarse a tu crecimiento. Comienza con nuestra versión gratuita y, cuando estés listo, actualiza a un plan superior que se ajuste a tus necesidades.</p>
+      </div>
 
+      <ion-segment scrollable="true"  value="default" [(ngModel)]="plans_type">
+        <ion-segment-button value="free">
+          <ion-label>Free</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="individual">
+          <ion-label>Individual</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="business">
+          <ion-label>Negocios</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="company">
+          <ion-label>Empresas</ion-label>
+        </ion-segment-button>
+      </ion-segment>
 
-    <ion-row style="margin-top: 3em;">
-      <ion-col size="11">
-        <h5> {{ 'adspot.cardsave' | translate }} </h5>
-          <div *ngIf="card">
-            <div style="margin-left:1em;">
-              <p class="capital">{{ card.brand }} **** {{ card.last4 }}</p>
-            </div>
-          </div>
-      </ion-col>
-      <ion-col size="1">
-        <h5 (click)="goToPayments()">
-          <ion-icon name="add-outline"></ion-icon>
-        </h5>
-      </ion-col>
-    </ion-row>
+      <ion-card style="padding: 1em;" *ngIf="plans_type == 'free'">
 
+        <h2 style="text-align: center;"><ion-chip color="success">
+          <ion-icon name="school-outline"></ion-icon>  &nbsp; &nbsp; Plan Free
+          </ion-chip>
+        </h2>
 
+        <div style="text-align: center;">
+          <h1>$0 MXN</h1>
+        </div>
+        <p>Lo mejor para iniciar a experimentar con la aplicación.</p>
 
-    <div style="padding: 2em;text-align: center;"  *ngIf="!card">
-      <h2> {{ 'adspot.nocards' | translate }} </h2>
-      <ion-button fill="clear" expand="block" (click)="goToPayments()"> {{ 'adspot.addcard' | translate }} </ion-button>
+        <p>Registros de usuarios limitado</p>
+        <p>Registro de visitas únicamente con la placa (requiere compra de la placa)</p>
+        <p>1 envio de notificación mensual</p>
+        <p>Estadiscticas básicas</p>
+        <p>2 promociones al mes</p>
+        <p>2 eventos al mes</p>
+
+      </ion-card>
+
+      <ion-card  style="padding: 1em;" *ngIf="plans_type == 'individual'">
+
+        <h2 style="text-align: center;"><ion-chip color="success">
+          <ion-icon name="person-circle-outline"></ion-icon>&nbsp; &nbsp; Plan Individual
+          </ion-chip>
+        </h2>
+        <div style="text-align: center;">
+          <h1>$149 MXN</h1>
+        </div>
+
+        <p>Perfecto para profesionales independientes y negocios en sus etapas iniciales.</p>
+
+        <p>Registros de usuarios ilimitado.</p>
+        <p>Registro de visitas de clientes y sus mascotas sin necesidad de placa.</p>
+        <p>Soporte básico</p>
+        <p>promociones ilimitadas</p>
+
+        <ion-button *ngIf="old_plan != PLAN_INDIVIDUAL" (click)="selectPlan(plans[0].priceId,plans[0].id,plans[0].price)" expand="block" shape="round" color="success">Seleccionar</ion-button>
+        <p style="color:green;text-align: center;" *ngIf="old_plan == PLAN_INDIVIDUAL">
+          Plan Actual
+        </p>
+      </ion-card>
+
+      <ion-card  style="padding: 1em;" *ngIf="plans_type == 'business'">
+
+        <h2 style="text-align: center;"><ion-chip color="success">
+          <ion-icon name="storefront-outline"></ion-icon>&nbsp; &nbsp; Plan Negocios
+        </ion-chip>
+        </h2>
+        <div style="text-align: center;">
+          <h1>$249 MXN</h1>
+        </div>
+        <p>Para negocios establecidas con años de experiencia y una amplia base de clientes</p>
+        <p>Registros de usuarios ilimitado.</p>
+        <p>Registro de visitas de clientes y sus mascotas sin necesidad de placa.</p>
+        <p>Creación de membresias</p>
+        <p>Soporte prioritario</p>
+        <p>Descuentos en compras de placas</p>
+        <ion-button *ngIf="old_plan != PLAN_BUSINESS"  (click)="selectPlan(plans[1].priceId,plans[1].id,plans[1].price)" expand="block" shape="round" color="success">Seleccionar</ion-button>
+        <p style="color:green;text-align: center;" *ngIf="old_plan == PLAN_BUSINESS">
+          Plan Actual
+        </p>
+      </ion-card>
+
+      <ion-card  style="padding: 1em;" *ngIf="plans_type == 'company'">
+
+        <h2 style="text-align: center;"><ion-chip color="success">
+          <ion-icon name="rocket-outline"></ion-icon>&nbsp; &nbsp; Plan Empresas
+        </ion-chip>
+        </h2>
+        <div style="text-align: center;">
+          <h1>Desde $449 MXN</h1>
+        </div>
+        <p>Empresas u organizaciones empresariales de gran tamaño con una alta demanda de clientes e información.</p>
+
+        <p>Gestión de múltiples ubicaciones y sucursales</p>
+        <p>Eventos y promociones a nivel nacional o regional.</p>
+        <p>Aparece en el listado de recomendados</p>
+        <p>Soporte prioritario</p>
+        <p>Envio de notificaciones ilimitadas y personalizadas</p>
+        <p>Estadisticas avanzadas</p>
+        <p>Descuentos en compras de placas</p>
+        <p>Funcionalidades personalizadas según la empresa</p>
+        <ion-button  *ngIf="old_plan != PLAN_COMPANY"  (click)="selectPlan(plans[2].priceId,plans[2].id,plans[2].price)" expand="block" shape="round" color="success">Seleccionar</ion-button>
+        <p style="color:green;text-align: center;" *ngIf="old_plan == PLAN_COMPANY">
+          Plan Actual
+        </p>
+      </ion-card>
+
     </div>
 
-    <ion-label style="color:rgb(49, 149, 232)" (click)="openCode()">{{ 'suscriptions.addcode' | translate }}</ion-label>
-    <div *ngIf="showCodeInput">
-      <ion-row>
-        <ion-col size="8">
-          <ion-input [(ngModel)]="code" placeholder="{{ 'suscriptions.addcode' | translate }}" />
+    <div *ngIf="step == 2" style="padding: 1em;">
+      <h2 style="margin-top: 4em;">Plan seleccionado</h2>
+        <ion-card style="padding: 1em;">
+        <div *ngIf="product == PLAN_INDIVIDUAL">
+          <p>Plan individual</p>
+          <h2>149 MXN</h2>
+        </div>
+        <div *ngIf="product == PLAN_BUSINESS">
+          <p>Plan empresarial</p>
+          <h2>249 MXN</h2>
+        </div>
+        <div *ngIf="product == PLAN_COMPANY">
+          <p>Plan compañia</p>
+          <h2>449 MXN</h2>
+        </div>
 
+      </ion-card>
+
+
+
+      <ion-row style="margin-top: 3em;">
+        <ion-col size="11">
+          <h5> {{ 'adspot.cardsave' | translate }} </h5>
+            <div *ngIf="card">
+              <div style="margin-left:1em;">
+                <p class="capital">{{ card.brand }} **** {{ card.last4 }}</p>
+              </div>
+            </div>
         </ion-col>
-        <ion-col size="4">
-          <ion-button (click)="validateCode()" [disabled]="btnValidate">
-            {{ 'suscriptions.validate' | translate }}
-          </ion-button>
+        <ion-col size="1">
+          <h5 (click)="goToPayments()">
+            <ion-icon name="add-outline"></ion-icon>
+          </h5>
         </ion-col>
       </ion-row>
 
-      <p *ngIf="codeValid == 'true'" style="color:green;">{{ 'suscriptions.validcode' | translate }}</p>
 
-      <p *ngIf="codeValid == 'false'" style="color:red;">{{ 'suscriptions.invalidcode' | translate }} </p>
+
+      <div style="padding: 2em;text-align: center;"  *ngIf="!card">
+        <h2> {{ 'adspot.nocards' | translate }} </h2>
+        <ion-button fill="clear" expand="block" (click)="goToPayments()"> {{ 'adspot.addcard' | translate }} </ion-button>
+      </div>
+
+      <ion-label style="color:rgb(49, 149, 232)" (click)="openCode()">{{ 'suscriptions.addcode' | translate }}</ion-label>
+      <div *ngIf="showCodeInput" style="margin-top: 3em;">
+        <ion-row>
+          <ion-col size="8">
+            <ion-input [(ngModel)]="code" placeholder="{{ 'suscriptions.addcode' | translate }}" />
+
+          </ion-col>
+          <ion-col size="4">
+            <ion-button expand="block" color="dark" (click)="validateCode()" [disabled]="!code || btnValidate">
+              {{ 'suscriptions.validate' | translate }}
+            </ion-button>
+          </ion-col>
+        </ion-row>
+
+        <p *ngIf="codeValid == 'true'" style="color:green;">{{ 'suscriptions.validcode' | translate }}</p>
+
+        <p *ngIf="codeValid == 'false'" style="color:red;">{{ 'suscriptions.invalidcode' | translate }} </p>
+      </div>
+
+      <ion-row>
+        <ion-col  size="6">
+          <h2>{{ 'suscriptions.total' | translate }}</h2>
+        </ion-col>
+        <ion-col size="6" style="text-align: right;">
+          <h2>{{total}} {{currency}}</h2>
+        </ion-col>
+      </ion-row>
+
+
     </div>
 
-    <ion-row>
-      <ion-col  size="6">
-        <h2>{{ 'suscriptions.total' | translate }}</h2>
-      </ion-col>
-      <ion-col size="6" style="text-align: right;">
-        <h2>{{total}} {{currency}}</h2>
-      </ion-col>
-    </ion-row>
-
-
+    <div *ngIf="step == 3" style="padding: 1em;">
+      <div style="padding:0em 8em;margin-top: 1.4em;">
+        <ng-lottie  [options]="success">
+        </ng-lottie>
+      </div>
+      <h2>¡Gracias por unirte a nuestra comunidad premium!</h2>
+      <p>Disfruta de beneficios exclusivos y contenido de primera calidad al alcance de tus manos</p>
+      <ion-button expand="block" color="success" shape="round" (click)="finish()">Cerrar</ion-button>
+    </div>
   </div>
+
 
 </ion-content>
 <ion-footer >
@@ -193,7 +245,7 @@
       </ion-button>
     </ion-col>
     <ion-col>
-      <ion-button expand="block" color="success" (click)="close()">
+      <ion-button [disabled]="!card" expand="block" color="success" (click)="createPlan()">
          Activar Plan
       </ion-button>
     </ion-col>

@@ -9,11 +9,20 @@ import { PlanPageRoutingModule } from './plan-routing.module';
 import { PlanPage } from './plan.page';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { LottieModule } from 'ngx-lottie';
+import player from 'lottie-web';
+
+export function playerFactory() {
+  return player;
+}
+
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    LottieModule,
     TranslateModule,
     PlanPageRoutingModule
   ],

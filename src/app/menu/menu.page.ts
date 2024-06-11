@@ -6,6 +6,7 @@ import { BillingPage } from '../billing/billing.page';
 import { InfoAppPage } from '../info-app/info-app.page';
 import { Browser } from '@capacitor/browser';
 import { ProfilePage } from '../profile/profile.page';
+import { ConfigurationAppPage } from '../pages/configuration-app/configuration-app.page';
 
 @Component({
   selector: 'app-menu',
@@ -73,6 +74,11 @@ export class MenuPage implements OnInit {
   billing(){
     this.openModal(BillingPage)
   }
+
+  app(){
+    this.openModal(ConfigurationAppPage)
+  }
+
 
   async openModal(Page){
     const modal = await this.modalCtrl.create({

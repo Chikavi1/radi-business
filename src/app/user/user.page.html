@@ -71,6 +71,9 @@
       <ion-segment-button value="info">
        Info
       </ion-segment-button>
+      <ion-segment-button value="membership">
+        Membresia
+       </ion-segment-button>
       <ion-segment-button value="visits" >
         Visitas
       </ion-segment-button>
@@ -144,6 +147,27 @@
   </ion-card>
 
 
+
+</div>
+
+<div *ngIf="menu == 'membership'">
+
+  <ion-card  *ngFor="let membership of memberships" style="padding: 1em;background-color: #1f4721;color:white;">
+    <h2>Membresia activa</h2>
+    <p>Recuerda que se actualiza cada {{membership.period}} dias</p>
+    <p>La próxima fecha es: {{ membership.nextDate | localizedDate:'fullDate' }}</p>
+    <ion-button color="dark" (click)="editMembership(membership)">
+      Editar membresia
+    </ion-button>
+  </ion-card>
+
+    <ion-card *ngIf="memberships.length == 0"  style="padding: 1em;background-color: #6c6c6c;color:white;">
+      <h2>No cuenta con ninguna inactiva</h2>
+      <p>Para crearle haz click aqui abajo.</p>
+      <ion-button color="dark" (click)="createMembership()">
+        Crear membresia
+      </ion-button>
+    </ion-card>
 
 </div>
 

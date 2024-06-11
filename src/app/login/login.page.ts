@@ -21,7 +21,7 @@ export class LoginPage implements OnInit {
     private modalCtrl:ModalController,
     private navCtrl:NavController) {
      this.device = localStorage.getItem('device');
-     this.email = localStorage.getItem('email')?localStorage.getItem('email'):''
+     this.email  = localStorage.getItem('email')?localStorage.getItem('email'):''
     }
 
   ngOnInit() {
@@ -58,6 +58,7 @@ export class LoginPage implements OnInit {
       localStorage.setItem('customer',decoded.customer);
       localStorage.setItem('granted',decoded.granted);
       localStorage.setItem('address',decoded.address);
+      localStorage.setItem('plan',decoded.plan);
 
       this.navCtrl.navigateRoot('/')
     },err => {

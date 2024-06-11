@@ -1,13 +1,19 @@
 <ion-content  >
   <div style="padding:1em">
     <h2>Seleccionar usuario</h2>
-    <div *ngFor="let item of users">
-      <ion-item lines="none" (click)="close(item.name,item.id)">
-        <ion-checkbox   mode="ios"  color="primary"  slot="start"></ion-checkbox>
-        <ion-label >
-          <p class="capital" style="font-weight: bold;">{{item.name}}</p>
-        </ion-label>
-      </ion-item>
+    <div *ngIf="users.length != 0">
+      <div *ngFor="let item of users">
+        <ion-item lines="none" (click)="close(item.name,item.id)">
+          <ion-checkbox   mode="ios"  color="primary"  slot="start"></ion-checkbox>
+          <ion-label >
+            <p class="capital" style="font-weight: bold;">{{item.name}}</p>
+          </ion-label>
+        </ion-item>
+      </div>
+    </div>
+    <div *ngIf="users.length == 0">
+      <h2>No tienes usuarios registrados</h2>
+      <p>Necesitas registrar a tus clientes primero ( para eso necesitas crear un cliente en la sección de clientes)</p>
     </div>
   </div>
 </ion-content>

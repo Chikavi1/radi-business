@@ -6,6 +6,7 @@ import { CreateAchivementPage } from '../create-achivement/create-achivement.pag
 import { ReportPage } from '../report/report.page';
 import { UserPage } from '../user/user.page';
 import { PetPage } from '../pet/pet.page';
+import { LogsActivityService } from '../services/logs-activity.service';
 
 
 @Component({
@@ -24,23 +25,16 @@ income;
 
   constructor(private api:DataService,
     private toastController:ToastController,
+    private LogsActivity:LogsActivityService,
     private modalctrl:ModalController){
   }
 
   editing(){
+    this.onEvent('click','Editar visita');
     this.edit = !this.edit;
   }
 
-  ngOnInit() {
-    this.api.getRecordsById(this.id).subscribe(data => {
-      console.log(data);
-      this.history = data[0];
-      this.description = this.history.description;
-      this.income = this.history.income;
-      this.hours = moment().diff(moment(this.history.date), 'hours')
 
-    });
-  }
 
   numberOnlyValidation(event: any) {
     const pattern = /[0-9.,]/;
@@ -53,6 +47,8 @@ income;
   }
 
   async createReport(){
+    this.onEvent('click','Crear reporte usuario');
+
     const modal = await this.modalctrl.create({
       component: ReportPage,
       breakpoints: [1],
@@ -71,6 +67,8 @@ income;
     return await modal.present();
   }
   async createAchivementModal(){
+    this.onEvent('click','Crear reconocimiento mascota');
+
     console.log(this.history.user_id)
     const modal = await this.modalctrl.create({
       component: CreateAchivementPage,
@@ -101,13 +99,17 @@ income;
     this.api.updateVisit(data).subscribe((data:any) => {
       console.log(data);
       if(data.status == 200){
-        this.presentToast('Se ha actualizado correctamente.','success')
+        this.presentToast('Se ha actualizado correctamente.','success');
+        this.onEvent('request','Actualiza visita');
         this.close();
       }
+    },err=>{
+      this.onEvent('error','Error al actualizar');
     });
   }
 
   close(){
+    this.onEvent('close','close');
     this.modalctrl.dismiss();
   }
 
@@ -139,6 +141,7 @@ income;
   }
 
   seePet(id){
+    this.onEvent('click','Ver perro |'+id);
     this.pet(id);
   }
 
@@ -161,6 +164,31 @@ income;
   }
 
   seeUser(id){
+    this.onEvent('click','Ver usuario |'+id);
     this.User(id);
+  }
+
+  ngOnInit() {
+    this.LogsActivity.startLogging('Visit');
+    this.api.getRecordsById(this.id).subscribe(data => {
+      console.log(data);
+      this.history = data[0];
+      this.description = this.history.description;
+      this.income = this.history.income;
+      this.hours = moment().diff(moment(this.history.date), 'hours')
+      this.onEvent('request','Información de la visita');
+    },err=>{
+      this.onEvent('error','error al obtener la visita | ');
+
+    });
+
+  }
+
+  ngOnDestroy() {
+    this.LogsActivity.stopLogging();
+  }
+
+  onEvent(type,name) {
+    this.LogsActivity.logEvent(type,name);
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
+import { LogsActivityService } from '../services/logs-activity.service';
 
 @Component({
   selector: 'app-create-achivement',
@@ -13,28 +14,32 @@ export class CreateAchivementPage implements OnInit {
   user_id;
 
   close(status){
+    this.onEvent('close','close');
     this.modalCtrl.dismiss(status);
   }
 
   achivements:any = [];
 
-  constructor(private api:DataService, private modalCtrl:ModalController){
+  constructor(private api:DataService,
+    private LogsActivity:LogsActivityService,
+    private modalCtrl:ModalController){
 
-    this.api.getAchiviments(localStorage.getItem('type')).subscribe(data => {
-      console.log(data);
-      this.achivements = data;
-    });
    }
 
    id;
    pet_id;
 
-  ngOnInit() {
-    // console.log(this.user_id);
+   ngOnInit() {
+    this.LogsActivity.startLogging('achiviments');
+    this.api.getAchiviments(localStorage.getItem('type')).subscribe(data => {
+      console.log(data);
+      this.achivements = data;
+      this.onEvent('request','Lista de reconocimientos');
 
-    this.id;
-    this.pet_id;
-    console.log(this.id,this.pet_id,this.user_id);
+    }, err => {
+      this.onEvent('error','Error al obtener listado de reconocimientos');
+
+    });
 
   }
   idSelected
@@ -61,8 +66,22 @@ export class CreateAchivementPage implements OnInit {
     }
     this.api.createAchivement(data).subscribe(result => {
       console.log(result);
+      this.onEvent('request','se creo reconocimiento');
       this.close(true);
+    },error=>{
+      this.onEvent('error','No se pudo crear reconocimiento');
+
     });
+  }
+
+
+
+  ngOnDestroy() {
+    this.LogsActivity.stopLogging();
+  }
+
+  onEvent(type,name) {
+    this.LogsActivity.logEvent(type,name);
   }
 
 }

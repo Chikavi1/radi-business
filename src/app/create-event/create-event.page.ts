@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { Geolocation } from '@capacitor/geolocation';
 
 import { DataService } from '../services/data.service';
+import { LogsActivityService } from '../services/logs-activity.service';
 declare var L: any;
 
 @Component({
@@ -36,6 +37,7 @@ export class CreateEventPage implements OnInit {
   }
   today;
   constructor(private modalCtrl:ModalController,
+    private LogsActivity:LogsActivityService,
     private loadingController:LoadingController,
     private alertController:AlertController,
     private api:DataService) {
@@ -47,6 +49,9 @@ export class CreateEventPage implements OnInit {
    }
 
   ngOnInit() {
+    this.LogsActivity.startLogging('create-event');
+
+
   }
 
   numberOnlyValidation(event: any) {
@@ -113,9 +118,12 @@ buttondisabled = false;
       console.log(data);
       if(data.status){
         this.loadingController.dismiss();
+        this.onEvent('request','Creo evento');
         this.modalCtrl.dismiss(1);
       }
 
+    },err=>{
+      this.onEvent('error','Error al crear evento');
     });
   }
   map;
@@ -146,6 +154,7 @@ buttondisabled = false;
   }
 
   takePhoto(){
+
     Camera.checkPermissions().then((res) => {
       if(res.photos != 'denied'){
         this.getPicture();
@@ -161,6 +170,7 @@ buttondisabled = false;
   }
 
   async getPicture(){
+    this.onEvent('error','Subir foto');
     const image = await Camera.getPhoto({
       quality: 100,
       saveToGallery:false,
@@ -222,6 +232,7 @@ buttondisabled = false;
 
 
   close(){
+    this.onEvent('close','close');
     this.modalCtrl.dismiss();
   }
 
@@ -267,6 +278,17 @@ buttondisabled = false;
   }
 
   back(){
+    this.onEvent('click','regreso');
     this.step -= 1;
   }
+
+
+  ngOnDestroy() {
+    this.LogsActivity.stopLogging();
+  }
+
+  onEvent(type,name) {
+    this.LogsActivity.logEvent(type,name);
+  }
+
 }

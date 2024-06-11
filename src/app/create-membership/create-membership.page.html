@@ -1,0 +1,63 @@
+<ion-content [fullscreen]="true">
+
+  <div style="padding: 1em;">
+
+      <div *ngIf="!id">
+        <ion-card style="padding: 1em;">
+        <h2>Usuario</h2>
+        <div *ngIf="user_id">
+          <h2>{{user_name}}</h2>
+          <p style="color:green" >Usuario seleccionado</p>
+        </div>
+        <p style="color:red" *ngIf="!user_id">No ha sido seleccionado el usuario</p>
+        <ion-button expand="block" color="dark" (click)="selectUser()" *ngIf="!user_id">Seleccionar usuario</ion-button>
+        <ion-button expand="block" color="dark" (click)="selectUser()" *ngIf="user_id">Cambiar usuario</ion-button>
+
+        </ion-card>
+      </div>
+
+      <div *ngIf="id">
+        <p>Estatus de la membresia</p>
+        <ion-item>
+          <ion-select [(ngModel)]="status" aria-label="Fruit" interface="popover" placeholder="Estatus">
+            <ion-select-option [value]="1">Activo</ion-select-option>
+            <ion-select-option [value]="0">Inactivo</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </div>
+
+    <h2>Fecha de inicio</h2>
+    <div style="padding: 1em;">
+      <ion-datetime  [min]="today" style="width: 100%;" [(ngModel)]="start">
+
+      </ion-datetime>
+    </div>
+
+    <h2>Descripción</h2>
+    <ion-input placeholder="Descripción" [(ngModel)]="description"  class="new-input"></ion-input>
+    <h2>Periodo (en dias)</h2>
+    <ion-input type="phone" [(ngModel)]="period" placeholder="Periodo" class="new-input"></ion-input>
+  </div>
+
+
+</ion-content>
+
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button expand="block" color="danger" (click)="close()">
+        Cerrar
+      </ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button *ngIf="!id" expand="block" color="success" [disabled]="!period ||
+      !start || !user_id || buttonDisabled" (click)="create()">
+        Crear
+      </ion-button>
+      <ion-button *ngIf="id" expand="block" color="success" [disabled]="!period ||
+      !start || buttonDisabled" (click)="update()">
+        Actualizar
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

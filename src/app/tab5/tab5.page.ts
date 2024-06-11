@@ -4,6 +4,7 @@ import { ProfilePage } from '../profile/profile.page';
 import Chart from 'chart.js/auto';
 import { DataService } from '../services/data.service';
 import { QrcodeappPage } from '../qrcodeapp/qrcodeapp.page';
+import { LogsActivityService } from '../services/logs-activity.service';
 
 @Component({
   selector: 'app-tab5',
@@ -38,13 +39,16 @@ export class Tab5Page implements AfterViewInit{
   hours ;
   device;
 
-  constructor(private api:DataService,private navCtrl:NavController,private modalCtrl:ModalController){
+  constructor(private api:DataService,
+    private LogsActivity: LogsActivityService,
+    private navCtrl:NavController,private modalCtrl:ModalController){
     this.device = localStorage.getItem('device');
-
-
   }
 
+
+
   back(){
+    this.onEvent('close','close');
     this.navCtrl.back();
    }
 
@@ -83,6 +87,9 @@ export class Tab5Page implements AfterViewInit{
       }else{
         this.winSpe = 2;
       }
+
+      this.onEvent('request','se obtienen estadisticas');
+
 
 
     this.speciePet();
@@ -313,6 +320,19 @@ export class Tab5Page implements AfterViewInit{
       }
     });
   }
+
+  ngOnDestroy() {
+    this.LogsActivity.stopLogging();
+  }
+
+  onEvent(type,name) {
+    this.LogsActivity.logEvent(type,name);
+  }
+
+  ngOnInit(){
+    this.LogsActivity.startLogging('Stats');
+  }
+
 
 
 }

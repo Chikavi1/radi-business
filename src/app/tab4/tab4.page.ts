@@ -5,6 +5,7 @@ import { PromotionPage } from '../promotion/promotion.page';
 import { DataService } from '../services/data.service';
 import { QrcodeappPage } from '../qrcodeapp/qrcodeapp.page';
 import { CreatePromotionPage } from '../create-promotion/create-promotion.page';
+import { LogsActivityService } from '../services/logs-activity.service';
 
 @Component({
   selector: 'app-tab4',
@@ -17,6 +18,7 @@ export class Tab4Page {
 
   constructor(private api:DataService,
     private navCtrl:NavController,
+    private LogsActivity: LogsActivityService,
     private modalCtrl:ModalController){
     this.device = localStorage.getItem('device');
     this.getData()
@@ -26,6 +28,9 @@ export class Tab4Page {
     this.api.discounts(localStorage.getItem('id_company')).subscribe(data => {
       this.discounts = data;
       console.log(this.discounts);
+      this.onEvent('request','listado de promociones')
+    },err=>{
+      this.onEvent('error','error en listado de promociones')
     });
   }
 
@@ -34,6 +39,7 @@ export class Tab4Page {
    }
 
  async createPromotion(){
+  this.onEvent('click','crear promocion')
     const modal = await this.modalCtrl.create({
       component: CreatePromotionPage,
       breakpoints: [ 1],
@@ -45,10 +51,13 @@ export class Tab4Page {
 
       }
     });
+    this.removeLogging()
     return await modal.present();
   }
 
   doRefresh(event) {
+    this.onEvent('refresher','se refresco la pagina')
+
     this.getData();
 
     setTimeout(() => {
@@ -57,6 +66,7 @@ export class Tab4Page {
   }
 
   async promotion(id){
+    this.onEvent('click','Ver promoción | '+id);
     const modal = await this.modalCtrl.create({
       component: PromotionPage,
       breakpoints: [1],
@@ -71,6 +81,19 @@ export class Tab4Page {
 
       }
     });
+    this.removeLogging();
     return await modal.present();
   }
+
+    ngOnInit() {
+    this.LogsActivity.startLogging('Promotions');
+    }
+
+    removeLogging(){
+      this.LogsActivity.stopLogging();
+    }
+
+    onEvent(type,name) {
+      this.LogsActivity.logEvent(type,name);
+    }
 }

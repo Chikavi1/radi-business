@@ -7,6 +7,7 @@ import { VaccinePage } from '../vaccine/vaccine.page';
 import { UpdatePetPage } from '../update-pet/update-pet.page';
 import { PetPage } from '../pet/pet.page';
 import { UserPage } from '../user/user.page';
+import { CreateMembershipPage } from '../create-membership/create-membership.page';
 
 
 declare var require: any;
@@ -29,6 +30,9 @@ export class ResultPage implements OnInit {
   grantedCarnet = false;
   grantedHistorial;
   grantedEditPet
+
+  visitsAutomatic;
+
   constructor(
     private api:DataService,
     private alertCtrl:AlertController,
@@ -39,7 +43,11 @@ export class ResultPage implements OnInit {
       this.grantedHistorial = granted.includes('historial');
       this.grantedEditPet = granted.includes('editpet');
 
+      this.visitsAutomatic = localStorage.getItem('automatic_visits');
 
+      if(this.visitsAutomatic){
+        this.addVisits()
+      }
 
     }
   btnCreate = true;
@@ -52,14 +60,69 @@ export class ResultPage implements OnInit {
 
   menu = 'pets';
 
+  memberships:any = [];
+
   segmentChange(e){
     console.log(e.detail.value);
     if(e.detail.value == 'visits'){
       if(this.visits.length == 0){
         this.getVisits();
       }
+    }else if(e.detail.value == 'user'){
+      this.getMembership();
+
     }
   }
+
+  getMembership(){
+    let data = {
+      id_user: this.result.id_user,
+      id_pawrtner:  localStorage.getItem('id_company')
+    }
+
+    this.api.getMembershipByUser(data).subscribe(data => {
+      console.log(data);
+      this.memberships = data;
+      this.calculateNextDate();
+    });
+  }
+
+  calculateNextDate(): void {
+    this.memberships.forEach(membership => {
+      if (membership.status === 1) {
+        const startDate = moment(membership.start);
+        const nextDate = startDate.add(membership.period, 'days');
+        membership.nextDate = nextDate.format('YYYY-MM-DD');
+      }
+    });
+  }
+
+  editMembership(item){
+    this.openEdit(item);
+  }
+
+  async openEdit(data){
+    console.log('--')
+    console.log(data);
+    console.log('--');
+
+    const modal = await this.modalctrl.create({
+      component: CreateMembershipPage,
+      breakpoints: [ 1],
+      initialBreakpoint: 1,
+      backdropDismiss:true,
+      canDismiss:true,
+      componentProps: data
+    });
+    modal.onDidDismiss().then((data) => {
+      if(data['data']){
+        this.getMembership();
+      }
+    });
+    return await modal.present();
+  }
+
+
   ngOnInit(){
 
     let data = {
@@ -321,7 +384,6 @@ export class ResultPage implements OnInit {
     this.api.createVisit(data).subscribe((data:any) => {
       if(data.status == 200){
         this.presentToast('Se ha creado la visita.','success')
-        this.close();
         localStorage.setItem('updateVisits','true');
         localStorage.setItem('updateUsers','true');
         localStorage.setItem('updateStats','true');

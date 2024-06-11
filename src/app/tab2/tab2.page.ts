@@ -4,6 +4,7 @@ import { ProfilePage } from '../profile/profile.page';
 import { HistoryPage } from '../history/history.page';
 import { DataService } from '../services/data.service';
 import { QrcodeappPage } from '../qrcodeapp/qrcodeapp.page';
+import { LogsActivityService } from '../services/logs-activity.service';
 
 @Component({
   selector: 'app-tab2',
@@ -15,12 +16,10 @@ export class Tab2Page {
   device;
   loading = false;
 
-  constructor(private api:DataService,private modalCtrl:ModalController){
-    this.getInfo();
-    setTimeout(() => {
-      this.loading = true;
-    },1200);
-    this.device = localStorage.getItem('device');
+  constructor(private api:DataService,
+    private LogsActivity:LogsActivityService,
+    private modalCtrl:ModalController){
+
 
   }
 
@@ -34,6 +33,9 @@ export class Tab2Page {
   getInfo(){
     this.api.getRecordsByCompany(localStorage.getItem('id_company')).subscribe(data => {
       this.records = data;
+      this.onEvent('request','Listado de visitas');
+    },err=> {
+      this.onEvent('error','Error en ver listado de visitas');
     });
   }
 
@@ -46,6 +48,8 @@ export class Tab2Page {
 
 
   async History(id){
+    this.onEvent('click','ver visita | '+id);
+
     const modal = await this.modalCtrl.create({
       component: HistoryPage,
       breakpoints: [1],
@@ -63,6 +67,24 @@ export class Tab2Page {
     });
     return await modal.present();
   }
+
+    ngOnInit() {
+      this.LogsActivity.startLogging('Visits');
+
+      this.getInfo();
+      setTimeout(() => {
+        this.loading = true;
+      },1200);
+      this.device = localStorage.getItem('device');
+    }
+
+    ngOnDestroy() {
+      this.LogsActivity.stopLogging();
+    }
+
+    onEvent(type,name) {
+      this.LogsActivity.logEvent(type,name);
+    }
 
 
 }

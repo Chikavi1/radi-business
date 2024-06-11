@@ -3,6 +3,7 @@ import { AlertController, LoadingController, ModalController, Platform, ToastCon
 import { DataService } from '../services/data.service';
 import { BarcodeFormat, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { UpdatePetPage } from '../update-pet/update-pet.page';
+import { LogsActivityService } from '../services/logs-activity.service';
 
 
 declare var require: any;
@@ -50,9 +51,13 @@ export class IdPetsPage implements OnInit {
     public modalCtrl: ModalController,
     public  dataService:  DataService,
     private loadingController:LoadingController,
+    private LogsActivity:LogsActivityService,
     private platform:Platform,
     private toastController: ToastController,
-    private alertController:AlertController
+    private alertController:AlertController,
+
+
+
     ){
       this.vet_name = localStorage.getItem('vet_name');
       this.vet_id = localStorage.getItem('vet_id');
@@ -63,6 +68,8 @@ export class IdPetsPage implements OnInit {
     }
 
     async delete(){
+      this.onEvent('click','Quiere eliminar la vinculacion de la placa');
+
         const alert = await this.alertController.create({
           cssClass: 'my-custom-class',
           header:'¿Estás seguro?',
@@ -78,6 +85,8 @@ export class IdPetsPage implements OnInit {
             }, {
               text: 'Aceptar',
               handler: (e) => {
+                this.onEvent('click','desvinculo placa');
+
               // this.dataService.deleteIdentification().subscribe(data => {
                 this.verified = false;
                 this.date = null;
@@ -99,16 +108,22 @@ export class IdPetsPage implements OnInit {
     // buscar si ya tiene
     this.dataService.getIdentification(hashids.decode(this.id)[0]).subscribe((data:any) => {
       this.info = data[0];
+      this.onEvent('request','obtuvo info placa');
+
+      console.log(data);
       if(data.length == 0){
         this.verified = false;
       }else{
         this.verified = true;
         this.date = data[0].redeemed_date;
       }
+    },err=>{
+      this.onEvent('error','error al obtener info placa');
     });
   }
 
   async scan(){
+    this.onEvent('click','escaneo placa');
     if(this.platform.is('android')){
       await BarcodeScanner.requestPermissions();
       const data = await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
@@ -153,21 +168,28 @@ export class IdPetsPage implements OnInit {
 
         if(result.status == 200){
           this.verified = true;
+
+          this.onEvent('request','Vinculo placa');
+
           this.presentToast('Se ha vinculado exitosamente','success');
           localStorage.setItem('updatePets','true');
           this.modalCtrl.dismiss(data);
         }
 
         if(result.status == 503){
+          this.onEvent('error','Error al vincular la placa');
           this.presentToast('No se puede asociar','warning');
         }
       },err => {
         console.log(err)
+        this.onEvent('error','Error al vincular la placa');
         this.presentToast('No se puede asociar','warning');
       })
   }
 
   close(){
+    this.onEvent('close','close');
+    this.LogsActivity.stopLogging();
     this.modalCtrl.dismiss();
   }
 
@@ -184,18 +206,18 @@ export class IdPetsPage implements OnInit {
 
   seWalletStep(w){
     this.walletstep = w;
-
-
+    this.onEvent('click','Ver wallet');
     this.getData();
-
-
   }
 
   getData(){
     let data = {
-      id: this.id
+      id: this.info.id_pet
     }
+    console.log(data);
     this.dataService.getInfodigitalCard(data).subscribe(data => {
+      this.onEvent('request','Obtuvo info wallet');
+
       console.log(data);
       this.pet_name = data[0].pet_name;
       this.user_name = data[0].user_name;
@@ -209,6 +231,8 @@ export class IdPetsPage implements OnInit {
       this.dewormings = data[0].dewormings;
       this.pet_sterelized = data[0].pet_sterelized;
 
+    },err => {
+      this.onEvent('error','Error en info wallet');
     });
   }
 
@@ -240,11 +264,13 @@ export class IdPetsPage implements OnInit {
       console.log(data);
       if(data.status == 200){
         this.loadingController.dismiss();
+        this.onEvent('request','Envio wallet al correo');
         this.presentToast('Se envio la tarjeta digital a tu correo','success');
         this.close();
       }
     },err=>{
       console.log(err);
+      this.onEvent('error','Error wallet al correo');
       this.disabledButton = false;
     });
   }
@@ -270,7 +296,7 @@ export class IdPetsPage implements OnInit {
         this.getData();
       }
     });
-
+    this.LogsActivity.stopLogging();
     return await modal.present();
   }
 
@@ -283,5 +309,10 @@ export class IdPetsPage implements OnInit {
     });
     toast.present();
   }
+
+    onEvent(type,name) {
+      this.LogsActivity.logEvent(type,name);
+    }
+
 
 }

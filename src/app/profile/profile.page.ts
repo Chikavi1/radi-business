@@ -5,6 +5,7 @@ import { Share } from '@capacitor/share';
 import { Browser } from '@capacitor/browser';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { PhotoRoundedModalPage } from '../photo-rounded-modal/photo-rounded-modal.page';
+import { LogsActivityService } from '../services/logs-activity.service';
 
 
 
@@ -36,18 +37,26 @@ export class ProfilePage implements OnInit {
 
   vet_name;
   vet_id;
+  plan;
 
   constructor(private api:DataService,
     private navCtrl: NavController,
     private alertController:AlertController,
     private actionSheetController:ActionSheetController,
     private loadingController:LoadingController,
+    private LogsActivity: LogsActivityService,
     private modalctrl:ModalController,private toastController:ToastController) {
 
+      this.plan = localStorage.getItem('plan');
       this.vet_name = localStorage.getItem('vet_name')
       this.vet_id = localStorage.getItem('vet_id')
 
+
+  }
+
+  getInfo(){
     this.api.getCompany(localStorage.getItem('id_company')).subscribe(data => {
+      this.onEvent('request','obtuvo info negocio');
       console.log(data)
       this.company = data[0];
       localStorage.setItem('granted',JSON.stringify(this.company.granted));
@@ -75,10 +84,14 @@ export class ProfilePage implements OnInit {
       //   Leaflet.marker([data[0].latitude,data[0].longitude],{icon: this.homeICon}).addTo(this.map).bindPopup(data[0].address);
       // },1000)
 
+    },err => {
+      this.onEvent('error','Error al obtener info');
     });
   }
 
   async share(){
+    this.onEvent('click','compartio su perfil');
+
    let hash = hashids.encode(this.company.id);
 
     await Share.share({
@@ -91,6 +104,8 @@ export class ProfilePage implements OnInit {
 
 
   saveVetData(){
+    this.onEvent('click','salvo info vet');
+
     localStorage.setItem('vet_id',this.vet_id);
     localStorage.setItem('vet_name',this.vet_name);
 
@@ -115,6 +130,7 @@ export class ProfilePage implements OnInit {
             if(res.camera != 'denied'){
               this.getPicture('camera');
             }else{
+              this.onEvent('error','No tiene permisos para la camara');
               alert('Necesitas autorizar los permisos');
             }
           })
@@ -127,8 +143,10 @@ export class ProfilePage implements OnInit {
           handler: () => {
             Camera.checkPermissions().then((res) => {
               if(res.photos != 'denied'){
+
                 this.getPicture('photos');
               }else{
+                this.onEvent('error','No tiene permisos para las fotos');
                alert('Necesitas autorizar los permisos');
               }
               // alert(JSON.stringify(res));
@@ -157,6 +175,8 @@ export class ProfilePage implements OnInit {
   }
 
   async getPicture(src){
+    this.onEvent('click','tomo foto');
+
     let source = src=='camera'?CameraSource.Camera:CameraSource.Photos;
 
     const image = await Camera.getPhoto({
@@ -165,7 +185,7 @@ export class ProfilePage implements OnInit {
       allowEditing: false,
       resultType: CameraResultType.Base64,
       source: source,
-      promptLabelHeader: 'Carnet de la mascota',
+      promptLabelHeader: 'Foto de perfil',
       promptLabelCancel: 'Cancelar',
       promptLabelPhoto:  'Galeria',
       promptLabelPicture: 'Tomar Foto'
@@ -177,6 +197,7 @@ export class ProfilePage implements OnInit {
   uploadPhoto;
 
   async modalImage(image){
+
     const modal = await this.modalctrl.create({
       component:PhotoRoundedModalPage,
       componentProps:{
@@ -210,6 +231,7 @@ export class ProfilePage implements OnInit {
       if(data.url){
         this.loadingController.dismiss();
         localStorage.setItem('image',data.url)
+        this.onEvent('request','Actualizo foto de perfil');
         this.presentToast('Se ha actualizado exitosamente la foto de perfil, espera unos segundos para que se actualice','success');
       }
     });
@@ -239,10 +261,13 @@ export class ProfilePage implements OnInit {
     this.api.updateCompany(data).subscribe((data:any) => {
       if(data.status == 200){
         this.presentToast('Se ha actualizado correctamente.','success')
+        this.onEvent('request','actualizo info');
         this.close();
-      }
 
+      }
       console.log(data);
+    },err => {
+      this.onEvent('error','Error al actualizar compañia');
 
     });
   }
@@ -258,13 +283,19 @@ export class ProfilePage implements OnInit {
 
 
   editing(){
+    this.onEvent('click','boton editar');
+
     this.edit = !this.edit;
   }
 
   ngOnInit() {
+    this.LogsActivity.startLogging('profile');
+    this.getInfo();
   }
 
   async presentAlertPrompt() {
+    this.onEvent('click','Quiere eliminar cuenta');
+
     const alert = await this.alertController.create({
       header: 'Eliminar cuenta',
       message: '¿Estás seguro? Esta acción no se puede deshacer.Ingresa la palabra eliminar',
@@ -307,11 +338,22 @@ export class ProfilePage implements OnInit {
 
 
   async openBlank(url){
+    this.onEvent('click','Abrio el navegador');
     await Browser.open({ url });
   }
 
   close(){
+    this.onEvent('close','close');
+
     this.modalctrl.dismiss();
+  }
+
+  ngOnDestroy() {
+    this.LogsActivity.stopLogging();
+  }
+
+  onEvent(type,name) {
+    this.LogsActivity.logEvent(type,name);
   }
 
 }

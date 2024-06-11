@@ -127,13 +127,45 @@
             </ion-col>
           </ion-row>
         </ion-card>
-        <ion-card style="padding: 1em;" *ngIf="result.user_name">
+
+        <!-- <ion-card style="padding: 1em;" *ngIf="result.user_name">
           <p>Para proteger la Información de nuestros usuarios, se le enviará una notificacion al usuario que se esta revisando su historial.</p>
-        </ion-card>
+        </ion-card> -->
+
+        <!-- las membresias -->
+
+
+      <ion-card [ngStyle]="{'background-color': membership.status === 1 ? '#1f4721' : '#6c6c6c'}"  *ngFor="let membership of memberships" style="padding: 1em;color:white;">
+        <h2 *ngIf="membership.status == 1">Membresia activa</h2>
+        <h2 *ngIf="membership.status == 0">Membresia inactiva</h2>
+        <div  *ngIf="membership.status == 1">
+          <p>Recuerda que se actualiza cada {{membership.period}} dias</p>
+          <p>La próxima fecha es: {{ membership.nextDate | localizedDate:'fullDate' }}</p>
+        </div>
+        <div *ngIf="membership.status == 0">
+          <p>
+            Para volver activar, haz click en el boton de abajo
+          </p>
+        </div>
+        <ion-button color="dark" (click)="editMembership(membership)">
+          Editar membresia
+        </ion-button>
+      </ion-card>
+
+        <ion-card *ngIf="memberships.length == 0"  style="padding: 1em;background-color: #6c6c6c;color:white;">
+        <h2>Membresia inactiva</h2>
+        <p>Esta persona no cuenta con una membresia activa.</p>
+
+      </ion-card>
+
+
         <ion-card style="padding:1em;" *ngIf="result.user_name">
           <h3 class="text-center" style="color:#41cb7d" *ngIf="goodbehavior">No cuenta con ningún reporte</h3>
           <h3 class="text-center" style="color:#e48f48" *ngIf="!goodbehavior">Cuenta con reporte</h3>
         </ion-card>
+
+
+
       </div>
 
       <div *ngIf="menu == 'visits'">
@@ -153,9 +185,11 @@
             <h2 style="text-align: center;">Primera visita con ustedes</h2>
           </div>
 
-          <ion-button *ngIf="btnCreate" (click)="addVisits()" shape="round" color="success" expand="full">
-            Agregar Visita
-          </ion-button>
+          <div *ngIf="!visitsAutomatic">
+            <ion-button *ngIf="btnCreate" (click)="addVisits()" shape="round" color="success" expand="full">
+              Agregar Visita
+            </ion-button>
+          </div>
         </ion-card>
       </div>
 

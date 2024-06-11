@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { LoadingController, ModalController } from '@ionic/angular';
+import { LogsActivityService } from '../services/logs-activity.service';
 
 @Component({
   selector: 'app-report',
@@ -10,13 +11,12 @@ import { LoadingController, ModalController } from '@ionic/angular';
 export class ReportPage implements OnInit {
 
   constructor(private api:DataService,
+    private LogsActivity:LogsActivityService,
     private loadingController:LoadingController,
     private modalCtrl:ModalController) { }
 
   description;
-  ngOnInit() {
 
-  }
 
   pet_id;
   user_id
@@ -49,12 +49,30 @@ export class ReportPage implements OnInit {
 
     this.api.createReport(data).subscribe(data => {
       console.log(data);
+      this.onEvent('request','crea reporte | '+this.user_id);
       this.modalCtrl.dismiss(1);
+    },err=>{
+      this.onEvent('error','error al crear reporte');
+
     });
   }
 
   close(){
+    this.onEvent('close','close');
     this.modalCtrl.dismiss();
+  }
+
+  ngOnInit() {
+    this.LogsActivity.startLogging('Report');
+  }
+
+
+  ngOnDestroy() {
+    this.LogsActivity.stopLogging();
+  }
+
+  onEvent(type,name) {
+    this.LogsActivity.logEvent(type,name);
   }
 
 }

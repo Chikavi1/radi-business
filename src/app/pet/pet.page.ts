@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { Browser } from '@capacitor/browser';
 import { UpdatePetPage } from '../update-pet/update-pet.page';
 import { IdPetsPage } from '../id-pets/id-pets.page';
+import { LogsActivityService } from '../services/logs-activity.service';
 
 declare var require: any;
 const Hashids = require('hashids/cjs');
@@ -21,6 +22,7 @@ export class PetPage implements OnInit {
   constructor(
     private api:DataService,
     private toastController:ToastController,
+    private LogsActivity: LogsActivityService,
     private actionSheetController:ActionSheetController,
     private modalCtrl:ModalController) {
 
@@ -30,9 +32,8 @@ export class PetPage implements OnInit {
   id;
 
   ngOnInit() {
+    this.LogsActivity.startLogging('pet');
     this.getPetInfo();
-
-    console.log(this.id);
   }
 
   noContent;
@@ -58,7 +59,7 @@ export class PetPage implements OnInit {
         if(data.length != 0){
           this.noContent = false;
           this.pet = data[0];
-
+          this.onEvent('request','se obtuvo la info pet');
           if(this.pet.breed){
             let petInfo = {
               language: 'es',
@@ -82,6 +83,9 @@ export class PetPage implements OnInit {
           this.noContent = true;
         }
         this.show = true;
+      },err =>{
+        this.onEvent('error','Error al obtener info pet');
+
       });
   }
 
@@ -134,10 +138,12 @@ export class PetPage implements OnInit {
   }
 
   close(){
+    this.onEvent('close','close');
     this.modalCtrl.dismiss()
   }
 
   async openBlank(url){
+    this.onEvent('click','Abrio navegador');
     if(url){
       await Browser.open({ url });
     }else{
@@ -152,6 +158,7 @@ export class PetPage implements OnInit {
       text: 'Editar',
       icon: 'paw',
       handler: () => {
+        this.onEvent('click','Editar mascota');
         this.presentModal(UpdatePetPage,{id: hashids.encode(this.id)});
       }
     },
@@ -159,6 +166,7 @@ export class PetPage implements OnInit {
       text: 'Identificación',
       icon: 'id-card-outline',
       handler: () => {
+       this.onEvent('click','Ver identificador');
        this.presentModal(IdPetsPage, {id: hashids.encode(this.id)});
       }
     },
@@ -167,6 +175,8 @@ export class PetPage implements OnInit {
       icon: 'close',
       role: 'cancel',
       handler: () => {
+        this.onEvent('click','Cancelar boton opciones');
+
       }
     }
   ];
@@ -218,4 +228,15 @@ export class PetPage implements OnInit {
     });
     toast.present();
   }
+
+
+  ngOnDestroy() {
+    this.LogsActivity.stopLogging();
+  }
+
+  onEvent(type,name) {
+    this.LogsActivity.logEvent(type,name);
+  }
+
+
 }
