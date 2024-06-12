@@ -43,11 +43,7 @@ export class ResultPage implements OnInit {
       this.grantedHistorial = granted.includes('historial');
       this.grantedEditPet = granted.includes('editpet');
 
-      this.visitsAutomatic = localStorage.getItem('automatic_visits');
 
-      if(this.visitsAutomatic){
-        this.addVisits()
-      }
 
     }
   btnCreate = true;
@@ -61,6 +57,8 @@ export class ResultPage implements OnInit {
   menu = 'pets';
 
   memberships:any = [];
+
+  loadingMemberships = false;
 
   segmentChange(e){
     console.log(e.detail.value);
@@ -85,6 +83,12 @@ export class ResultPage implements OnInit {
       this.memberships = data;
       this.calculateNextDate();
     });
+
+
+    setTimeout(()=>{
+      this.loadingMemberships = true;
+    },1200);
+
   }
 
   calculateNextDate(): void {
@@ -140,7 +144,7 @@ export class ResultPage implements OnInit {
         this.get_injections()
       }
 
-
+      this.automatic_visit();
       this.load = false;
     },error=>{
       this.result = [];
@@ -148,10 +152,22 @@ export class ResultPage implements OnInit {
 
     }
   );
-  }
+
+    }
+
+
+    automatic_visit(){
+      this.visitsAutomatic = localStorage.getItem('automatic_visits');
+
+      if(this.visitsAutomatic){
+        setTimeout(()=>{
+          this.addVisits()
+        },1200);
+      }
+    }
+    loadingVisits = false;
 
   getVisits(){
-    console.log('get api visits');
     let dataVisit = {
       id_user: this.result.id_user,
       id_pet: this.result.id_pet,
@@ -175,8 +191,14 @@ export class ResultPage implements OnInit {
           }
         });
 
+        setTimeout(()=>{
+          this.loadingVisits = true;
+        },1200);
+
       });
     }
+
+
 
   }
 

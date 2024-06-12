@@ -134,29 +134,46 @@
 
         <!-- las membresias -->
 
-
-      <ion-card [ngStyle]="{'background-color': membership.status === 1 ? '#1f4721' : '#6c6c6c'}"  *ngFor="let membership of memberships" style="padding: 1em;color:white;">
-        <h2 *ngIf="membership.status == 1">Membresia activa</h2>
-        <h2 *ngIf="membership.status == 0">Membresia inactiva</h2>
-        <div  *ngIf="membership.status == 1">
-          <p>Recuerda que se actualiza cada {{membership.period}} dias</p>
-          <p>La próxima fecha es: {{ membership.nextDate | localizedDate:'fullDate' }}</p>
+        <div *ngIf="!loadingMemberships">
+          <ion-card >
+            <h2>
+                <ion-skeleton-text [animated]="true" style="width: 25%;"></ion-skeleton-text>
+            </h2>
+            <div>
+              <p>
+                                   <ion-skeleton-text [animated]="true" style="width: 65%;"></ion-skeleton-text>
+              </p>
+              <p>
+                                   <ion-skeleton-text [animated]="true" style="width: 85%;"></ion-skeleton-text>
+              </p>
+            </div>
+        </ion-card>
         </div>
-        <div *ngIf="membership.status == 0">
-          <p>
-            Para volver activar, haz click en el boton de abajo
-          </p>
+
+        <div *ngIf="loadingMemberships">
+                <ion-card [ngStyle]="{'background-color': membership.status === 1 ? '#1f4721' : '#6c6c6c'}"  *ngFor="let membership of memberships" style="padding: 1em;color:white;">
+                  <h2 *ngIf="membership.status == 1">Membresia activa</h2>
+                  <h2 *ngIf="membership.status == 0">Membresia inactiva</h2>
+                  <div  *ngIf="membership.status == 1">
+                    <p>Recuerda que se actualiza cada {{membership.period}} dias</p>
+                    <p>La próxima fecha es: {{ membership.nextDate | localizedDate:'fullDate' }}</p>
+                  </div>
+                  <div *ngIf="membership.status == 0">
+                    <p>
+                      Para volver activar, haz click en el boton de abajo
+                    </p>
+                  </div>
+                  <ion-button color="dark" (click)="editMembership(membership)">
+                    Editar membresia
+                  </ion-button>
+                </ion-card>
+
+                <ion-card *ngIf="memberships.length == 0"  style="padding: 1em;background-color: #6c6c6c;color:white;">
+                  <h2>Membresia inactiva</h2>
+                  <p>Esta persona no cuenta con una membresia activa.</p>
+
+                </ion-card>
         </div>
-        <ion-button color="dark" (click)="editMembership(membership)">
-          Editar membresia
-        </ion-button>
-      </ion-card>
-
-        <ion-card *ngIf="memberships.length == 0"  style="padding: 1em;background-color: #6c6c6c;color:white;">
-        <h2>Membresia inactiva</h2>
-        <p>Esta persona no cuenta con una membresia activa.</p>
-
-      </ion-card>
 
 
         <ion-card style="padding:1em;" *ngIf="result.user_name">
@@ -172,24 +189,36 @@
         <ion-card style="padding:1em;" *ngIf="result.user_name">
           <h3 class="text-center">Visitas</h3>
 
-          <div *ngIf="visits.length != 0">
-            <ion-item *ngFor="let item of visits" style="background-color: transparent;" button detail="true" detail-icon="caret-forward-outline">
-              <ion-label (click)="History(item.id)">
-                <h3>{{item.description}}</h3>
-                <p>{{item.date| date:'dd/MM/yyyy'}}</p>
+          <div  *ngIf="!loadingVisits">
+            <ion-item *ngFor="let item of [1,1,1,1,1,1,1,1]" style="background-color: transparent;">
+              <ion-label >
+                <h3><ion-skeleton-text [animated]="true" style="width: 25%;"></ion-skeleton-text></h3>
+                <p><ion-skeleton-text [animated]="true" style="width: 65%;"></ion-skeleton-text></p>
               </ion-label>
             </ion-item>
           </div>
 
-          <div *ngIf="visits.length == 0">
-            <h2 style="text-align: center;">Primera visita con ustedes</h2>
+          <div *ngIf="loadingVisits">
+            <div *ngIf="visits.length != 0">
+              <ion-item *ngFor="let item of visits" style="background-color: transparent;" button detail="true" detail-icon="caret-forward-outline">
+                <ion-label (click)="History(item.id)">
+                  <h3>{{item.description}}</h3>
+                  <p>{{item.date| date:'dd/MM/yyyy'}}</p>
+                </ion-label>
+              </ion-item>
+            </div>
+
+            <div *ngIf="visits.length == 0">
+              <h2 style="text-align: center;">Primera visita con ustedes</h2>
+            </div>
+
+            <div *ngIf="!visitsAutomatic">
+              <ion-button *ngIf="btnCreate" (click)="addVisits()" shape="round" color="success" expand="full">
+                Agregar Visita
+              </ion-button>
+            </div>
           </div>
 
-          <div *ngIf="!visitsAutomatic">
-            <ion-button *ngIf="btnCreate" (click)="addVisits()" shape="round" color="success" expand="full">
-              Agregar Visita
-            </ion-button>
-          </div>
         </ion-card>
       </div>
 

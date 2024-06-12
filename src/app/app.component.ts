@@ -43,6 +43,7 @@ export class AppComponent {
       }else{
         this.router.navigateByUrl('/login')
     }
+    // this.openResult('app','214904');
   }
 
   async checkDevice(){

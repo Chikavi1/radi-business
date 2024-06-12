@@ -112,9 +112,6 @@ export class CreateMembershipPage implements OnInit {
       "status": this.status
     }
 
-    console.log(data);
-    this.modalCtrl.dismiss(true);
-
     this.api.updateMembership(data).subscribe(data => {
       console.log(data);
 
