@@ -2,7 +2,7 @@
 
 <ion-content>
   <div *ngIf="account">
-    <div style="padding:2em;" *ngIf="!paymentsEnabled">
+    <div style="padding:2em;" *ngIf="messageStatus">
       <div *ngIf="messageStatus == 'disabledpayments'">
         <h2>No tiene activada la función</h2>
         <p>Informa al cliente que los pagos con identificador aún no están activados en su cuenta. <br> Para habilitar esta función es muy sencillo, debe dirigirse al menú de "configuración", elegir la opción de "pagos" y activar la funcionalidad de "pagos con identificador". <br><br></p>
@@ -10,15 +10,22 @@
       <div *ngIf="messageStatus == 'idnofound'">
         <h2>Placa no válida</h2>
         <p>Queremos informarte que la placa que has escaneado no es válida para el proceso actual. <br><br> Si has utilizado el código QR del perfil de la mascota, queremos aclararte que, por razones de seguridad, la función de pagos solo es compatible con la placa QR emitida por Radi Pets.</p>
+        <ion-button (click)="close()">Entendido</ion-button>
       </div>
       <div *ngIf="messageStatus == 'cardsnone'">
         <h2>No cuenta con tarjeta vinculada</h2>
         <p>Informa al cliente que no tiene una tarjeta registrada, le recomendamos añadir una tarjeta y un NIP para aumentar su seguridad.</p>
+        <ion-button (click)="close()">Entendido</ion-button>
       </div>
-    <ion-button (click)="close()">Entendido</ion-button>
+      <div *ngIf="messageStatus == 'needconfiguration'">
+        <h2>Configuración de Pagos Pendiente</h2>
+        <p>Por favor, configura los métodos de pago para poder recibir transacciones.</p>
+
+        <ion-button (click)="billing()">Configurar pagos</ion-button>
+      </div>
     </div>
 
-    <div *ngIf="paymentsEnabled">
+    <div *ngIf="!messageStatus">
       <div *ngIf="step == 1" style="padding: 1em;margin-top: 3em;">
         <h3>Cantidad</h3>
         <ion-input class="new-input" type="number" placeholder="Ingresa cantidad" [(ngModel)]="amount"  ></ion-input>

@@ -152,14 +152,34 @@
 
 <div *ngIf="menu == 'membership'">
 
-  <ion-card  *ngFor="let membership of memberships" style="padding: 1em;background-color: #1f4721;color:white;">
-    <h2>Membresia activa</h2>
-    <p>Recuerda que se actualiza cada {{membership.period}} dias</p>
-    <p>La próxima fecha es: {{ membership.nextDate | localizedDate:'fullDate' }}</p>
-    <ion-button color="dark" (click)="editMembership(membership)">
-      Editar membresia
-    </ion-button>
-  </ion-card>
+  <div *ngIf="!loadingMemberships">
+    <ion-card  *ngFor="let i of [1,1,1,1,1,1,1]" style="padding: 1em;">
+      <h2>
+          <ion-skeleton-text [animated]="true" style="width: 75%;"></ion-skeleton-text>
+      </h2>
+      <p>
+        <ion-skeleton-text [animated]="true" style="width: 75%;"></ion-skeleton-text>
+      </p>
+    </ion-card>
+  </div>
+
+  <div *ngIf="loadingMemberships">
+    <ion-card [ngStyle]="{'background-color': membership.status === 1 ? '#1f4721' : '#6c6c6c'}"  *ngFor="let membership of memberships" style="padding: 1em;color:white;">
+      <h2 *ngIf="membership.status == 1">Membresia activa</h2>
+      <h2 *ngIf="membership.status == 0">Membresia inactiva</h2>
+      <div  *ngIf="membership.status == 1">
+        <p>Recuerda que se actualiza cada {{membership.period}} dias</p>
+        <p>La próxima fecha es: {{ membership.nextDate | localizedDate:'fullDate' }}</p>
+      </div>
+      <div *ngIf="membership.status == 0">
+        <p>
+          Para volver activar, haz click en el boton de abajo
+        </p>
+      </div>
+      <ion-button color="dark" (click)="editMembership(membership)">
+        Editar membresia
+      </ion-button>
+    </ion-card>
 
     <ion-card *ngIf="memberships.length == 0"  style="padding: 1em;background-color: #6c6c6c;color:white;">
       <h2>No cuenta con ninguna inactiva</h2>
@@ -168,21 +188,36 @@
         Crear membresia
       </ion-button>
     </ion-card>
+  </div>
 
 </div>
 
 <div *ngIf="menu == 'visits'">
+
   <ion-card style="text-align: center;">
     <h3>Visitas</h3>
+    <div *ngIf="!loadingVisits">
+      <ion-item *ngFor="let i of [1,1,1,1,1,1,1,1]" class="capital" lines="none" style="padding-bottom:1em;background-color: transparent;" button detail="true" detail-icon="caret-forward-outline">
+        <ion-label>
+          <p class="capital" style="font-weight: bold;">
+            <ion-skeleton-text [animated]="true" style="width: 75%;"></ion-skeleton-text>
+          </p>
+          <p class="capital">
+            <ion-skeleton-text [animated]="true" style="width: 35%;"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+  </div>
 
-    <ion-item *ngFor="let record of records" class="capital" lines="none" style="padding-bottom:1em;background-color: transparent;" button detail="true" detail-icon="caret-forward-outline">
-      <ion-label (click)="History(record.id)">
-        <p class="capital" style="font-weight: bold;">{{record.description}}</p>
-        <p class="capital">{{record.date | localizedDate:'fullDate'}}</p>
-      </ion-label>
-    </ion-item>
-
-  </ion-card>
+    <div *ngIf="loadingVisits">
+      <ion-item *ngFor="let record of records" class="capital" lines="none" style="padding-bottom:1em;background-color: transparent;" button detail="true" detail-icon="caret-forward-outline">
+        <ion-label (click)="History(record.id)">
+          <p class="capital" style="font-weight: bold;">{{record.description}}</p>
+          <p class="capital">{{record.date | localizedDate:'fullDate'}}</p>
+        </ion-label>
+      </ion-item>
+    </div>
+    </ion-card>
 </div>
 
 <div *ngIf="menu == 'pets'">
@@ -280,23 +315,36 @@
 
 <div *ngIf="menu == 'alerts'">
   <h2>Notificaciones</h2>
-  <div *ngIf="!isSuscribe">
-    <h2>El usuario no esta suscrito a recibir notificaciones de tu negocio</h2>
+
+  <div *ngIf="!loadingAlerts">
+    <h2>
+      <ion-skeleton-text [animated]="true" style="width: 55%;"></ion-skeleton-text>
+    </h2>
     <p>
-      Puedes invitarlo a suscribirse desde su aplicación o ofrecerte a registrarlo de forma gratuita. Recuerda que suscribir usuarios sin su consentimiento puede resultar en la suspensión de tu cuenta. </p>
-      <p><ion-checkbox labelPlacement="end" [(ngModel)]="checkboxSuscribe">El cliente me da su autorización para suscribirlo</ion-checkbox></p>
-    <ion-button expand="block" color="dark" [disabled]="!checkboxSuscribe" shape="round" (click)="createSubscrptionAlert()">Suscribir</ion-button>
+      <ion-skeleton-text [animated]="true" style="width: 85%;"></ion-skeleton-text>
+      <ion-skeleton-text [animated]="true" style="width: 35%;"></ion-skeleton-text>
 
+    </p>
   </div>
-  <div *ngIf="isSuscribe">
-    <div *ngIf="suscribeStatus">
-      <h2>El usuario esta suscrito a recibir notificaciones</h2>
-      <ion-button expand="block" color="dark" shape="round" (click)="sendNotification()">Enviar notificación</ion-button>
-    </div>
-    <div  *ngIf="!suscribeStatus">
-      <h2>  El usuario tiene desahabilitado las suscripciones</h2>
-    </div>
+  <div *ngIf="loadingAlerts">
+    <div *ngIf="!isSuscribe">
+      <h2>El usuario no esta suscrito a recibir notificaciones de tu negocio</h2>
+      <p>
+        Puedes invitarlo a suscribirse desde su aplicación o ofrecerte a registrarlo de forma gratuita. Recuerda que suscribir usuarios sin su consentimiento puede resultar en la suspensión de tu cuenta. </p>
+        <p><ion-checkbox labelPlacement="end" [(ngModel)]="checkboxSuscribe">El cliente me da su autorización para suscribirlo</ion-checkbox></p>
+      <ion-button expand="block" color="dark" [disabled]="!checkboxSuscribe" shape="round" (click)="createSubscrptionAlert()">Suscribir</ion-button>
 
+    </div>
+    <div *ngIf="isSuscribe">
+      <div *ngIf="suscribeStatus">
+        <h2>El usuario esta suscrito a recibir notificaciones</h2>
+        <ion-button expand="block" color="dark" shape="round" (click)="sendNotification()">Enviar notificación</ion-button>
+      </div>
+      <div  *ngIf="!suscribeStatus">
+        <h2>  El usuario tiene desahabilitado las suscripciones</h2>
+      </div>
+
+    </div>
   </div>
 </div>
 

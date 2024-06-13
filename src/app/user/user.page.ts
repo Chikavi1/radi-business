@@ -142,6 +142,9 @@ export class UserPage implements OnInit {
   notes;
   crudIs;
 
+  loadingMemberships = false;
+  loadingVisits = false;
+
   getExtraData(){
     if(!this.extraShows){
       this.api.getExtraData({id_business: localStorage.getItem('id_company'), id_user: this.user.id}).subscribe(data => {
@@ -247,8 +250,12 @@ getVisits(){
         this.recordsShows = true;
       }
       this.onEvent('request','Obten visitas por usuario');
-
     });
+
+    setTimeout(()=>{
+      this.loadingVisits = true;
+    },1200)
+
   }
 }
 
@@ -286,6 +293,7 @@ isSuscribe;
 suscribeStatus;
 
 memberships:any = [];
+loadingAlerts = false;
 
 getSubscrptionAlert(){
   let data = {
@@ -303,6 +311,10 @@ getSubscrptionAlert(){
       this.suscribeStatus = data[0].status;
     }
   });
+
+  setTimeout(()=>{
+    this.loadingAlerts = true;
+  },1500);
 }
 
 createSubscrptionAlert(){
@@ -376,6 +388,11 @@ getMembership(){
     this.memberships = data;
     this.calculateNextDate();
   });
+
+  setTimeout(()=>{
+    this.loadingMemberships = true;
+  },1200)
+
 }
 
 calculateNextDate(): void {

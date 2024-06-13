@@ -205,6 +205,7 @@ export class CardPage implements OnInit {
         },
         err => {
           this.btnenabled = true;
+          alert(JSON.stringify(err));
           console.log(err);
           if(err.error.code === "invalid_cvc"){
             this.presentToast(this.invalid_cvc,'danger');
@@ -213,6 +214,7 @@ export class CardPage implements OnInit {
       );
     }).catch(error =>{
       console.error(error)
+      alert(JSON.stringify(error));
       this.btnenabled = true;
           if(error.code == "incorrect_number"){
             this.presentToast(this.incorrect_number,'danger');

@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { LoadingController, ModalController, Platform, ToastController } from '@ionic/angular';
 import { DataService } from '../services/data.service';
 import { BarcodeFormat, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
-import { LocalNotifications } from '@capacitor/local-notifications';
 import { PaymentsPage } from '../payments/payments.page';
 import { LogsActivityService } from '../services/logs-activity.service';
+import { BillingPage } from '../billing/billing.page';
 
 
 @Component({
@@ -33,7 +33,27 @@ export class PaymentPage implements OnInit {
   this.stripe = ((3.60*this.amount)/100)+3;
   this.ivastripe = (this.stripe * 0.16);
   this.business = this.amount - (this.stripe+this.ivastripe);
-  this.total = this.amount+this.radiservice;
+  this.total = this.amount;
+}
+
+billing(){
+  this.close();
+  this.openModal(BillingPage)
+}
+
+async openModal(Page){
+  const modal = await this.modalCtrl.create({
+    component: Page,
+    breakpoints: [1],
+    initialBreakpoint: 1,
+    componentProps:{
+      id:1,
+    }
+  });
+  modal.onDidDismiss().then((data) => {
+
+  });
+  return await modal.present();
 }
 
 account;
@@ -72,7 +92,24 @@ account;
     }
 
   ngOnInit(){
+
+
+    this.getAccountInfo();
+
     this.LogsActivity.startLogging('Payment');
+  }
+
+  needConfigurate
+  getAccountInfo(){
+    this.api.getAccount({account: this.account}).subscribe(data => {
+      if(data.details_submitted){
+        this.needConfigurate = false;
+      }else{
+        this.messageStatus = 'needconfiguration';
+        console.log('NECESITAS CONFIGURAR TUS PAGOS')
+        this.needConfigurate = true;
+      }
+    });
   }
 
   removeLogging(){
@@ -107,7 +144,6 @@ account;
         hash = d.split('pet/pets/');
       }
 
-      console.log(hash);
     this.api.checkUserPay({code: hash[1]}).subscribe(data => {
       console.log(data)
       if(data.status == 401){
@@ -122,6 +158,7 @@ account;
         }
       }
     },err=>{
+      console.log(err);
       this.presentToast('Placa no valida','danger','top');
     });
   }
@@ -140,7 +177,7 @@ account;
 
 
  async checkPayments(){
-  // let url = 'https://radi.pet/pets/RD39uc98q4';
+  // let url = 'https://radi.pet/pets/RDxqp83r35';
   // this.handlerScanner(url);
 
 
@@ -172,9 +209,6 @@ account;
 
   payment(){
     this.onEvent('click','boton pagar');
-
-    console.log(this.correctPin,this.pin);
-
     if(this.correctPin == this.pin){
       this.showLoading();
 
@@ -190,25 +224,13 @@ account;
 
 
       this.api.paymentbusiness(data).subscribe(async(data) => {
+        console.log(data);
         if(data.status == 'succeeded'){
           this.onEvent('payment','pago | '+data.id);
             this.idc = data.id;
             this.loadingCtrl.dismiss();
             this.enabledButton = true;
             this.step = 3;
-            await LocalNotifications.schedule({
-              notifications: [
-                {
-                  id: 1,
-                  title: 'Cobro realizado correctamente',
-                  body: 'Se realizo un cobro por $165.00',
-                  extra: {
-                    data: 'pass'
-                  },
-                  iconColor: "#17202F"
-                }
-              ]
-            });
         }
 
         if(data.status == 204){
@@ -217,6 +239,16 @@ account;
           this.pin = '';
           this.enabledButton = true;
         }
+      },err => {
+        this.enabledButton = true;
+
+        console.log(err);
+
+        if(err.error.details.code  == "card_declined"){
+          this.presentToast('Tarjeta declinada, sin saldo','danger','bottom');
+        }
+
+        console.log(err.error.details.code == "card_declined");
       });
 
     }else{
